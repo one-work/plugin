@@ -1,0 +1,7 @@
+{
+  "pages": {
+    "print": "pages/print/index",
+    "weigh": "pages/weigh/index"
+  },
+  "main": "index.js"
+}
