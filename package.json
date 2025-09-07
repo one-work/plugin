@@ -1,11 +1,21 @@
 {
   "name": "bluetooth",
+  "id": "chuangyin-bluetooth",
+  "displayName": "蓝牙打印机",
   "version": "1.0.0",
   "main": "index.js",
-  "keywords": [],
+  "keywords": ["蓝牙", "打印机"],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "蓝牙打印机",
+  "dcloudext": {
+    "type": "sdk-js",
+    "declaration": {
+      "ads": "无",
+      "data": "插件不采集任何数据",
+      "permissions": "<uses-permission android:name=\\\"android.permission.BLUETOOTH\\\"/>"
+    }
+  },
   "dependencies": {
     "buffer": "^6.0.3",
     "iconv-lite": "^0.7.0",
