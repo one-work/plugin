@@ -20,11 +20,11 @@ export default class PrintCPCL {
       ''
     ].join("\n")
 
-    if (typeof TextEncoder) {
+    if (typeof TextEncoder === 'function') {
       const encoder = new TextEncoder()
       return encoder.encode(content)
     } else {
-      return Buffer.from(content, 'utf8');
+      return Buffer.from(content, 'utf8')
     }
   }
 
