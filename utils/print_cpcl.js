@@ -21,7 +21,7 @@ export default class PrintCPCL {
     ].join("\n")
 
     const encoder = new TextEncoder()
-    return encoder.encode(str)
+    return encoder.encode(content)
   }
 
   head() {
