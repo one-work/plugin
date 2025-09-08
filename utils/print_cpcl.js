@@ -1,3 +1,5 @@
+import TextEncoder from './text_encoder'
+
 export default class PrintCPCL {
   static PADDING_TOP = 40
 
@@ -20,12 +22,8 @@ export default class PrintCPCL {
       ''
     ].join("\n")
 
-    let result = []
-    for (let i = 0; i < content.length; i++) {
-      result.push(content.charCodeAt(i))
-    }
-
-    return result
+    const encoder = new TextEncoder()
+    return encoder.encode(content)
   }
 
   head() {
