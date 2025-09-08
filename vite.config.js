@@ -25,11 +25,8 @@ export default defineConfig({
         entryFileNames: 'utils/print_cpcl.js',
         chunkFileNames: '[name].js',
         assetFileNames: '[name].[ext]',
-        format: 'umd',
-        name: 'PrintCPCL',
-        globals: {
-          'iconv-lite': 'iconv'
-        }
+        format: 'cjs',
+        exports: 'default'
       },
       external: []
     },
@@ -37,7 +34,7 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, 'utils/print_cpcl.js'),
       name: 'PrintCPCL',
-      formats: ['umd'],
+      formats: ['cjs'],
       fileName: () => 'utils/print_cpcl.js'
     },
     outDir: 'dist',
