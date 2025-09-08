@@ -1,6 +1,6 @@
 const iconv = require('iconv-lite')
 
-export default class PrintCPCL {
+module.exports = class PrintCPCL {
   static PADDING_TOP = 40
 
   constructor({ width = 72, height = 40 } = {}) {
