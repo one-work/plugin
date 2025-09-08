@@ -1,4 +1,4 @@
-import TextEncoder from './text_encoder'
+import { encodeUTF8 } from './text_encoder'
 
 export default class PrintCPCL {
   static PADDING_TOP = 40
@@ -22,8 +22,7 @@ export default class PrintCPCL {
       ''
     ].join("\n")
 
-    const encoder = new TextEncoder()
-    return encoder.encode(content)
+    return encodeUTF8(content)
   }
 
   head() {
