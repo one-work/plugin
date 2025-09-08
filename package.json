@@ -22,11 +22,6 @@
     "i18n": "-",
     "widescreen": "-"
   },
-  "dependencies": {
-    "buffer": "^6.0.3",
-    "iconv-lite": "^0.7.0",
-    "string_decoder": "^1.3.0"
-  },
   "engines": {
     "HBuilderX": "^3.1.0",
     "uni-app": "^3.1.0",
