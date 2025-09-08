@@ -1,4 +1,4 @@
-import { encodeUTF8 } from './text_encoder'
+const iconv = require('iconv-lite')
 
 export default class PrintCPCL {
   static PADDING_TOP = 40
@@ -22,7 +22,7 @@ export default class PrintCPCL {
       ''
     ].join("\n")
 
-    return encodeUTF8(content)
+    return iconv.encode(content, 'gb18030')
   }
 
   head() {
