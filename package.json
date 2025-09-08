@@ -13,7 +13,9 @@
   "description": "蓝牙打印机",
   "scripts": {
     "dev": "vite",
-    "build": "vite build"
+    "build": "vite build",
+    "serve": "python3 -m http.server 8080",
+    "test": "npm run build && npm run serve"
   },
   "dcloudext": {
     "type": "sdk-js",
