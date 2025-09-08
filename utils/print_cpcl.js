@@ -11,7 +11,7 @@ export default class PrintCPCL {
   }
 
   render() {
-    return [
+    const content = [
       ...this.head(),
       ...this.texts,
       ...this.qrcodes,
@@ -19,6 +19,9 @@ export default class PrintCPCL {
       'PRINT',
       ''
     ].join("\n")
+
+    const encoder = new TextEncoder()
+    return encoder.encode(str)
   }
 
   head() {
