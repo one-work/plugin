@@ -20,12 +20,12 @@ export default class PrintCPCL {
       ''
     ].join("\n")
 
-    if (typeof TextEncoder === 'function') {
-      const encoder = new TextEncoder()
-      return encoder.encode(content)
-    } else {
-      return Buffer.from(content, 'utf8')
+    let result = []
+    for (let i = 0; i < content.length; i++) {
+      result.push(content.charCodeAt(i))
     }
+
+    return result
   }
 
   head() {
