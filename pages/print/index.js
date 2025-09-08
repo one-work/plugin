@@ -1,4 +1,5 @@
 import BluetoothPrinter from '../../utils/bluetooth_printer'
+import PrintCPCL from '../../utils/print_cpcl'
 
 Page({
   data: {
@@ -9,10 +10,8 @@ Page({
   onLoad(options) {
     console.debug('print onload', options)
     const printer = new BluetoothPrinter(wx)
-    this.setData({
-      url: decodeURIComponent(options.url),
-      printer: printer // 只有当连接成功的才赋值, 当断开时会取消赋值
-    })
+    this.printer = printer
+    wx.cpcl = new PrintCPCL()
   },
 
   createBLEConnection(e) {
