@@ -1,5 +1,3 @@
-import { utf8ToGb18030 } from './icu'
-
 export default class PrintCPCL {
   static PADDING_TOP = 40
 
@@ -13,7 +11,7 @@ export default class PrintCPCL {
   }
 
   render() {
-    const content = [
+    return [
       ...this.head(),
       ...this.texts,
       ...this.qrcodes,
@@ -21,8 +19,6 @@ export default class PrintCPCL {
       'PRINT',
       ''
     ].join("\n")
-
-    return utf8ToGb18030(content)
   }
 
   head() {
