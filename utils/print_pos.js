@@ -26,7 +26,6 @@ export default class PrintPOS {
   }
 
   render_raw() {
-    this.data.map {|i| i.to_s(16).rjust(2, '0') }.join('')
-  } 
+  }
   
 }
