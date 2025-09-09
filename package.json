@@ -2,7 +2,7 @@
   "name": "bluetooth",
   "id": "chuangyin-bluetooth",
   "displayName": "蓝牙打印",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "index.js",
   "keywords": [
     "蓝牙",
