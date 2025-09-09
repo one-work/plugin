@@ -10,10 +10,20 @@
 import PrintCPCL from '@/uni_modules/chuangyin-bluetooth/utils/print_cpcl.js'
 const cpcl = new PrintCPCL()
 
-
 cpcl.text_bold('hello, world!')
 cpcl.text('欢迎使用创印智能打印机！')
 const data = cpcl.render()
+```
+
+###  POS/ESC 打印指令
+
+```js
+import PrintPOS from '@/uni_modules/chuangyin-bluetooth/utils/print_pos.js'
+const pos = new PrintPOS()
+
+pos.text_bold('hello, world!')
+pos.text('欢迎使用创印智能打印机！')
+const data = pos.render()
 ```
 
 
