@@ -1,15 +1,15 @@
 {
   "name": "bluetooth",
-  "id": "chuangyin-printer",
+  "id": "chuangyin-bluetooth",
   "displayName": "蓝牙打印",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "index.js",
   "keywords": [
     "蓝牙",
     "打印",
     "小票",
     "标签"
-  ],
+],
   "author": "",
   "license": "ISC",
   "description": "蓝牙打印",
@@ -20,9 +20,9 @@
       "data": "插件不采集任何数据",
       "permissions": "<uses-permission android:name=\\\"android.permission.BLUETOOTH\\\"/>"
     },
-    "darkmode": "-",
-    "i18n": "-",
-    "widescreen": "-"
+    "darkmode": "x",
+    "i18n": "x",
+    "widescreen": "x"
   },
   "dependencies": {
     "buffer": "^6.0.3",
@@ -32,23 +32,23 @@
   },
   "engines": {
     "HBuilderX": "^3.1.0",
-    "uni-app": "^3.1.0",
-    "uni-app-x": "^3.1.0"
+    "uni-app": "^4.07",
+    "uni-app-x": "^4.07"
   },
   "uni_modules": {
     "dependencies": [],
     "encrypt": [],
     "platforms": {
       "cloud": {
-        "tcb": "-",
-        "aliyun": "-",
-        "alipay": "-"
+        "tcb": "√",
+        "aliyun": "√",
+        "alipay": "√"
       },
       "client": {
         "uni-app": {
           "vue": {
             "vue2": "-",
-            "vue3": "-"
+            "vue3": "√"
           },
           "web": {
             "safari": "-",
@@ -62,7 +62,7 @@
             "harmony": "-"
           },
           "mp": {
-            "weixin": "-",
+            "weixin": "√",
             "alipay": "-",
             "toutiao": "-",
             "baidu": "-",
