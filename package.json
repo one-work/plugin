@@ -93,8 +93,5 @@
         }
       }
     }
-  },
-  "devDependencies": {
-    "vite": "^7.1.5"
   }
 }
