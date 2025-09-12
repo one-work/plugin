@@ -114,7 +114,7 @@ export default class {
       if (this.connectedDevice.deviceId !== item.deviceId) {
         this.createBLEConnection(item.deviceId, success)
       } else {
-        success
+        success?.({ devices: foundDevices })
       }
     }
 
