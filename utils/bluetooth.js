@@ -110,6 +110,8 @@ export default class {
         }
       })
       this.createBLEConnection(item.deviceId, success)
+    } else if (item && this.connectedDevice.deviceId === item.deviceId) {
+      success
     }
 
     this.allDevices = foundDevices
