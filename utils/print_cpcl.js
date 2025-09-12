@@ -50,12 +50,19 @@ export default class PrintCPCL {
     this.texts.push('SETBOLD 0')
   }
 
-  qrcode_right(data, { y = PrintCPCL.PADDING_TOP, u = 6 }) {
+  qrcode_right(data, { y = PrintCPCL.PADDING_TOP, u = 6 } = {}) {
     const qrcodeEncoder = Qrcode(4, 'M')
     qrcodeEncoder.addData(data)
     qrcodeEncoder.make()
     const size = qrcodeEncoder.getModuleCount()
     console.debug('---------qrcode size', size)
+    const x = this.width - (u * size) - 16
+    const qrData = [
+      `B QR ${x} ${y} M 2 U ${u}`,
+      `MA,${data}`,
+      'ENDQR'
+    ].join("\n")
+    this.qrcodes.push(qrData)
   }
 
 }
