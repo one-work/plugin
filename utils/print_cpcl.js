@@ -1,4 +1,6 @@
 import iconv from 'iconv-lite'
+import { Encoder, Hanzi } from '@nuintun/qrcode'
+const encoder = new Encoder({ level: 'H' })
 
 export default class PrintCPCL {
   static PADDING_TOP = 40
