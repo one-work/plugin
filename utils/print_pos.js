@@ -18,7 +18,14 @@ export default class PrintPOS {
     this.data.push(...PrintPOS.TXT_NORMAL)
     this.data.push(0x0a)  // 换行
   }
-  
+
+  text(value) {
+    this.data.push(...PrintPOS.TXT_NORMAL)
+    this.data.push(...Array.from(iconv.encode(value, 'gb18030'))) // 将 value 转为 bytes
+    this.data.push(...PrintPOS.TXT_NORMAL)
+    this.data.push(0x0a)  // 换行
+  }
+
   render() {
     this.push(...Array(5).fill(0x0a))  // 5个换行
     return this.data
