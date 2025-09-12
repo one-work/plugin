@@ -9,7 +9,7 @@
     "打印",
     "小票",
     "标签"
-],
+  ],
   "author": "",
   "license": "ISC",
   "description": "蓝牙打印",
@@ -25,6 +25,7 @@
     "widescreen": "x"
   },
   "dependencies": {
+    "@nuintun/qrcode": "^5.0.2",
     "buffer": "^6.0.3",
     "iconv-lite": "^0.7.0",
     "process": "^0.11.10",
