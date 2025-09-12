@@ -112,6 +112,14 @@ export default class {
       this.createBLEConnection(item.deviceId, success)
     } else if (item && this.connectedDevice.deviceId === item.deviceId) {
       success
+      this.api.offBluetoothDeviceFound(res => {
+        console.debug('停止监听', res)
+      })
+      this.api.stopBluetoothDevicesDiscovery({
+        complete(res) {
+          console.debug('停止扫描蓝牙设备', res)
+        }
+      })
     }
 
     this.allDevices = foundDevices
