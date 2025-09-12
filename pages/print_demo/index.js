@@ -9,6 +9,7 @@ Page({
 
   onLoad() {
     this.printer = new BluetoothPrinter(wx)
+    this.printer.registeredDevices = ['DP-HT303-5402']
   },
 
   printCpcl() {
