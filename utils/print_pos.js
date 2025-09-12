@@ -12,6 +12,14 @@ export default class PrintPOS {
     this.data.push(0x1c, 0x21, 0x00)  // 中文字间距为 0 点
   }
 
+  render() {
+    this.data.push(...Array(5).fill(0x0a))  // 5个换行
+    return this.data
+  }
+
+  render_raw() {
+  }
+
   text_big(value) {
     this.data.push(0x1b, 0x21, 0x30) // Quad area text
     this.data.push(...Array.from(iconv.encode(value, 'gb18030'))) // 将 value 转为 bytes
@@ -26,12 +34,21 @@ export default class PrintPOS {
     this.data.push(0x0a)  // 换行
   }
 
-  render() {
-    this.data.push(...Array(5).fill(0x0a))  // 5个换行
-    return this.data
-  }
+  qrcode(value) {
+    const bytes = Array.from(iconv.encode(value, 'gb18030'))
+    const qrSize = [0x1d, 0x28, 0x6b, 0x03, 0x00, 0x31, 0x43, 0x06] // 二维码模块大小
+    const qrErr = [0x1d, 0x28, 0x6b, 0x03, 0x00, 0x31, 0x45, 0x30] // 错误校正水平
+    const qrData = [0x1d, 0x28, 0x6b, bytes.length + 3, 0x00, 0x31, 0x50, 0x30] // 二维码数据
+    const qrRun = [0x1d, 0x28, 0x6b, 0x03, 0x00, 0x31, 0x51, 0x30] // 打印二维码
 
-  render_raw() {
+    this.data.push(
+      ...qrSize,
+      ...qrErr,
+      ...qrData,
+      ...bytes,
+      ...qrRun
+    )
+    this.data.push(0x0a, 0x0a)
   }
   
 }

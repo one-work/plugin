@@ -30,6 +30,7 @@ Page({
     const pos = new PrintPOS()
     pos.text_big('创印智能')
     pos.text('创印智能')
+    pos.qrcode('https://one.work')
     const data = pos.render()
     console.debug('POS处理后的数据：', data)
 
