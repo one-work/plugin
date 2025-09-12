@@ -1,5 +1,5 @@
 import iconv from 'iconv-lite'
-import { Encoder, Hanzi } from '@nuintun/qrcode'
+import Qrcode from 'qrcode-generator'
 
 export default class PrintCPCL {
   static PADDING_TOP = 40
@@ -51,8 +51,10 @@ export default class PrintCPCL {
   }
 
   qrcode_right(data, { y = PrintCPCL.PADDING_TOP, u = 6 }) {
-    const qrcodeEncoder = new Encoder({ level: 'M' })
-    const size = qrcodeEncoder.encode(new Hanzi(data)).size
+    const qrcodeEncoder = Qrcode(4, 'M')
+    qrcodeEncoder.addData(data)
+    qrcodeEncoder.make()
+    const size = qrcodeEncoder.getModuleCount()
     console.debug('---------qrcode size', size)
   }
 
