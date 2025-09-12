@@ -90,7 +90,7 @@ export default class {
 
     const item = foundDevices.find(e => this.registeredDevices.includes(e.name))
     console.debug('=======筛选注册的设备', item, this.registeredDevices, foundDevices)
-    if (item && this.connectedDevice.deviceId !== item.deviceId) {
+    if (item) {
       console.debug('可连接设备', item)
       foundDevices.sort((a, b) => {
         if (a.deviceId === item.deviceId) {
@@ -101,15 +101,21 @@ export default class {
 
         return 0
       })
+
       this.api.offBluetoothDeviceFound(res => {
         console.debug('停止监听', res)
       })
       this.api.stopBluetoothDevicesDiscovery({
-        complete(res) {
+        complete: res => {
           console.debug('停止扫描蓝牙设备', res)
         }
       })
-      this.createBLEConnection(item.deviceId, success)
+
+      if (this.connectedDevice.deviceId !== item.deviceId) {
+        this.createBLEConnection(item.deviceId, success)
+      } else {
+        success?.({ devices: foundDevices })
+      }
     }
 
     this.allDevices = foundDevices

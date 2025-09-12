@@ -1,6 +1,7 @@
 {
   "pages": {
     "print": "pages/print/index",
+    "print_demo": "pages/print_demo/index",
     "weigh": "pages/weigh/index"
   },
   "main": "index.js"
