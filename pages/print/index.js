@@ -9,8 +9,7 @@ Page({
 
   onLoad(options) {
     console.debug('print onload', options)
-    const printer = new BluetoothPrinter(wx)
-    this.printer = printer
+    this.printer = new BluetoothPrinter(wx)
     wx.cpcl = new PrintCPCL()
   },
 

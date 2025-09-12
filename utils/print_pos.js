@@ -27,7 +27,7 @@ export default class PrintPOS {
   }
 
   render() {
-    this.push(...Array(5).fill(0x0a))  // 5个换行
+    this.data.push(...Array(5).fill(0x0a))  // 5个换行
     return this.data
   }
 
