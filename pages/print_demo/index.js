@@ -21,7 +21,7 @@ Page({
     cpcl.lineX()
     cpcl.text('cpcl.text("创印智能")')
     cpcl.text('创印智能')
-    cpcl.text('cpcl.qrcode_right(\'https://one.work\')')
+    cpcl.text('cpcl.qrcode_right("https://one.work")')
     cpcl.qrcode_right('https://one.work')
     const data = cpcl.render()
     console.debug(data)
