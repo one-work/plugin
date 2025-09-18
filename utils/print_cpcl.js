@@ -65,4 +65,9 @@ export default class PrintCPCL {
     this.qrcodes.push(qrData)
   }
 
+  lineX({ x0 = 0, x1 = 40 * 8, height = 36, width = 2 } = {}) {
+    this.texts.push(`L ${x0} ${this.currentY} ${x1} ${this.currentY} ${width}`)
+    this.currentY = this.currentY + height
+  }
+
 }

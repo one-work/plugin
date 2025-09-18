@@ -14,9 +14,13 @@ Page({
 
   printCpcl() {
     const cpcl = new PrintCPCL()
+    cpcl.text('const cpcl = new PrintCPCL()')
     cpcl.text_bold('创印智能')
-    cpcl.text_bold('cpcl.text_bold("创印智能")')
+    cpcl.text('cpcl.text_bold("创印智能")')
+    cpcl.lineX()
+    cpcl.text('cpcl.lineX()')
     cpcl.text('创印智能')
+    cpcl.text('cpcl.text("创印智能")')
     cpcl.qrcode_right('https://one.work')
     const data = cpcl.render()
     console.debug(data)
