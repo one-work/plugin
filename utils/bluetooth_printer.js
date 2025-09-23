@@ -84,7 +84,7 @@ export default class extends Bluetooth {
                   success: res => {
                     for (const characteristic of res.characteristics) {
                       console.debug('特征值', deviceId, service.uuid, characteristic.uuid, characteristic.properties)
-                      if (characteristic.properties.write && (characteristic.properties.writeNoResponse || characteristic.properties.read)) {
+                      if (characteristic.properties.write && (characteristic.properties.writeNoResponse || characteristic.properties.notify)) {
                         console.debug('可写入', deviceId, service.uuid, characteristic.uuid)
                         this.connectedDevice = {
                           deviceId: deviceId,
