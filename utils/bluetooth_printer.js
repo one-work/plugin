@@ -92,6 +92,10 @@ export default class extends Bluetooth {
                     }
                     // 所有 service 的特制值已获取完毕
                     if (servicesLength === index + 1) {
+                      this.api.showModal({
+                        title: '获取打印机',
+                        content: JSON.stringify(this.connectedDevice)
+                      })
                       if (this.connectedDevice.deviceId) {
                         success?.({devices: this.allDevices})
                       } else {
