@@ -93,6 +93,11 @@ export default class extends Bluetooth {
                     // 所有 service 的特制值已获取完毕
                     if (servicesLength === index + 1 && this.connectedDevice.deviceId) {
                       success?.({ devices: this.allDevices })
+                    } else {
+                      this.api.showModal({
+                        title: '获取合适的特征值失败',
+                        content: JSON.stringify(res)
+                      })
                     }
                   },
                   fail: res => {
