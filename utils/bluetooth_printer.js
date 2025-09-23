@@ -49,8 +49,11 @@ export default class extends Bluetooth {
         success(res) {
           console.debug('写入数据成功', res.errMsg)
         },
-        fail(res) {
-          console.debug('写入数据失败', res)
+        fail: (res) => {
+          this.api.showModal({
+            title: '写入数据失败',
+            content: JSON.stringify(res)
+          })
         }
       })
 
