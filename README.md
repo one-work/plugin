@@ -32,7 +32,7 @@ const data = pos.render()
 ```js
 import BluetoothPrinter from '@/uni_modules/chuangyin-bluetooth/utils/bluetooth_printer.js'
 const printer = new BluetoothPrinter(uni)
-printer.registeredDevices = ['GP-M421-87F6']
+printer.registeredDevices = ['GP-M421-87F6']  // 此处为打印机的蓝牙设备名称
 printer.getState({
   success: (res) => {
     printer.writeBuffer(data)
