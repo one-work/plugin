@@ -102,9 +102,12 @@ export default class {
         return 0
       })
 
-      this.api.offBluetoothDeviceFound(res => {
-        console.debug('停止监听', res)
-      })
+      if (this.api.offBluetoothDeviceFound === 'function') {
+        this.api.offBluetoothDeviceFound(res => {
+          console.debug('停止监听', res)
+        })
+      }
+
       this.api.stopBluetoothDevicesDiscovery({
         complete: res => {
           console.debug('停止扫描蓝牙设备', res)

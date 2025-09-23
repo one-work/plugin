@@ -91,7 +91,7 @@ export default class extends Bluetooth {
                       }
                     }
                     // 所有 service 的特制值已获取完毕
-                    if (servicesLength === index + 1) {
+                    if (servicesLength === index + 1 && this.connectedDevice.deviceId) {
                       success?.({ devices: this.allDevices })
                     }
                   },
