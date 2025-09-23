@@ -12,6 +12,8 @@ const cpcl = new PrintCPCL()
 
 cpcl.text_bold('hello, world!')
 cpcl.text('欢迎使用创印智能打印机！')
+cpcl.qrcode_right('二维码内容')
+cpcl.lineX()  // 打印横线
 const data = cpcl.render()
 ```
 
@@ -23,6 +25,7 @@ const pos = new PrintPOS()
 
 pos.text_bold('hello, world!')
 pos.text('欢迎使用创印智能打印机！')
+pos.qrcode('二维码内容')
 const data = pos.render()
 ```
 
@@ -33,7 +36,8 @@ const data = pos.render()
 import BluetoothPrinter from '@/uni_modules/chuangyin-bluetooth/utils/bluetooth_printer.js'
 const printer = new BluetoothPrinter(uni)
 printer.registeredDevices = ['GP-M421-87F6']  // 此处为打印机的蓝牙设备名称
-printer.getState({
+// getState 会基于上面注册的蓝牙打印机名称自动连接打印机并调用打印
+printer.getState({  
   success: (res) => {
     printer.writeBuffer(data)
   }  
