@@ -34,6 +34,7 @@ export default class extends Bluetooth {
   writeBuffer(buffer, chunkSize = 20) {
     const totalChunks = Math.ceil(buffer.length / chunkSize)
     const systemInfo = this.api.getSystemInfoSync()
+    const writeType = systemInfo.platform === 'android' ? 'writeNoResponse' : 'write'
     let chunksSent = 0
     console.debug(`开始发送数据，总大小: ${buffer.length}字节，分${totalChunks}块发送`, `当前浏览器${systemInfo.platform}`)
 
@@ -47,9 +48,9 @@ export default class extends Bluetooth {
         serviceId: this.connectedDevice.serviceId,
         characteristicId: this.connectedDevice.characteristicId,
         value: arrayBuffer,
-        writeType: 'writeNoResponse',
+        writeType: writeType,
         success: (res) => {
-          console.debug(`写入第${index}块数据成功`, res.errMsg)
+          console.debug(`写入第${index}块数据成功，写入类型：${writeType}`, res.errMsg)
         },
         fail: (res) => {
           console.debug(`写入第${index}块数据失败：`, res)
