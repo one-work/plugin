@@ -38,33 +38,40 @@ export default class extends Bluetooth {
     let chunksSent = 0
     console.debug(`开始发送数据，总大小: ${buffer.length}字节，分${totalChunks}块发送`, `当前浏览器${systemInfo.platform}`)
 
-    for (let offset = 0; offset < buffer.length; offset += chunkSize) {
-      const chunk = buffer.subarray(offset, offset + chunkSize)
-      const arrayBuffer = chunk.buffer.slice(chunk.byteOffset, chunk.byteOffset + chunk.length)
-      const index = chunksSent
+    writeRemain(buffer, 0, chunkSize, writeType)
+      //const index = chunksSent
+      //chunksSent++
+      //console.debug(`第${chunksSent}/${totalChunks}块发送成功，大小: ${chunk.length}字节`)
+  }
 
-      this.api.writeBLECharacteristicValue({
-        deviceId: this.connectedDevice.deviceId,
-        serviceId: this.connectedDevice.serviceId,
-        characteristicId: this.connectedDevice.characteristicId,
-        value: arrayBuffer,
-        writeType: writeType,
-        success: (res) => {
-          console.debug(`写入第${index}块数据成功，写入类型：${writeType}`, res.errMsg)
-        },
-        fail: (res) => {
-          console.debug(`写入第${index}块数据失败：`, res)
-          this.api.showModal({
-            title: '写入数据失败',
-            content: JSON.stringify(res)
-          })
-        }
-      })
-
-      chunksSent++
-
-      console.debug(`第${chunksSent}/${totalChunks}块发送成功，大小: ${chunk.length}字节`)
+  writeRemain(buffer, offset, chunkSize, writeType) {
+    if (offset >= buffer.length) {
+      console.debug('所有数据已发送完成')
+      return
     }
+    
+    const chunk = buffer.subarray(offset, offset + chunkSize)
+    const arrayBuffer = chunk.buffer.slice(chunk.byteOffset, chunk.byteOffset + chunk.length)
+    
+    this.api.writeBLECharacteristicValue({
+      deviceId: this.connectedDevice.deviceId,
+      serviceId: this.connectedDevice.serviceId,
+      characteristicId: this.connectedDevice.characteristicId,
+      value: arrayBuffer,
+      writeType: writeType,
+      success: (res) => {
+        //console.debug(`写入第${index}块数据成功，写入类型：${writeType}`, res.errMsg)
+        offset += checkSize
+        writeRemain(buffer, offset, chunkSize, writeType)
+      },
+      fail: (res) => {
+        //console.debug(`写入第${index}块数据失败：`, res)
+        this.api.showModal({
+          title: '写入数据失败',
+          content: JSON.stringify(res)
+        })
+      }
+    })
   }
 
   createBLEConnection(deviceId, success) {
