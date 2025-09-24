@@ -55,7 +55,7 @@ export default class PrintCPCL {
     qrcodeEncoder.addData(data)
     qrcodeEncoder.make()
     const size = qrcodeEncoder.getModuleCount()
-    console.debug('---------qrcode size', size)
+    console.debug('qrcode size：', size)
     const x = this.width - (u * size) - 16
     const qrData = [
       `B QR ${x} ${y} M 2 U ${u}`,

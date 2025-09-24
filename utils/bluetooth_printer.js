@@ -7,25 +7,18 @@ export default class extends Bluetooth {
   }
 
   // 向蓝牙设备发送数据
-  writeValue(data, maxChunk = 20) {
-    while (data.length > 0) {
-      let subData = data.splice(0, maxChunk)
-      let buffer = new ArrayBuffer(subData.length)
-      let uint = new Uint8Array(buffer)
-      uint.set(subData)
-
-      this.api.writeBLECharacteristicValue({
-        deviceId: this.connectedDevice.deviceId,
-        serviceId: this.connectedDevice.serviceId,
-        characteristicId: this.connectedDevice.characteristicId,
-        value: buffer,
-        writeType: 'write',
-        success(res) {
-          console.debug('写入数据成功', res.errMsg)
-        },
-        fail(res) {
-          console.debug('写入数据失败', res)
-        }
+  writeValue(data) {
+    if (Array.isArray(data)) {
+      const buffer = new ArrayBuffer(data.length)
+      const uint = new Uint8Array(buffer)
+      uint.set(data)
+      this.writeBuffer(uint)
+    } else if (data instanceof Uint8Array) {
+      this.writeBuffer(data) 
+    } else {
+      this.api.showModal({
+        title: '数据格式不符合预期',
+        content: '支持 Array 类型或者 Uint8Array 类型数据！'
       })
     }
   }
@@ -73,10 +66,6 @@ export default class extends Bluetooth {
       },
       fail: (res) => {
         console.debug(`写入第${index}块数据失败：`, res)
-        this.api.showModal({
-          title: '写入数据失败',
-          content: JSON.stringify(res)
-        })
         this.writeRemain({
           buffer: buffer, 
           offset: offset, 
