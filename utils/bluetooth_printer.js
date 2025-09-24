@@ -33,23 +33,26 @@ export default class extends Bluetooth {
   // 完善后的写入Buffer函数
   writeBuffer(buffer, chunkSize = 20) {
     const totalChunks = Math.ceil(buffer.length / chunkSize)
+    const systemInfo = this.api.getSystemInfoSync()
     let chunksSent = 0
-    console.debug(`开始发送数据，总大小: ${buffer.length}字节，分${totalChunks}块发送`)
+    console.debug(`开始发送数据，总大小: ${buffer.length}字节，分${totalChunks}块发送`, `当前浏览器${systemInfo.platform}`)
 
     for (let offset = 0; offset < buffer.length; offset += chunkSize) {
       const chunk = buffer.subarray(offset, offset + chunkSize)
       const arrayBuffer = chunk.buffer.slice(chunk.byteOffset, chunk.byteOffset + chunk.length)
+      const index = chunksSent
 
       this.api.writeBLECharacteristicValue({
         deviceId: this.connectedDevice.deviceId,
         serviceId: this.connectedDevice.serviceId,
         characteristicId: this.connectedDevice.characteristicId,
         value: arrayBuffer,
-        writeType: 'write',
-        success(res) {
-          console.debug('写入数据成功', res.errMsg)
+        writeType: 'writeNoResponse',
+        success: (res) => {
+          console.debug(`写入第${index}块数据成功`, res.errMsg)
         },
         fail: (res) => {
+          console.debug(`写入第${index}块数据失败：`, res)
           this.api.showModal({
             title: '写入数据失败',
             content: JSON.stringify(res)
@@ -84,7 +87,7 @@ export default class extends Bluetooth {
                   success: res => {
                     for (const characteristic of res.characteristics) {
                       console.debug('特征值', deviceId, service.uuid, characteristic.uuid, characteristic.properties)
-                      if (characteristic.properties.write && (characteristic.properties.writeNoResponse || characteristic.uuid.endsWith('0000-1000-8000-00805F9B34FB'))) {
+                      if (characteristic.properties.write && (characteristic.properties.writeNoResponse || (characteristic.uuid.endsWith('0000-1000-8000-00805F9B34FB')))) {
                         console.debug('可写入', deviceId, service.uuid, characteristic.uuid)
                         this.connectedDevice = {
                           deviceId: deviceId,
@@ -95,10 +98,7 @@ export default class extends Bluetooth {
                     }
                     // 所有 service 的特制值已获取完毕
                     if (servicesLength === index + 1) {
-                      this.api.showModal({
-                        title: '获取打印机',
-                        content: JSON.stringify(this.connectedDevice)
-                      })
+                      console.debug('获取打印机', this.connectedDevice)
                       if (this.connectedDevice.deviceId) {
                         success?.({devices: this.allDevices})
                       } else {

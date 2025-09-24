@@ -89,9 +89,10 @@ export default class {
     })
 
     const item = foundDevices.find(e => this.registeredDevices.includes(e.name))
-    console.debug('=======筛选注册的设备', item, this.registeredDevices, foundDevices)
+    console.debug('筛选设备-符合条件：', item)
+    console.debug('筛选设备-绑定列表：', this.registeredDevices)
+    console.debug('筛选设备-找到的设备：', foundDevices)
     if (item) {
-      console.debug('可连接设备', item)
       foundDevices.sort((a, b) => {
         if (a.deviceId === item.deviceId) {
           return -1
@@ -117,7 +118,19 @@ export default class {
       if (this.connectedDevice.deviceId !== item.deviceId) {
         this.createBLEConnection(item.deviceId, success)
       } else {
-        success?.({ devices: foundDevices })
+        console.debug('已连接设备：', this.connectedDevice)
+        this.api.getConnectedBluetoothDevices({
+          services: [],
+          success: res => {
+            const connectedItem = res.devices.find(e => e.deviceId === this.connectedDevice.deviceId)
+            console.debug('当前连接：', res, connectedItem)
+            if (connectedItem) {
+              success?.({ devices: foundDevices })
+            } else {
+              this.createBLEConnection(item.deviceId, success)
+            }
+          }
+        })
       }
     }
 
