@@ -39,7 +39,7 @@ printer.registeredDevices = ['GP-M421-87F6']  // 此处为打印机的蓝牙设�
 // getState 会基于上面注册的蓝牙打印机名称自动连接打印机并调用打印
 printer.getState({  
   success: (res) => {
-    printer.writeBuffer(data)
+    printer.writeValue(data)
   }  
 })
 ```
