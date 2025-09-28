@@ -57,6 +57,7 @@ export default class PrintCPCL {
     const size = qrcodeEncoder.getModuleCount()
     console.debug('qrcode size：', size)
     const x = this.width - (u * size) - 16
+
     const qrData = [
       `B QR ${x} ${y} M 2 U ${u}`,
       `MA,${data}`,
@@ -67,6 +68,11 @@ export default class PrintCPCL {
 
   lineX({ x0 = 0, x1 = 40 * 8, width = 8, height = 36 } = {}) {
     this.texts.push(`L ${x0} ${this.currentY} ${x1} ${this.currentY} ${width}`)
+    this.currentY = this.currentY + height
+  }
+  
+  barcode(data, { width = 1, ratio = 1, height = 50, x = 0 } = {}) {
+    this.texts.push(`B 39 ${width} ${ratio} ${height} ${x} ${this.currentY} ${data}`)
     this.currentY = this.currentY + height
   }
 
