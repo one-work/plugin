@@ -51,4 +51,21 @@ export default class PrintPOS {
     this.data.push(0x0a, 0x0a)
   }
   
+  // 02 数据在条码下方
+  barcode(value, { pos = 2, width = 2, height = 50, format = 4 } = {}) {
+    const bytes = Array.from(iconv.encode(value, 'gb18030'))
+    const barPostion = [0x1d, 0x48, pos]
+    const barWidth = [0x1d, 0x77, width]
+    const barHeight = [0x1d, 0x68, height]
+    const barFormat = [0x1d, 0x6b, format]
+    
+    this.data.push(
+      ...barPostion,
+      ...barWidth,
+      ...barHeight,
+      ...barFormat,
+      ...bytes
+    )
+  }
+  
 }
