@@ -17,9 +17,6 @@ export default class PrintPOS {
     return this.data
   }
 
-  render_raw() {
-  }
-
   text_big(value) {
     this.data.push(0x1b, 0x21, 0x30) // Quad area text
     this.data.push(...iconv.encode(value, 'gb18030')) // 将 value 转为 bytes
