@@ -6,10 +6,10 @@ export default class PrintPOS {
   constructor() {
     this.data = []
     this.data.push(0x1b, 0x40)  // 初始化打印机：清除打印缓存，各参数恢复默认值
-    this.data.push(0x1b, 0x4c)  // 页模式
-    this.data.push(0x1d, 0x4c, 0x12, 0x00)  // 设置左限（左边距）：向右移动 18（0x12）点
-    this.data.push(0x1c, 0x26) // 启用 16×16 点阵中文打印模式
-    this.data.push(0x1c, 0x21, 0x00)  // 中文字间距为 0 点
+    //this.data.push(0x1b, 0x4c)  // 页模式
+    //this.data.push(0x1d, 0x4c, 0x12, 0x00)  // 设置左限（左边距）：向右移动 18（0x12）点
+    //this.data.push(0x1c, 0x26) // 启用 16×16 点阵中文打印模式
+    //this.data.push(0x1c, 0x21, 0x00)  // 中文字间距为 0 点
   }
 
   render() {
@@ -72,6 +72,15 @@ export default class PrintPOS {
       ...img,
       ...head,
       ...value
+    )
+  }
+  
+  test() {
+    const img = [0x1d, 0x76, 0x30, 0x00, 0x03, 0x00, 0x09, 0x00]
+    const data = [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255]
+    this.data.push(
+      ...img,
+      ...data
     )
   }
   

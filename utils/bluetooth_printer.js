@@ -37,7 +37,7 @@ export default class extends Bluetooth {
     })
   }
 
-  writeRemain({ buffer, chunkSize, writeType, offset = 0, index = 1 } = {}) {
+  writeRemain({ buffer, chunkSize, writeType, offset = 0, index = 1, retry = 3 } = {}) {
     if (offset >= buffer.length) {
       console.debug('所有数据已发送完成')
       return
@@ -65,14 +65,18 @@ export default class extends Bluetooth {
         })
       },
       fail: (res) => {
-        console.debug(`写入第${index}块数据失败：`, res)
-        this.writeRemain({
-          buffer: buffer, 
-          offset: offset, 
-          chunkSize: chunkSize, 
-          writeType: writeType,
-          index: index
-        })
+        if (retry > 0) {
+          retry -= 1
+          console.debug(`写入第${index}块数据失败：`, res)
+          this.writeRemain({
+            buffer: buffer, 
+            offset: offset, 
+            chunkSize: chunkSize, 
+            writeType: writeType,
+            index: index,
+            retry: retry
+          })
+        }
       }
     })
   }
