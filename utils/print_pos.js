@@ -22,20 +22,20 @@ export default class PrintPOS {
 
   text_big(value) {
     this.data.push(0x1b, 0x21, 0x30) // Quad area text
-    this.data.push(...Array.from(iconv.encode(value, 'gb18030'))) // 将 value 转为 bytes
+    this.data.push(...iconv.encode(value, 'gb18030')) // 将 value 转为 bytes
     this.data.push(...PrintPOS.TXT_NORMAL)
     this.data.push(0x0a)  // 换行
   }
 
   text(value) {
     this.data.push(...PrintPOS.TXT_NORMAL)
-    this.data.push(...Array.from(iconv.encode(value, 'gb18030'))) // 将 value 转为 bytes
+    this.data.push(...iconv.encode(value, 'gb18030')) // 将 value 转为 bytes
     this.data.push(...PrintPOS.TXT_NORMAL)
     this.data.push(0x0a)  // 换行
   }
 
   qrcode(value) {
-    const bytes = Array.from(iconv.encode(value, 'gb18030'))
+    const bytes = iconv.encode(value, 'gb18030')
     const qrSize = [0x1d, 0x28, 0x6b, 0x03, 0x00, 0x31, 0x43, 0x06] // 二维码模块大小
     const qrErr = [0x1d, 0x28, 0x6b, 0x03, 0x00, 0x31, 0x45, 0x30] // 错误校正水平
     const qrData = [0x1d, 0x28, 0x6b, bytes.length + 3, 0x00, 0x31, 0x50, 0x30] // 二维码数据
@@ -53,7 +53,7 @@ export default class PrintPOS {
   
   // 02 数据在条码下方
   barcode(value, { pos = 2, height = 50, width = 2, format = 4 } = {}) {
-    const bytes = Array.from(iconv.encode(value, 'gb18030'))
+    const bytes = iconv.encode(value, 'gb18030')
     const barPostion = [0x1d, 0x48, pos]
     const barHeight = [0x1d, 0x68, height]
     const barWidth = [0x1d, 0x77, width]
@@ -66,6 +66,15 @@ export default class PrintPOS {
       ...barFormat,
       ...bytes,
       0x00
+    )
+  }
+  
+  image(value, head) {
+    const img = [0x1d, 0x76, 0x30, 0x00]
+    this.data.push(
+      ...img,
+      ...head,
+      ...value
     )
   }
   

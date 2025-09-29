@@ -6,7 +6,7 @@ export default class PrintPic {
   }
 
   // 画 canvas 并取 RGBA
-  loadImageToCanvas(src, { success } = {}) {
+  loadImageToCanvas(src, success) {
     const ctx = this.api.createCanvasContext('hiddenCanvas', this.page)
     ctx.clearRect(0, 0, 9999, 9999)
     console.debug('图片 src：', src)
@@ -29,7 +29,7 @@ export default class PrintPic {
             height: dh,
             success: (res) => {
               console.debug('canvas 数据：', res)
-              const data = this.imgToRaster(res.data, dw, dh)
+              const data = this.imgToRaster(res.data, res.width, res.height)
               console.debug('转化后的数据:', data)
               success?.(data)
             }
@@ -53,14 +53,15 @@ export default class PrintPic {
         }
       }
     }
-    /* ESC/POS 光栅位图命令：GS v 0 */
-    const head = new Uint8Array([
-      0x1d, 0x76, 0x30, 0x00,          // m=0 正常模式
-      bytesPerLine % 256, bytesPerLine / 256,
-      h % 256, h / 256
-    ])
     console.debug('图片数据：', raster)
-    return Uint8Array.from([...head, ...raster])
+    
+    const head = [
+      bytesPerLine % 256, Math.floor(bytesPerLine / 256), h % 256, Math.floor(h / 256)
+    ]
+    return {
+      head: head,
+      data: raster
+    }
   }
 
 }
