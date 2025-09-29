@@ -1,7 +1,7 @@
 import iconv from 'iconv-lite'
 
 export default class PrintPOS {
-  static TXT_NORMAL = [ 0x1b, 0x21, 0x00 ]
+  static TXT_NORMAL = [0x1b, 0x21, 0x00]
 
   constructor() {
     this.data = []
