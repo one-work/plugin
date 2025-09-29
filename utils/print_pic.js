@@ -6,7 +6,7 @@ export default class PrintPic {
   }
 
   // 画 canvas 并取 RGBA
-  loadImageToCanvas(src) {
+  loadImageToCanvas(src, { succsss } = {}) {
     const ctx = this.api.createCanvasContext('hiddenCanvas', this.page)
     ctx.clearRect(0, 0, 9999, 9999)
 
@@ -26,11 +26,13 @@ export default class PrintPic {
             width: dw,
             height: dh,
             success: (res) => {
-              this.imgToRaster({
+              const data = this.imgToRaster({
                 rgba: res.data,
                 w: dw,
                 h: dh
               })
+              console.debug('转化后的数据:', data)
+              success?(data)
             }
           })
         })
