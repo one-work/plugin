@@ -9,17 +9,19 @@ export default class {
 
   // 获取本机蓝牙适配器状态
   getState({ success, fail } = {}) {
+    console.debug('已连接设备：', this.connectedDevice)
+    console.debug('绑定设备：', this.registeredDevices)
     this.api.getBluetoothAdapterState({
       success: stateRes => {
-        console.debug('获取本机蓝牙适配器状态', stateRes)
+        console.debug('蓝牙状态：', stateRes)
         const state = stateRes.adapterState || stateRes
-
-        if (!state.discovering) {
-          this.startBluetoothDevicesDiscovery()
-        }
 
         if (state.available) {
           this.#getConnectedBluetoothDevices(success)
+        }
+
+        if (!state.discovering) {
+          this.startBluetoothDevicesDiscovery()
         }
       },
 
@@ -27,7 +29,7 @@ export default class {
         console.debug('获取本机蓝牙适配器状态失败', stateRes)
         this.api.openBluetoothAdapter({
           success: res => {
-            console.debug('初始化蓝牙模块', res)
+            console.debug('初始化蓝牙模块：', res)
             this.startBluetoothDevicesDiscovery()
             this.api.onBluetoothDeviceFound(res => {
               console.debug('发现新设备', JSON.stringify(res.devices))
@@ -71,7 +73,7 @@ export default class {
       if (item) {
         Object.assign(item, device)
       } else {
-        console.debug('搜索到新设备', device.name)
+        console.debug('搜索到新设备：', device.name)
         foundDevices.push(device)
       }
     })
@@ -105,11 +107,11 @@ export default class {
         }
       })
 
-      if (this.connectedDevice.deviceId !== item.deviceId) {
-        this.createBLEConnection(item.deviceId, success)
-      } else {
+      if (this.connectedDevice.deviceId === item.deviceId) {
         console.debug('已连接设备：', this.connectedDevice)
-        this.#getConnectedBluetoothDevices(item, success)
+        this.#getConnectedBluetoothDevices(success, item)
+      } else {
+        this.createBLEConnection(item.deviceId, success)
       }
     } else {
       this.allDevices = foundDevices
@@ -120,31 +122,37 @@ export default class {
     }
   }
 
-  #getConnectedBluetoothDevices(item = null, success) {
+  #getConnectedBluetoothDevices(success, item) {
     this.api.getConnectedBluetoothDevices({
       services: [],
       success: res => {
-        console.debug('当前连接：', res)
+        console.debug('当前连接：', res, item)
 
-        const connectedItem = res.devices.find(e => e.deviceId === this.connectedDevice.deviceId)
-        console.debug('当前连接-已连接：', connectedItem)
+        if (res.devices.length > 0) {
+          const connectedItem = res.devices.find(e => e.deviceId === this.connectedDevice.deviceId)
+          console.debug('当前连接-已连接：', connectedItem)
 
-        const registeredItem = res.devices.find(e => this.registeredDevices.includes(e.name))
-        console.debug('当前连接-已绑定：', registeredItem)
+          const registeredItem = res.devices.find(e => this.registeredDevices.includes(e.name))
+          console.debug('当前连接-已绑定：', registeredItem)
 
-        if (connectedItem) {
-          success?.()
-        } else if (registeredItem) {
-          this.getBLEDeviceServices(registeredItem.deviceId, success)
-        } else if (item) {
-          this.createBLEConnection(item.deviceId, success)
+          if (connectedItem) {
+            success?.()
+          } else if (registeredItem) {
+            this.getBLEDeviceServices(registeredItem.deviceId, success)
+          } else if (item) {
+            this.createBLEConnection(item.deviceId, success)
+          }
         } else {
-          this.api.getBluetoothDevices({
-            success: res => {
-              console.debug('获取在蓝牙模块生效期间所有搜索到的蓝牙设备', res)
-              this.#filterBluetoothDevices(res.devices, success)
-            }
-          })
+          if (item) {
+            this.createBLEConnection(item.deviceId, success)
+          } else {
+            this.api.getBluetoothDevices({
+              success: res => {
+                console.debug('获取在蓝牙模块生效期间所有搜索到的蓝牙设备', res)
+                this.#filterBluetoothDevices(res.devices, success)
+              }
+            })
+          }
         }
       }
     })
