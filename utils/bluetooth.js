@@ -8,7 +8,7 @@ export default class {
   }
 
   // 获取本机蓝牙适配器状态
-  getState({ success, fail, complete } = {}) {
+  getState({ success, fail } = {}) {
     this.api.getBluetoothAdapterState({
       success: stateRes => {
         console.debug('获取本机蓝牙适配器状态', stateRes)
@@ -19,13 +19,7 @@ export default class {
         }
 
         if (state.available) {
-          this.api.getBluetoothDevices({
-            success: res => {
-              console.debug('获取在蓝牙模块生效期间所有搜索到的蓝牙设备', res)
-              this.#filterBluetoothDevices(res.devices, success)
-              complete?.(this.allDevices)
-            }
-          })
+          this.#getConnectedBluetoothDevices(success)
         }
       },
 
@@ -38,7 +32,6 @@ export default class {
             this.api.onBluetoothDeviceFound(res => {
               console.debug('发现新设备', JSON.stringify(res.devices))
               this.#filterBluetoothDevices(res.devices, success)
-              complete?.(this.allDevices)
             })
           },
           fail: res => {
@@ -116,7 +109,7 @@ export default class {
         this.createBLEConnection(item.deviceId, success)
       } else {
         console.debug('已连接设备：', this.connectedDevice)
-        this.getConnectedBluetoothDevices(item, foundDevices, success)
+        this.#getConnectedBluetoothDevices(item, success)
       }
     } else {
       this.allDevices = foundDevices
@@ -127,22 +120,31 @@ export default class {
     }
   }
 
-  getConnectedBluetoothDevices(item = null, foundDevices, success) {
+  #getConnectedBluetoothDevices(item = null, success) {
     this.api.getConnectedBluetoothDevices({
       services: [],
       success: res => {
+        console.debug('当前连接：', res)
+
         const connectedItem = res.devices.find(e => e.deviceId === this.connectedDevice.deviceId)
-        console.debug('当前连接-已连接：', res, connectedItem)
+        console.debug('当前连接-已连接：', connectedItem)
 
         const registeredItem = res.devices.find(e => this.registeredDevices.includes(e.name))
-        console.debug('当前连接-已绑定：', res, registeredItem)
+        console.debug('当前连接-已绑定：', registeredItem)
 
         if (connectedItem) {
-          success?.({ devices: foundDevices })
+          success?.()
         } else if (registeredItem) {
           this.getBLEDeviceServices(registeredItem.deviceId, success)
         } else if (item) {
           this.createBLEConnection(item.deviceId, success)
+        } else {
+          this.api.getBluetoothDevices({
+            success: res => {
+              console.debug('获取在蓝牙模块生效期间所有搜索到的蓝牙设备', res)
+              this.#filterBluetoothDevices(res.devices, success)
+            }
+          })
         }
       }
     })
