@@ -63,28 +63,26 @@ export default class {
   }
 
   #filterBluetoothDevices(devices, success) {
-    const foundDevices = this.allDevices
-
     devices.forEach(device => {
       if (!device.name && !device.localName) { return }
       if (!device.RSSI) { return }
       if (device.name.includes('未知或不支持的设备') || device.name.includes('未知设备')) { return }
-      const item = foundDevices.find(e => e.deviceId === device.deviceId)
+      const item = this.allDevices.find(e => e.deviceId === device.deviceId)
       if (item) {
         Object.assign(item, device)
       } else {
         console.debug('搜索到新设备：', device.name)
-        foundDevices.push(device)
+        this.allDevices.push(device)
       }
     })
 
-    const item = foundDevices.find(e => this.registeredDevices.includes(e.name))
+    const item = devices.find(e => this.registeredDevices.includes(e.name))
     console.debug('筛选设备-符合条件：', item)
     console.debug('筛选设备-绑定列表：', this.registeredDevices)
-    console.debug('筛选设备-找到的设备：', foundDevices)
+    console.debug('筛选设备-找到的设备：', this.allDevices)
 
     if (item) {
-      foundDevices.sort((a, b) => {
+      this.allDevices.sort((a, b) => {
         if (a.deviceId === item.deviceId) {
           return -1
         } else if (b.deviceId === item.deviceId) {
@@ -93,7 +91,6 @@ export default class {
 
         return 0
       })
-      this.allDevices = foundDevices
 
       if (this.api.offBluetoothDeviceFound === 'function') {
         this.api.offBluetoothDeviceFound(res => {
@@ -114,7 +111,6 @@ export default class {
         this.createBLEConnection(item.deviceId, success)
       }
     } else {
-      this.allDevices = foundDevices
       this.api.onBluetoothDeviceFound(res => {
         console.debug('发现新设备', res)
         this.#filterBluetoothDevices(res.devices, success)
