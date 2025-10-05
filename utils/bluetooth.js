@@ -132,6 +132,8 @@ export default class {
       success: res => {
         const connectedItem = res.devices.find(e => e.deviceId === this.connectedDevice.deviceId)
         console.debug('当前连接：', res, connectedItem)
+
+        const registeredItem = res.devices.find(e => this.registeredDevices.includes(e.name))
         if (connectedItem) {
           success?.({ devices: foundDevices })
         } else {
