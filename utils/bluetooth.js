@@ -26,11 +26,6 @@ export default class {
               complete?.(this.allDevices)
             }
           })
-          this.api.onBluetoothDeviceFound(res => {
-            console.debug('发现新设备', res)
-            this.#filterBluetoothDevices(res.devices, success)
-            complete?.(this.allDevices)
-          })
         }
       },
 
@@ -92,6 +87,7 @@ export default class {
     console.debug('筛选设备-符合条件：', item)
     console.debug('筛选设备-绑定列表：', this.registeredDevices)
     console.debug('筛选设备-找到的设备：', foundDevices)
+
     if (item) {
       foundDevices.sort((a, b) => {
         if (a.deviceId === item.deviceId) {
@@ -102,6 +98,7 @@ export default class {
 
         return 0
       })
+      this.allDevices = foundDevices
 
       if (this.api.offBluetoothDeviceFound === 'function') {
         this.api.offBluetoothDeviceFound(res => {
@@ -121,12 +118,16 @@ export default class {
         console.debug('已连接设备：', this.connectedDevice)
         this.getConnectedBluetoothDevices(item, foundDevices, success)
       }
+    } else {
+      this.allDevices = foundDevices
+      this.api.onBluetoothDeviceFound(res => {
+        console.debug('发现新设备', res)
+        this.#filterBluetoothDevices(res.devices, success)
+      })
     }
-
-    this.allDevices = foundDevices
   }
 
-  getConnectedBluetoothDevices(item, foundDevices, success) {
+  getConnectedBluetoothDevices(item = null, foundDevices, success) {
     this.api.getConnectedBluetoothDevices({
       services: [],
       success: res => {
@@ -140,7 +141,7 @@ export default class {
           success?.({ devices: foundDevices })
         } else if (registeredItem) {
           this.getBLEDeviceServices(registeredItem.deviceId, success)
-        } else {
+        } else if (item) {
           this.createBLEConnection(item.deviceId, success)
         }
       }
