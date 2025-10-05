@@ -131,11 +131,15 @@ export default class {
       services: [],
       success: res => {
         const connectedItem = res.devices.find(e => e.deviceId === this.connectedDevice.deviceId)
-        console.debug('当前连接：', res, connectedItem)
+        console.debug('当前连接-已连接：', res, connectedItem)
 
         const registeredItem = res.devices.find(e => this.registeredDevices.includes(e.name))
+        console.debug('当前连接-已绑定：', res, registeredItem)
+
         if (connectedItem) {
           success?.({ devices: foundDevices })
+        } else if (registeredItem) {
+          this.getBLEDeviceServices(registeredItem.deviceId, success)
         } else {
           this.createBLEConnection(item.deviceId, success)
         }

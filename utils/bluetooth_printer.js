@@ -86,55 +86,58 @@ export default class extends Bluetooth {
       deviceId,
       success: res => {
         console.debug('连接蓝牙设备', deviceId, res)
-
-        // 获取蓝牙设备的所有服务
-        this.api.getBLEDeviceServices({
-          deviceId,
-          success: res => {
-            const availableServices = res.services.filter(service => service.isPrimary && service.uuid.endsWith('0000-1000-8000-00805F9B34FB'))
-            const servicesLength = availableServices.length
-
-            availableServices.forEach((service, index) => {
-              console.debug('设备 ID：', deviceId, '主服务：', service.uuid)
-              // 获取蓝牙设备服务中所有特征
-              this.api.getBLEDeviceCharacteristics({
-                deviceId: deviceId,
-                serviceId: service.uuid,
-                success: res => {
-                  for (const characteristic of res.characteristics) {
-                    console.debug('特征值', deviceId, service.uuid, characteristic.uuid, characteristic.properties)
-                    if (characteristic.properties.write && (characteristic.properties.writeNoResponse || (characteristic.uuid.endsWith('0000-1000-8000-00805F9B34FB')))) {
-                      console.debug('可写入', deviceId, service.uuid, characteristic.uuid)
-                      this.connectedDevice = {
-                        deviceId: deviceId,
-                        serviceId: service.uuid,
-                        characteristicId: characteristic.uuid
-                      }
-                    }
-                  }
-                  // 所有 service 的特制值已获取完毕
-                  if (servicesLength === index + 1) {
-                    console.debug('获取打印机', this.connectedDevice)
-                    if (this.connectedDevice.deviceId) {
-                      success?.({ devices: this.allDevices })
-                    } else {
-                      this.api.showModal({
-                        title: '获取合适的特征值失败',
-                        content: JSON.stringify(res)
-                      })
-                    }
-                  }
-                },
-                fail: res => {
-                  console.error('读取蓝牙设备特征值失败', res)
-                }
-              })
-            })
-          }
-        })
+        this.getBLEDeviceServices(deviceId, success)
       },
       fail: res => {
         console.debug('连接蓝牙设备失败', deviceId, res)
+      }
+    })
+  }
+
+  // 获取蓝牙设备的所有服务
+  getBLEDeviceServices(deviceId, success) {
+    this.api.getBLEDeviceServices({
+      deviceId,
+      success: res => {
+        const availableServices = res.services.filter(service => service.isPrimary && service.uuid.endsWith('0000-1000-8000-00805F9B34FB'))
+        const servicesLength = availableServices.length
+
+        availableServices.forEach((service, index) => {
+          console.debug('设备 ID：', deviceId, '主服务：', service.uuid)
+          // 获取蓝牙设备服务中所有特征
+          this.api.getBLEDeviceCharacteristics({
+            deviceId: deviceId,
+            serviceId: service.uuid,
+            success: res => {
+              for (const characteristic of res.characteristics) {
+                console.debug('特征值', deviceId, service.uuid, characteristic.uuid, characteristic.properties)
+                if (characteristic.properties.write && (characteristic.properties.writeNoResponse || (characteristic.uuid.endsWith('0000-1000-8000-00805F9B34FB')))) {
+                  console.debug('可写入', deviceId, service.uuid, characteristic.uuid)
+                  this.connectedDevice = {
+                    deviceId: deviceId,
+                    serviceId: service.uuid,
+                    characteristicId: characteristic.uuid
+                  }
+                }
+              }
+              // 所有 service 的特制值已获取完毕
+              if (servicesLength === index + 1) {
+                console.debug('获取打印机', this.connectedDevice)
+                if (this.connectedDevice.deviceId) {
+                  success?.({ devices: this.allDevices })
+                } else {
+                  this.api.showModal({
+                    title: '获取合适的特征值失败',
+                    content: JSON.stringify(res)
+                  })
+                }
+              }
+            },
+            fail: res => {
+              console.error('读取蓝牙设备特征值失败', res)
+            }
+          })
+        })
       }
     })
   }
