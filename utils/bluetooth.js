@@ -27,7 +27,7 @@ export default class {
             this.#filterBluetoothDevices(res.devices, success)
           })
         } else {
-          this.#startBluetoothDevicesDiscovery(allowDup)
+          this.#startBluetoothDevicesDiscovery(allowDup, success)
         }
       },
       fail: stateRes => {
@@ -35,13 +35,13 @@ export default class {
         this.api.openBluetoothAdapter({
           success: res => {
             console.debug('初始化蓝牙模块：', res)
-            this.#startBluetoothDevicesDiscovery(allowDup)
+            this.#startBluetoothDevicesDiscovery(allowDup, success)
           },
           fail: res => {
             fail?.(res)
             this.api.showModal({
               title: '初始化蓝牙模块失败',
-              content: '清除缓存后再试'
+              content: '清除微信缓存后再试'
             })
             console.debug('初始化蓝牙模块失败', res)
           }
@@ -50,13 +50,13 @@ export default class {
     })
   }
 
-  #startBluetoothDevicesDiscovery(allowDup) {
+  #startBluetoothDevicesDiscovery(allowDup, success) {
     this.api.startBluetoothDevicesDiscovery({
       allowDuplicatesKey: allowDup,
       success: res => {
         console.debug('开始搜寻：', res)
         this.api.onBluetoothDeviceFound(res => {
-          console.debug('发现新设备：', JSON.stringify(res.devices))
+          console.debug('发现新设备（startBlue）：', JSON.stringify(res.devices))
           this.#filterBluetoothDevices(res.devices, success)
         })
       },
@@ -74,6 +74,7 @@ export default class {
       if (device.name.includes('未知或不支持的设备') || device.name.includes('未知设备')) { return }
       const item = this.allDevices.find(e => e.deviceId === device.deviceId)
       if (item) {
+        console.debug('搜索到新设备-更新：', device.name)
         Object.assign(item, device)
       } else {
         console.debug('搜索到新设备：', device.name)
@@ -87,26 +88,24 @@ export default class {
     console.debug('筛选设备-找到的设备：', this.allDevices)
 
     if (item) {
+      if (this.api.offBluetoothDeviceFound === 'function') {
+        this.api.offBluetoothDeviceFound(res => {
+          console.debug('停止监听：', res)
+        })
+      }
+      this.api.stopBluetoothDevicesDiscovery({
+        complete: res => {
+          console.debug('停止扫描：', res)
+        }
+      })
+
       this.allDevices.sort((a, b) => {
         if (a.deviceId === item.deviceId) {
           return -1
         } else if (b.deviceId === item.deviceId) {
           return 1
         }
-
         return 0
-      })
-
-      if (this.api.offBluetoothDeviceFound === 'function') {
-        this.api.offBluetoothDeviceFound(res => {
-          console.debug('停止监听', res)
-        })
-      }
-
-      this.api.stopBluetoothDevicesDiscovery({
-        complete: res => {
-          console.debug('停止扫描蓝牙设备', res)
-        }
       })
 
       if (this.connectedDevice.deviceId === item.deviceId) {
@@ -115,11 +114,6 @@ export default class {
       } else {
         this.createBLEConnection(item.deviceId, success)
       }
-    } else {
-      this.api.onBluetoothDeviceFound(res => {
-        console.debug('发现新设备：', res)
-        this.#filterBluetoothDevices(res.devices, success)
-      })
     }
   }
 
