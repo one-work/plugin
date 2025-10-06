@@ -8,7 +8,7 @@ export default class {
   }
 
   // 获取本机蓝牙适配器状态
-  getState({ success, fail } = {}) {
+  getState({ success, fail, allowDup = false } = {}) {
     console.debug('已连接设备：', this.connectedDevice)
     console.debug('绑定设备：', this.registeredDevices)
     console.debug('所有设备：', this.allDevices)
@@ -27,7 +27,7 @@ export default class {
             this.#filterBluetoothDevices(res.devices, success)
           })
         } else {
-          this.#startBluetoothDevicesDiscovery()
+          this.#startBluetoothDevicesDiscovery(allowDup)
         }
       },
       fail: stateRes => {
@@ -35,7 +35,7 @@ export default class {
         this.api.openBluetoothAdapter({
           success: res => {
             console.debug('初始化蓝牙模块：', res)
-            this.#startBluetoothDevicesDiscovery()
+            this.#startBluetoothDevicesDiscovery(allowDup)
           },
           fail: res => {
             fail?.(res)
@@ -50,9 +50,9 @@ export default class {
     })
   }
 
-  #startBluetoothDevicesDiscovery() {
+  #startBluetoothDevicesDiscovery(allowDup) {
     this.api.startBluetoothDevicesDiscovery({
-      allowDuplicatesKey: true,
+      allowDuplicatesKey: allowDup,
       success: res => {
         console.debug('开始搜寻：', res)
         this.api.onBluetoothDeviceFound(res => {
