@@ -37,10 +37,7 @@ export default class {
           success: res => {
             console.debug('初始化蓝牙模块：', res)
             this.startBluetoothDevicesDiscovery()
-            this.api.onBluetoothDeviceFound(res => {
-              console.debug('发现新设备：', JSON.stringify(res.devices))
-              this.#filterBluetoothDevices(res.devices, success)
-            })
+
           },
           fail: res => {
             fail?.(res)
