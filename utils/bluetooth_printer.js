@@ -4,22 +4,32 @@ export default class extends Bluetooth {
 
   constructor(api) {
     super(api)
+    this.printLock = false
   }
 
   // 向蓝牙设备发送数据
   writeValue(data) {
-    if (Array.isArray(data)) {
-      const buffer = new ArrayBuffer(data.length)
-      const uint = new Uint8Array(buffer)
-      uint.set(data)
-      this.writeBuffer(uint)
-    } else if (data instanceof Uint8Array) {
-      this.writeBuffer(data) 
-    } else {
+    console.debug('收到打印任务！')
+    if (this.printLock) {
       this.api.showModal({
-        title: '数据格式不符合预期',
-        content: '支持 Array 类型或者 Uint8Array 类型数据！'
+        title: '打印机正忙',
+        content: '前一个打印任务还在进行中！'
       })
+    } else {
+      this.printLock = true
+      if (Array.isArray(data)) {
+        const buffer = new ArrayBuffer(data.length)
+        const uint = new Uint8Array(buffer)
+        uint.set(data)
+        this.writeBuffer(uint)
+      } else if (data instanceof Uint8Array) {
+        this.writeBuffer(data) 
+      } else {
+        this.api.showModal({
+          title: '数据格式不符合预期',
+          content: '支持 Array 类型或者 Uint8Array 类型数据！'
+        })
+      }
     }
   }
 
@@ -39,6 +49,7 @@ export default class extends Bluetooth {
 
   writeRemain({ buffer, chunkSize, writeType, offset = 0, index = 1, retry = 3 } = {}) {
     if (offset >= buffer.length) {
+      this.printLock = false
       console.debug('所有数据已发送完成')
       return
     }
@@ -52,7 +63,7 @@ export default class extends Bluetooth {
       characteristicId: this.connectedDevice.characteristicId,
       value: arrayBuffer,
       writeType: writeType,
-      success: (res) => {
+      success: res => {
         console.debug(`写入第${index}块数据成功，写入类型：${writeType}，大小: ${chunk.length}字节`, res.errMsg)
         offset += chunkSize
         index += 1
@@ -64,7 +75,7 @@ export default class extends Bluetooth {
           index: index
         })
       },
-      fail: (res) => {
+      fail: res => {
         if (retry > 0) {
           retry -= 1
           console.debug(`写入第${index}块数据失败：`, res)

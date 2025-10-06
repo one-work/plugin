@@ -27,7 +27,12 @@ export default class {
             this.#filterBluetoothDevices(res.devices, success)
           })
         } else {
-          this.#startBluetoothDevicesDiscovery(allowDup, success)
+          const item = this.allDevices.find(e => this.registeredDevices.includes(e.name))
+          if (item) {
+            console.debug('打印机已连接')
+          } else {
+            this.#startBluetoothDevicesDiscovery(allowDup, success)
+          }
         }
       },
       fail: stateRes => {
@@ -85,7 +90,7 @@ export default class {
     const item = devices.find(e => this.registeredDevices.includes(e.name))
     console.debug('筛选设备-符合条件：', item)
     console.debug('筛选设备-绑定列表：', this.registeredDevices)
-    console.debug('筛选设备-找到的设备：', this.allDevices)
+    console.debug('筛选设备-找到的设备：', devices)
 
     if (item) {
       if (this.api.offBluetoothDeviceFound === 'function') {
@@ -110,7 +115,7 @@ export default class {
 
       if (this.connectedDevice.deviceId === item.deviceId) {
         console.debug('已连接设备：', this.connectedDevice)
-        this.#getConnectedBluetoothDevices(success, item)
+        success?.()
       } else {
         this.createBLEConnection(item.deviceId, success)
       }
@@ -126,13 +131,11 @@ export default class {
       services: filterDevices,
       success: res => {
         console.debug('当前连接：', res, item)
-        const devices = res.devices
-
-        if (devices.length > 0) {
-          const connectedItem = devices.find(e => e.deviceId === this.connectedDevice.deviceId)
+        if (res.devices.length > 0) {
+          const connectedItem = res.devices.find(e => e.deviceId === this.connectedDevice.deviceId)
           console.debug('当前连接-已连接：', connectedItem)
 
-          const registeredItem = devices.find(e => this.registeredDevices.includes(e.name))
+          const registeredItem = res.devices.find(e => this.registeredDevices.includes(e.name))
           console.debug('当前连接-已绑定：', registeredItem)
 
           if (connectedItem) {
