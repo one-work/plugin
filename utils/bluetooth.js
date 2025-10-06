@@ -27,7 +27,7 @@ export default class {
             this.#filterBluetoothDevices(res.devices, success)
           })
         } else {
-          this.startBluetoothDevicesDiscovery()
+          this.#startBluetoothDevicesDiscovery()
         }
       },
 
@@ -36,8 +36,7 @@ export default class {
         this.api.openBluetoothAdapter({
           success: res => {
             console.debug('初始化蓝牙模块：', res)
-            this.startBluetoothDevicesDiscovery()
-
+            this.#startBluetoothDevicesDiscovery()
           },
           fail: res => {
             fail?.(res)
@@ -52,7 +51,7 @@ export default class {
     })
   }
 
-  startBluetoothDevicesDiscovery() {
+  #startBluetoothDevicesDiscovery() {
     this.api.startBluetoothDevicesDiscovery({
       allowDuplicatesKey: true,
       success: res => {
@@ -63,7 +62,7 @@ export default class {
         })
       },
       fail: res => {
-        console.debug('搜寻附近的蓝牙设备失败', res)
+        console.debug('搜寻失败：', res)
         this.#reportError('startBluetoothDevicesDiscovery', res)
       }
     })
