@@ -96,7 +96,7 @@ export default class extends Bluetooth {
     this.api.createBLEConnection({
       deviceId,
       success: res => {
-        console.debug('连接蓝牙设备', deviceId, res)
+        console.debug('连接蓝牙：', deviceId, res)
         this.getBLEDeviceServices(deviceId, success)
       },
       fail: res => {

@@ -9,9 +9,9 @@ export default class {
 
   // 获取本机蓝牙适配器状态
   getState({ success, fail, allowDup = false } = {}) {
-    console.debug('已连接设备：', this.connectedDevice)
-    console.debug('绑定设备：', this.registeredDevices)
-    console.debug('所有设备：', this.allDevices)
+    console.debug('已连接设备（init）：', this.connectedDevice)
+    console.debug('绑定设备（init）：', this.registeredDevices)
+    console.debug('所有设备（init）：', this.allDevices.length, this.allDevices)
     this.api.getBluetoothAdapterState({
       success: stateRes => {
         console.debug('蓝牙状态：', stateRes)
@@ -77,12 +77,13 @@ export default class {
       if (!device.name && !device.localName) { return }
       if (!device.RSSI) { return }
       if (device.name.includes('未知或不支持的设备') || device.name.includes('未知设备')) { return }
+      console.debug('所有设备（filter)：', this.allDevices)
       const item = this.allDevices.find(e => e.deviceId === device.deviceId)
       if (item) {
-        console.debug('搜索到新设备-更新：', device.name)
+        console.debug('=====搜索到新设备-更新：', device.name)
         Object.assign(item, device)
       } else {
-        console.debug('搜索到新设备：', device.name)
+        console.debug('=====搜索到新设备：', device.name)
         this.allDevices.push(device)
       }
     })
@@ -115,7 +116,8 @@ export default class {
 
       if (this.connectedDevice.deviceId === item.deviceId) {
         console.debug('已连接设备：', this.connectedDevice)
-        success?.()
+        //success?.()
+        this.createBLEConnection(item.deviceId, success)
       } else {
         this.createBLEConnection(item.deviceId, success)
       }
@@ -124,9 +126,10 @@ export default class {
 
   #getConnectedBluetoothDevices(success, item) {
     let filterDevices = []
-    if (this.connectedDevice) {
+    if (this.connectedDevice.deviceId) {
       filterDevices = [this.connectedDevice.deviceId]
     }
+    console.debug('筛选列表：', filterDevices)
     this.api.getConnectedBluetoothDevices({
       services: filterDevices,
       success: res => {
@@ -167,7 +170,7 @@ export default class {
         console.debug('停止扫描蓝牙设备', res)
       }
     })
-    
+
     if (this.connectedDevice) {
       this.api.closeBLEConnection({
         deviceId: this.connectedDevice.deviceId,
@@ -176,6 +179,12 @@ export default class {
         }
       })
     }
+
+    this.api.closeBluetoothAdapter({
+      success: () => {
+        console.debug('关闭蓝牙!')
+      }
+    })
   }
 
   #reportError(api, res) {
