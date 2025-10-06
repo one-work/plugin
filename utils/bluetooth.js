@@ -30,7 +30,6 @@ export default class {
           this.#startBluetoothDevicesDiscovery()
         }
       },
-
       fail: stateRes => {
         console.debug('获取蓝牙状态失败：', stateRes)
         this.api.openBluetoothAdapter({
@@ -166,6 +165,12 @@ export default class {
   }
 
   closeBLEConnection() {
+    this.api.stopBluetoothDevicesDiscovery({
+      complete: res => {
+        console.debug('停止扫描蓝牙设备', res)
+      }
+    })
+    
     if (this.connectedDevice) {
       this.api.closeBLEConnection({
         deviceId: this.connectedDevice.deviceId,
