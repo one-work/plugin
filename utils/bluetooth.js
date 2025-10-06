@@ -11,6 +11,7 @@ export default class {
   getState({ success, fail } = {}) {
     console.debug('已连接设备：', this.connectedDevice)
     console.debug('绑定设备：', this.registeredDevices)
+    console.debug('所有设备：', this.allDevices)
     this.api.getBluetoothAdapterState({
       success: stateRes => {
         console.debug('蓝牙状态：', stateRes)
@@ -20,19 +21,24 @@ export default class {
           this.#getConnectedBluetoothDevices(success)
         }
 
-        if (!state.discovering) {
+        if (state.discovering) {
+          this.api.onBluetoothDeviceFound(res => {
+            console.debug('发现新设备：', JSON.stringify(res.devices))
+            this.#filterBluetoothDevices(res.devices, success)
+          })
+        } else {
           this.startBluetoothDevicesDiscovery()
         }
       },
 
       fail: stateRes => {
-        console.debug('获取本机蓝牙适配器状态失败', stateRes)
+        console.debug('获取蓝牙状态失败：', stateRes)
         this.api.openBluetoothAdapter({
           success: res => {
             console.debug('初始化蓝牙模块：', res)
             this.startBluetoothDevicesDiscovery()
             this.api.onBluetoothDeviceFound(res => {
-              console.debug('发现新设备', JSON.stringify(res.devices))
+              console.debug('发现新设备：', JSON.stringify(res.devices))
               this.#filterBluetoothDevices(res.devices, success)
             })
           },
@@ -53,7 +59,11 @@ export default class {
     this.api.startBluetoothDevicesDiscovery({
       allowDuplicatesKey: true,
       success: res => {
-        console.debug('开始搜寻附近的蓝牙设备', res)
+        console.debug('开始搜寻：', res)
+        this.api.onBluetoothDeviceFound(res => {
+          console.debug('发现新设备：', JSON.stringify(res.devices))
+          this.#filterBluetoothDevices(res.devices, success)
+        })
       },
       fail: res => {
         console.debug('搜寻附近的蓝牙设备失败', res)
@@ -112,23 +122,28 @@ export default class {
       }
     } else {
       this.api.onBluetoothDeviceFound(res => {
-        console.debug('发现新设备', res)
+        console.debug('发现新设备：', res)
         this.#filterBluetoothDevices(res.devices, success)
       })
     }
   }
 
   #getConnectedBluetoothDevices(success, item) {
+    let filterDevices = []
+    if (this.connectedDevice) {
+      filterDevices = [this.connectedDevice.deviceId]
+    }
     this.api.getConnectedBluetoothDevices({
-      services: [],
+      services: filterDevices,
       success: res => {
         console.debug('当前连接：', res, item)
+        const devices = res.devices
 
-        if (res.devices.length > 0) {
-          const connectedItem = res.devices.find(e => e.deviceId === this.connectedDevice.deviceId)
+        if (devices.length > 0) {
+          const connectedItem = devices.find(e => e.deviceId === this.connectedDevice.deviceId)
           console.debug('当前连接-已连接：', connectedItem)
 
-          const registeredItem = res.devices.find(e => this.registeredDevices.includes(e.name))
+          const registeredItem = devices.find(e => this.registeredDevices.includes(e.name))
           console.debug('当前连接-已绑定：', registeredItem)
 
           if (connectedItem) {
