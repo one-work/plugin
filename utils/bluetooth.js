@@ -122,11 +122,11 @@ export default class {
 
       if (this.connectedDevice.deviceId === item.deviceId) {
         console.debug('已连接设备：', this.connectedDevice, this.offed)
-        if (this.offed) {
-          this.createBLEConnection(item.deviceId, success)
-        } else {
-          success?.()
-        }
+        
+         // this.createBLEConnection(item.deviceId, success)
+        
+        success?.()
+        
       } else {
         this.createBLEConnection(item.deviceId, success)
       }
@@ -181,20 +181,10 @@ export default class {
     })
 
     if (this.connectedDevice) {
-      this.api.closeBLEConnection({
-        deviceId: this.connectedDevice.deviceId,
-        success: res => {
-          console.debug('断开蓝牙连接成功：', res, this.connectedDevice.deviceId)
-        }
-      })
+      //this.api.closeBLEConnection({deviceId: this.connectedDevice.deviceId,success: res => {console.debug('断开蓝牙连接成功：', res)}})
     }
 
-    this.api.closeBluetoothAdapter({
-      success: res => {
-        console.debug('关闭蓝牙!', res)
-        this.offed = true
-      }
-    })
+    //this.api.closeBluetoothAdapter({success: res => {console.debug('关闭蓝牙!', res)}})
   }
 
   #reportError(api, res) {
