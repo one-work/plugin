@@ -5,13 +5,16 @@ export default class {
     this.allDevices = []
     this.registeredDevices = []
     this.connectedDevice = {}
+    this.objectId = Math.random()
+    this.offed = false
   }
 
   // 获取本机蓝牙适配器状态
   getState({ success, fail, allowDup = false } = {}) {
-    console.debug('已连接设备（init）：', this.connectedDevice)
+    const allDevices = [...this.allDevices]
+    console.debug('已连接设备（init）：', this.connectedDevice, this.objectId)
     console.debug('绑定设备（init）：', this.registeredDevices)
-    console.debug('所有设备（init）：', this.allDevices.length, this.allDevices)
+    console.debug('所有设备（init）：', allDevices.length, allDevices)
     this.api.getBluetoothAdapterState({
       success: stateRes => {
         console.debug('蓝牙状态：', stateRes)
@@ -24,12 +27,12 @@ export default class {
         if (state.discovering) {
           this.api.onBluetoothDeviceFound(res => {
             console.debug('发现新设备：', JSON.stringify(res.devices))
-            this.#filterBluetoothDevices(res.devices, success)
+            this.#filterBluetoothDevices(res.devices, this.objectId, success)
           })
         } else {
-          const item = this.allDevices.find(e => this.registeredDevices.includes(e.name))
+          const item = allDevices.find(e => this.registeredDevices.includes(e.name))
           if (item) {
-            console.debug('打印机已连接')
+            console.debug('打印机已连接：', item)
           } else {
             this.#startBluetoothDevicesDiscovery(allowDup, success)
           }
@@ -58,11 +61,12 @@ export default class {
   #startBluetoothDevicesDiscovery(allowDup, success) {
     this.api.startBluetoothDevicesDiscovery({
       allowDuplicatesKey: allowDup,
-      success: res => {
-        console.debug('开始搜寻：', res)
-        this.api.onBluetoothDeviceFound(res => {
-          console.debug('发现新设备（startBlue）：', JSON.stringify(res.devices))
-          this.#filterBluetoothDevices(res.devices, success)
+      success: discoveryRes => {
+        console.debug('开始搜寻：', discoveryRes)
+        this.api.onBluetoothDeviceFound(foundRes => {
+          // 因为 uniApp 没有实现停止监听的方法，所以通过传递 ObjectId 来比较打印服务实例
+          console.debug('发现新设备（startBlue）：', this.objectId, JSON.stringify(foundRes.devices))
+          this.#filterBluetoothDevices(foundRes.devices, this.objectId, success)
         })
       },
       fail: res => {
@@ -72,13 +76,16 @@ export default class {
     })
   }
 
-  #filterBluetoothDevices(devices, success) {
+  #filterBluetoothDevices(devices, objectId, success) {
+    const allDevices = [...this.allDevices]
+    console.debug('本次筛选（filter）：', devices)
+    console.debug('所有设备（filter）：', allDevices)
+    console.debug('本次已连接:', this.connectedDevice)
     devices.forEach(device => {
       if (!device.name && !device.localName) { return }
       if (!device.RSSI) { return }
       if (device.name.includes('未知或不支持的设备') || device.name.includes('未知设备')) { return }
-      console.debug('所有设备（filter)：', this.allDevices)
-      const item = this.allDevices.find(e => e.deviceId === device.deviceId)
+      const item = allDevices.find(e => e.deviceId === device.deviceId)
       if (item) {
         console.debug('=====搜索到新设备-更新：', device.name)
         Object.assign(item, device)
@@ -91,7 +98,6 @@ export default class {
     const item = devices.find(e => this.registeredDevices.includes(e.name))
     console.debug('筛选设备-符合条件：', item)
     console.debug('筛选设备-绑定列表：', this.registeredDevices)
-    console.debug('筛选设备-找到的设备：', devices)
 
     if (item) {
       if (this.api.offBluetoothDeviceFound === 'function') {
@@ -115,9 +121,12 @@ export default class {
       })
 
       if (this.connectedDevice.deviceId === item.deviceId) {
-        console.debug('已连接设备：', this.connectedDevice)
-        //success?.()
-        this.createBLEConnection(item.deviceId, success)
+        console.debug('已连接设备：', this.connectedDevice, this.offed)
+        if (this.offed) {
+          this.createBLEConnection(item.deviceId, success)
+        } else {
+          success?.()
+        }
       } else {
         this.createBLEConnection(item.deviceId, success)
       }
@@ -174,15 +183,16 @@ export default class {
     if (this.connectedDevice) {
       this.api.closeBLEConnection({
         deviceId: this.connectedDevice.deviceId,
-        success: (res) => {
+        success: res => {
           console.debug('断开蓝牙连接成功：', res, this.connectedDevice.deviceId)
         }
       })
     }
 
     this.api.closeBluetoothAdapter({
-      success: () => {
-        console.debug('关闭蓝牙!')
+      success: res => {
+        console.debug('关闭蓝牙!', res)
+        this.offed = true
       }
     })
   }
