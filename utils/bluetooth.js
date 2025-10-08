@@ -130,7 +130,6 @@ export default class {
         console.debug('即将连接设备（即将打印）：', item.deviceId, objectId, this.objectId, this.enabled)
         this.createBLEConnection(item.deviceId, success)
       }
-      
     }
   }
 
