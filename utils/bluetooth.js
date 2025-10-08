@@ -133,7 +133,7 @@ export default class {
     }
   }
 
-  #getConnectedBluetoothDevices(success, item) {
+  #getConnectedBluetoothDevices(success) {
     let filterDevices = []
     if (this.connectedDevice.deviceId) {
       filterDevices = [this.connectedDevice.deviceId]
@@ -142,32 +142,27 @@ export default class {
     this.api.getConnectedBluetoothDevices({
       services: filterDevices,
       success: res => {
-        console.debug('当前连接：', res, item)
+        console.debug('当前连接：', res)
         if (res.devices.length > 0) {
           const connectedItem = res.devices.find(e => e.deviceId === this.connectedDevice.deviceId)
           console.debug('当前连接-已连接：', connectedItem)
+          if (connectedItem) {
+            success?.()
+            return
+          }
 
           const registeredItem = res.devices.find(e => this.registeredDevices.includes(e.name))
           console.debug('当前连接-已绑定：', registeredItem)
-
-          if (connectedItem) {
-            success?.()
-          } else if (registeredItem) {
+          if (registeredItem) {
             this.getBLEDeviceServices(registeredItem.deviceId, success)
-          } else if (item) {
-            this.createBLEConnection(item.deviceId, success)
           }
         } else {
-          if (item) {
-            this.createBLEConnection(item.deviceId, success)
-          } else {
-            this.api.getBluetoothDevices({
-              success: res => {
-                console.debug('获取在蓝牙模块生效期间所有搜索到的蓝牙设备', res)
-                this.#filterBluetoothDevices(res.devices, success)
-              }
-            })
-          }
+          this.api.getBluetoothDevices({
+            success: res => {
+              console.debug('获取在蓝牙模块生效期间所有搜索到的蓝牙设备：', res)
+              this.#filterBluetoothDevices(res.devices, success)
+            }
+          })
         }
       }
     })
