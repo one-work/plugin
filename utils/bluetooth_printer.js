@@ -64,7 +64,7 @@ export default class extends Bluetooth {
       value: arrayBuffer,
       writeType: writeType,
       success: res => {
-        console.debug(`写入第${index}块数据成功，写入类型：${writeType}，大小: ${chunk.length}字节`, res.errMsg)
+        console.debug(`写入第${index}块数据成功，写入：${this.connectedDevice.deviceId}，大小: ${chunk.length}字节`, res.errMsg)
         offset += chunkSize
         index += 1
         this.writeRemain({ 

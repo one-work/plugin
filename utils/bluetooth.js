@@ -6,6 +6,7 @@ export default class {
     this.registeredDevices = []
     this.connectedDevice = {}
     this.objectId = Math.random()
+    this.enabled = true
   }
 
   // 获取本机蓝牙适配器状态
@@ -76,6 +77,9 @@ export default class {
   }
 
   #filterBluetoothDevices(devices, objectId, success) {
+    if (!this.enabled) {
+      return
+    }
     const allDevices = [...this.allDevices]
     console.debug('本次筛选（filter）：', devices)
     console.debug('所有设备（filter）：', allDevices)
@@ -120,11 +124,13 @@ export default class {
       })
 
       if (this.connectedDevice.deviceId === item.deviceId) {
-        console.debug('已连接设备：', this.connectedDevice, this.offed)
+        console.debug('已连接设备（即将打印）：', item.deviceId, objectId, this.objectId, this.enabled)
         success?.()
       } else {
+        console.debug('即将连接设备（即将打印）：', item.deviceId, objectId, this.objectId, this.enabled)
         this.createBLEConnection(item.deviceId, success)
       }
+      
     }
   }
 
@@ -169,6 +175,7 @@ export default class {
   }
 
   closeBLEConnection() {
+    this.enabled = false
     this.api.stopBluetoothDevicesDiscovery({
       complete: res => {
         console.debug('停止扫描蓝牙设备', res)
