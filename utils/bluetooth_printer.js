@@ -9,7 +9,7 @@ export default class extends Bluetooth {
 
   // 向蓝牙设备发送数据
   writeValue(data) {
-    console.debug('收到打印任务！')
+    console.debug(`${'-'.repeat(20)}${this.objectId}收到打印任务！${'-'.repeat(20)}`)
     if (this.printLock) {
       this.api.showModal({
         title: '打印机正忙',
