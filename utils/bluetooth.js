@@ -6,7 +6,6 @@ export default class {
     this.registeredDevices = []
     this.connectedDevice = {}
     this.objectId = Math.random()
-    this.offed = false
   }
 
   // 获取本机蓝牙适配器状态
@@ -122,11 +121,7 @@ export default class {
 
       if (this.connectedDevice.deviceId === item.deviceId) {
         console.debug('已连接设备：', this.connectedDevice, this.offed)
-        
-         // this.createBLEConnection(item.deviceId, success)
-        
         success?.()
-        
       } else {
         this.createBLEConnection(item.deviceId, success)
       }
