@@ -26,6 +26,7 @@ export default class {
 
         if (state.discovering) {
           this.api.onBluetoothDeviceFound(res => {
+            console.debug('-'.repeat(50))
             console.debug('发现新设备：', JSON.stringify(res.devices))
             this.#filterBluetoothDevices(res.devices, this.objectId, success)
           })
@@ -65,7 +66,8 @@ export default class {
         console.debug('开始搜寻：', discoveryRes)
         this.api.onBluetoothDeviceFound(foundRes => {
           // 因为 uniApp 没有实现停止监听的方法，所以通过传递 ObjectId 来比较打印服务实例
-          console.debug('发现新设备（startBlue）：', this.objectId, JSON.stringify(foundRes.devices))
+          console.debug('='.repeat(50))
+          console.debug('发现新设备（OnFound）：', this.objectId, JSON.stringify(foundRes.devices))
           this.#filterBluetoothDevices(foundRes.devices, this.objectId, success)
         })
       },
@@ -81,8 +83,7 @@ export default class {
       return
     }
     const allDevices = [...this.allDevices]
-    console.debug('本次筛选（filter）：', devices)
-    console.debug('所有设备（filter）：', allDevices)
+    console.debug('所有设备（filter）：', allDevices.length, allDevices)
     console.debug('本次已连接:', this.connectedDevice)
     devices.forEach(device => {
       if (!device.name && !device.localName) { return }
@@ -90,17 +91,16 @@ export default class {
       if (device.name.includes('未知或不支持的设备') || device.name.includes('未知设备')) { return }
       const item = allDevices.find(e => e.deviceId === device.deviceId)
       if (item) {
-        console.debug('=====搜索到新设备-更新：', device.name)
+        console.debug('搜索到新设备-更新：', device.name)
         Object.assign(item, device)
       } else {
-        console.debug('=====搜索到新设备：', device.name)
+        console.debug('搜索到新设备：', device.name)
         this.allDevices.push(device)
       }
     })
 
     const item = devices.find(e => this.registeredDevices.includes(e.name))
     console.debug('筛选设备-符合条件：', item)
-    console.debug('筛选设备-绑定列表：', this.registeredDevices)
 
     if (item) {
       if (this.api.offBluetoothDeviceFound === 'function') {
@@ -142,7 +142,7 @@ export default class {
     this.api.getConnectedBluetoothDevices({
       services: filterDevices,
       success: res => {
-        console.debug('当前连接：', res)
+        console.debug('当前连接：', res.devices.length, res.devices)
         if (res.devices.length > 0) {
           const connectedItem = res.devices.find(e => e.deviceId === this.connectedDevice.deviceId)
           console.debug('当前连接-已连接：', connectedItem)
