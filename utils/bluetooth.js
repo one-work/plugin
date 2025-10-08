@@ -34,8 +34,6 @@ export default class {
           const item = allDevices.find(e => this.registeredDevices.includes(e.name))
           if (item) {
             console.debug('打印机已连接：', item)
-          } else {
-            this.#startBluetoothDevicesDiscovery(allowDup, success)
           }
         }
       },
@@ -155,7 +153,10 @@ export default class {
           console.debug('当前连接-已绑定：', registeredItem)
           if (registeredItem) {
             this.getBLEDeviceServices(registeredItem.deviceId, success)
+            return
           }
+
+          this.#startBluetoothDevicesDiscovery(false, success)
         } else {
           this.api.getBluetoothDevices({
             success: res => {
