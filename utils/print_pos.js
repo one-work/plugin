@@ -74,5 +74,11 @@ export default class PrintPOS {
       ...value
     )
   }
-  
+
+  disconnect() {
+    this.data.push(
+      0x1f, 0x28, 0x63, 0x02, 0x00, 0x44, 0x42
+    )
+  }
+
 }
