@@ -157,8 +157,10 @@ export default class {
         if (res.devices.length > 0) {
           const connectedItem = res.devices.find(e => e.deviceId === deviceId)
           console.debug('当前连接-已连接：', connectedItem)
-          if (connectedItem) {
+          if (connectedItem && this.connectedDevice.deviceId === deviceId) {
             success?.()
+          } else if (connectedItem) {
+            this.getBLEDeviceServices(deviceId, success)
           } else {
             console.debug('即将连接设备（即将打印）：', deviceId)
             this.createBLEConnection(deviceId, success)
