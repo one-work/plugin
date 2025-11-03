@@ -76,7 +76,7 @@ export default class {
     })
   }
 
-  #filterBluetoothDevices(devices, objectId, success) {
+  #filterBluetoothDevices(devices, objectId, success, x = false) {
     if (!this.enabled) {
       return
     }
@@ -125,9 +125,15 @@ export default class {
         console.debug('已连接设备（即将打印）：', item.deviceId, objectId, this.objectId, this.enabled)
         success?.()
       } else {
-        console.debug('即将连接设备（即将打印）：', item.deviceId, objectId, this.objectId, this.enabled)
-        this.#createBLEConnection(item.deviceId, success)
+        if (x) {
+          this.#getConnectedBluetoothDevices(item.advertisServiceUUIDs, item.deviceId, success)
+        } else {
+          this.getBLEDeviceServices(item.deviceId, success)
+        }
       }
+    } else if (x) {
+      // x 表示是筛选所有发现过的设备场景, 既然找不到就开启 discovery
+      this.#startBluetoothDevicesDiscovery(false, success)
     }
   }
 
@@ -135,34 +141,28 @@ export default class {
     this.api.getBluetoothDevices({
       success: res => {
         console.debug('获取在蓝牙模块生效期间所有搜索到的蓝牙设备：', res)
-        this.#filterBluetoothDevices(res.devices, this.objectId, success)
+        this.#filterBluetoothDevices(res.devices, this.objectId, success, true)
       }
     })
   }
 
   // 在 ios 系统中，必须提供有效的 services , getConnectedBluetoothDevices 才能正常工作；
-  #getConnectedBluetoothDevices(filterDevices, success) {
+  #getConnectedBluetoothDevices(filterDevices, deviceId, success) {
     console.debug('筛选列表：', filterDevices)
     this.api.getConnectedBluetoothDevices({
       services: filterDevices,
       success: res => {
         console.debug('当前连接：', res.devices.length, res.devices)
         if (res.devices.length > 0) {
-          const connectedItem = res.devices.find(e => e.deviceId === this.connectedDevice.deviceId)
+          const connectedItem = res.devices.find(e => e.deviceId === deviceId)
           console.debug('当前连接-已连接：', connectedItem)
           if (connectedItem) {
             success?.()
             return
+          } else {
+            console.debug('即将连接设备（即将打印）：', deviceId)
+            this.#createBLEConnection(deviceId, success)
           }
-
-          const registeredItem = res.devices.find(e => this.registeredDevices.includes(e.name))
-          console.debug('当前连接-已绑定：', registeredItem)
-          if (registeredItem) {
-            this.getBLEDeviceServices(registeredItem.deviceId, success)
-            return
-          }
-
-          this.#startBluetoothDevicesDiscovery(false, success)
         }
       }
     })

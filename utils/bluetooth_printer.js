@@ -135,7 +135,6 @@ export default class extends Bluetooth {
               if (servicesLength === index + 1) {
                 console.debug('获取打印机', this.connectedDevice)
                 if (this.connectedDevice.deviceId) {
-                  console.debug('-----------------', success)
                   success?.({ devices: this.allDevices })
                 } else {
                   this.api.showModal({
