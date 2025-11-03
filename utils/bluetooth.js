@@ -21,7 +21,7 @@ export default class {
         const state = stateRes.adapterState || stateRes
 
         if (state.available) {
-          this.#getConnectedBluetoothDevices(success)
+          this.#getBluetoothDevices(success)
         }
 
         if (state.discovering) {
@@ -126,16 +126,22 @@ export default class {
         success?.()
       } else {
         console.debug('即将连接设备（即将打印）：', item.deviceId, objectId, this.objectId, this.enabled)
-        this.createBLEConnection(item.deviceId, success)
+        this.#createBLEConnection(item.deviceId, success)
       }
     }
   }
 
-  #getConnectedBluetoothDevices(success) {
-    let filterDevices = []
-    if (this.connectedDevice.deviceId) {
-      filterDevices = [this.connectedDevice.deviceId]
-    }
+  #getBluetoothDevices(success) {
+    this.api.getBluetoothDevices({
+      success: res => {
+        console.debug('获取在蓝牙模块生效期间所有搜索到的蓝牙设备：', res)
+        this.#filterBluetoothDevices(res.devices, this.objectId, success)
+      }
+    })
+  }
+
+  // 在 ios 系统中，必须提供有效的 services , getConnectedBluetoothDevices 才能正常工作；
+  #getConnectedBluetoothDevices(filterDevices, success) {
     console.debug('筛选列表：', filterDevices)
     this.api.getConnectedBluetoothDevices({
       services: filterDevices,
@@ -157,13 +163,6 @@ export default class {
           }
 
           this.#startBluetoothDevicesDiscovery(false, success)
-        } else {
-          this.api.getBluetoothDevices({
-            success: res => {
-              console.debug('获取在蓝牙模块生效期间所有搜索到的蓝牙设备：', res)
-              this.#filterBluetoothDevices(res.devices, success)
-            }
-          })
         }
       }
     })
