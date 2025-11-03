@@ -161,7 +161,7 @@ export default class {
             return
           } else {
             console.debug('即将连接设备（即将打印）：', deviceId)
-            this.#createBLEConnection(deviceId, success)
+            this.createBLEConnection(deviceId, success)
           }
         }
       }

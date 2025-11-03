@@ -92,7 +92,7 @@ export default class extends Bluetooth {
     })
   }
 
-  #createBLEConnection(deviceId, success) {
+  createBLEConnection(deviceId, success) {
     this.api.createBLEConnection({
       deviceId,
       success: res => {
