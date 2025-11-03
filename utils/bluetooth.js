@@ -126,9 +126,10 @@ export default class {
         success?.()
       } else {
         if (x) {
+          console.debug('-------------筛选', item.advertisServiceUUIDs)
           this.#getConnectedBluetoothDevices(item.advertisServiceUUIDs, item.deviceId, success)
         } else {
-          this.getBLEDeviceServices(item.deviceId, success)
+          this.createBLEConnection(item.deviceId, success)
         }
       }
     } else if (x) {
@@ -158,11 +159,13 @@ export default class {
           console.debug('当前连接-已连接：', connectedItem)
           if (connectedItem) {
             success?.()
-            return
           } else {
             console.debug('即将连接设备（即将打印）：', deviceId)
             this.createBLEConnection(deviceId, success)
           }
+        } else {
+          console.debug('即将连接设备（即将打印）：', deviceId)
+          this.createBLEConnection(deviceId, success)
         }
       }
     })
