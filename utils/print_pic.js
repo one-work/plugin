@@ -55,12 +55,21 @@ export default class PrintPic {
     }
     console.debug('图片数据：', raster)
     
-    const head = [
-      bytesPerLine % 256, Math.floor(bytesPerLine / 256), h % 256, Math.floor(h / 256)
-    ]
+    const head = {
+      xL: bytesPerLine % 256,
+      xH: Math.floor(bytesPerLine / 256),
+      yL: h % 256,
+      yH: Math.floor(h / 256)
+    }
+    const meta = {
+      width: bytesPerLine,
+      height: h
+    }
+
     return {
       head: head,
-      data: raster
+      data: raster,
+      meta: meta
     }
   }
 

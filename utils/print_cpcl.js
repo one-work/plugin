@@ -11,6 +11,7 @@ export default class PrintCPCL {
     this.texts = []
     this.currentY = PrintCPCL.PADDING_TOP
     this.qrcodes = []
+    this.images = []
   }
 
   render() {
@@ -18,6 +19,7 @@ export default class PrintCPCL {
       ...this.head(),
       ...this.texts,
       ...this.qrcodes,
+      ...this.images,
       'FORM',
       'PRINT',
       ''
@@ -70,7 +72,12 @@ export default class PrintCPCL {
     this.texts.push(`L ${x0} ${this.currentY} ${x1} ${this.currentY} ${width}`)
     this.currentY = this.currentY + height
   }
-  
+
+  // 使用压缩数据
+  image(data, { x = 0, y = this.currentY, width = 1, height = 1 } = {}) {
+    this.images.push(`CG ${width} ${height} ${x} ${y} ${data}`)
+  }
+
   barcode(data, { width = 1, ratio = 1, height = 50, x = 0 } = {}) {
     this.texts.push(`B 39 ${width} ${ratio} ${height} ${x} ${this.currentY} ${data}`)
     this.currentY = this.currentY + height

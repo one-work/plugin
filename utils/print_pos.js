@@ -70,7 +70,7 @@ export default class PrintPOS {
     const img = [0x1d, 0x76, 0x30, 0x00]
     this.data.push(
       ...img,
-      ...head,
+      ...[head.xL, head.xH, head.yL, head.yH],
       ...value
     )
   }
