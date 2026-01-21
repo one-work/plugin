@@ -45,7 +45,8 @@ export default class PrintPic {
     const raster = new Uint8Array(bytesPerLine * h)
     for (let y = 0; y < h; y++) {
       for (let x = 0; x < w; x++) {
-        const gray = rgba[(y * w + x) * 4] * 0.299 + rgba[(y * w + x) * 4 + 1] * 0.587 + rgba[(y * w + x) * 4 + 2] * 0.114
+        const i = (y * w + x) * 4
+        const gray = rgba[i] * 0.299 + rgba[i + 1] * 0.587 + rgba[i + 2] * 0.114
         if (gray < 128) {
           const byte = Math.floor(x / 8)
           const bit = 7 - (x % 8)
