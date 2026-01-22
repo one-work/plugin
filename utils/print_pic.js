@@ -57,14 +57,12 @@ export default class PrintPic {
 
     for (let y = 0; y < h; y++) {
       const sub = grayArray.splice(0, w)
-      console.debug('------------------', sub.length, sub.join(''))
       for (let x = 0; x < bytesPerLine; x++) {
         const a = parseInt(sub.splice(0, 8).join('').padEnd(8, '0'), 2)
         raster.push(a) // 8 位二进制转 16进制，不足的用 0 补齐
       }
     }
-    console.debug('图片数据：', raster.join(''))
-    
+
     const head = {
       xL: bytesPerLine % 256,
       xH: Math.floor(bytesPerLine / 256),
