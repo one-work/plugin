@@ -82,7 +82,11 @@ export default class PrintCPCL {
 
   // 使用压缩数据
   image(dataArray, { x = 0, y = this.currentY, width = 1, height = 1 } = {}) {
-    this.images = Array.from(iconv.encode(`CG ${width} ${height} ${x} ${y} `, 'gb18030')).concat(dataArray)
+    this.images = Array.from(iconv.encode("\n", 'gb18030')).concat(
+      Array.from(iconv.encode(`CG ${width} ${height} ${x} ${y} `, 'gb18030')),
+      dataArray,
+      Array.from(iconv.encode("\n", 'gb18030'))
+    )
   }
 
   barcode(data, { width = 1, ratio = 1, height = 50, x = 0 } = {}) {
