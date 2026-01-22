@@ -15,17 +15,22 @@ export default class PrintCPCL {
   }
 
   render() {
-    const content = [
+    const content = []
+    const content1 = [
       ...this.head(),
       ...this.texts,
-      ...this.qrcodes,
-      ...this.images,
+      ...this.qrcodes
+    ].join("\n")      
+    const content2 = [
       'FORM',
       'PRINT',
       ''
     ].join("\n")
+    content.concat(Array.from(iconv.encode(content1, 'gb18030')))
+    content.concat(this.images)
+    content.concat(Array.from(iconv.encode(content2, 'gb18030')))
 
-    return iconv.encode(content, 'gb18030')
+    return content
   }
 
   head() {
@@ -74,8 +79,10 @@ export default class PrintCPCL {
   }
 
   // 使用压缩数据
-  image(data, { x = 0, y = this.currentY, width = 1, height = 1 } = {}) {
-    this.images.push(`CG ${width} ${height} ${x} ${y} ${data}`)
+  image(dataArray, { x = 0, y = this.currentY, width = 1, height = 1 } = {}) {
+    this.images.concat(Array.from(iconv.encode(`CG ${width} ${height} ${x} ${y} `, 'gb18030')))
+    
+    this.images.concat(dataArray)
   }
 
   barcode(data, { width = 1, ratio = 1, height = 50, x = 0 } = {}) {

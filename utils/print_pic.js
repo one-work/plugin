@@ -60,7 +60,7 @@ export default class PrintPic {
       console.debug('------------------', sub.length, sub.join(''))
       for (let x = 0; x < bytesPerLine; x++) {
         const a = parseInt(sub.splice(0, 8).join('').padEnd(8, '0'), 2)
-        raster.push(a) // 8 位二进制转 16进制，不足的用 0 补齐
+        raster.push(a.toString(16)) // 8 位二进制转 16进制，不足的用 0 补齐
       }
     }
     console.debug('图片数据：', raster.join(''))
