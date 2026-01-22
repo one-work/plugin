@@ -41,24 +41,29 @@ export default class PrintPic {
 
   // RGBA → 1 bit 光栅命令
   imgToRaster(rgba, w, h) {
-    const grayArray = new Uint8Array(rgba.length / 4)
+    const grayArray = []
     for (let i = 0; i < rgba.length; i += 4) {
       const gray = Math.round(rgba[i] * 0.299 + rgba[i + 1] * 0.587 + rgba[i + 2] * 0.114)
       if (gray < 128) {
-        grayArray[i] = 1 // 打印像素点
+        grayArray.push(1) // 打印像素点
       } else {
-        grayArray[i] = 0 // 不打印
+        grayArray.push(0) // 不打印
       }
     }
+    console.debug('转灰度后的数据：', grayArray.length, grayArray.join(''))
 
     const bytesPerLine = Math.ceil(w / 8)
-    const raster = new Uint8Array(bytesPerLine * h)
+    const raster = []
+
     for (let y = 0; y < h; y++) {
-      for (let x = 0; x < bytesPerLine; x += 8) {
-        raster[x/8] = parseInt(grayArray.slice(x, x + 8).join('').padEnd(8, '0'), 2) // 8 位二进制转 16进制，不足的用 0 补齐
+      const sub = grayArray.splice(0, w)
+      console.debug('------------------', sub.length, sub.join(''))
+      for (let x = 0; x < bytesPerLine; x++) {
+        const a = parseInt(sub.splice(0, 8).join('').padEnd(8, '0'), 2)
+        raster.push(a) // 8 位二进制转 16进制，不足的用 0 补齐
       }
     }
-    console.debug('图片数据：', raster)
+    console.debug('图片数据：', raster.join(''))
     
     const head = {
       xL: bytesPerLine % 256,
@@ -73,7 +78,7 @@ export default class PrintPic {
 
     return {
       head: head,
-      data: raster,
+      data: raster.join(''),
       meta: meta
     }
   }
