@@ -26,11 +26,13 @@ export default class PrintCPCL {
       'PRINT',
       ''
     ].join("\n")
-    content.concat(Array.from(iconv.encode(content1, 'gb18030')))
-    content.concat(this.images)
-    content.concat(Array.from(iconv.encode(content2, 'gb18030')))
+    const result = content.concat(
+      Array.from(iconv.encode(content1, 'gb18030')),
+      this.images,
+      Array.from(iconv.encode(content2, 'gb18030'))
+    )
 
-    return content
+    return result
   }
 
   head() {
@@ -80,9 +82,7 @@ export default class PrintCPCL {
 
   // 使用压缩数据
   image(dataArray, { x = 0, y = this.currentY, width = 1, height = 1 } = {}) {
-    this.images.concat(Array.from(iconv.encode(`CG ${width} ${height} ${x} ${y} `, 'gb18030')))
-    
-    this.images.concat(dataArray)
+    this.images = Array.from(iconv.encode(`CG ${width} ${height} ${x} ${y} `, 'gb18030')).concat(dataArray)
   }
 
   barcode(data, { width = 1, ratio = 1, height = 50, x = 0 } = {}) {
