@@ -4,36 +4,28 @@ import Qrcode from 'qrcode-generator'
 export default class PrintCPCL {
   static PADDING_TOP = 40
 
-  constructor({ width = 72, height = 40 } = {}) {
+  constructor({ width = 72, height = 40, rotate = 0 } = {}) {
     this.width = width * 8
     this.height = height * 8
     this.qty = 1
-    this.texts = []
     this.currentY = PrintCPCL.PADDING_TOP
-    this.qrcodes = []
-    this.images = []
+    this.data = []
+    this.data.push(0x1a, 0x5b, 0x01) // 标签开始指令
+    this.data.push(0x00, 0x00, 0x00, 0x00) // x, y 相对于 0,0 的偏移量
+    this.data.push(...this.#doubleDigit(width), ...this.#doubleDigit(height), rotate)
   }
 
-  render() {
-    const content = []
-    const content1 = [
-      ...this.head(),
-      ...this.texts,
-      ...this.qrcodes
-    ].join("\n")      
-    const content2 = [
-      'FORM',
-      'PRINT',
-      ''
-    ].join("\n")
-    const result = content.concat(
-      this.head16(),
-      this.texts,
-      this.images,
-      this.foot16()
-    )
+  render() {     
+    this.data.push(0x1a, 0x5d, 0x00) // 标签结束指令 
+    this.data.push(0x1a, 0x4f, 0x00) // 标签打印指令
 
-    return result
+    this.debug()
+
+    return this.data
+  }
+
+  debug() {
+    console.debug('打印数据：', this.data.map(i => { return i.toString(16).padStart(2, '0') }).join(' '))
   }
 
   head() {
@@ -41,24 +33,6 @@ export default class PrintCPCL {
       `! 0 200 200 ${this.height} ${this.qty}`,
       `PW ${this.width}`,
       'PREFEED 64'
-    ]
-  }
-
-  head16() {
-    return [
-      0x1A, 0x5B, 0x01, 
-      0x00, 0x00, 0x00, 0x00, 
-      this.width % 256, Math.floor(this.width / 256), this.height % 256, Math.floor(this.height / 256),
-      0x00,
-      0x0a
-    ]
-  }
-  
-  foot16() {
-    return [
-      0x1A, 0x5D, 0x00, 
-      0x0a,
-      0x1A, 0x4F, 0x00
     ]
   }
 
@@ -104,23 +78,24 @@ export default class PrintCPCL {
     this.currentY = this.currentY + height
   }
 
-  image(dataArray, { x = 0, y = this.currentY, head = {} } = {}) {
-    this.images = this.head16().concat(
-      [0x1a, 0x21, 0x01],
-      [x % 256, Math.floor(x / 256), y % 256, Math.floor(y / 256)],
-      [head.xL, head.xH, head.yL, head.yH, 0x00, 0x11],
-      [0x0a],
-      dataArray,
-      [0x0a],
-      this.foot16()
+  image(dataArray, { x = 0, y = this.currentY, meta = {} } = {}) {
+    this.data.push(0x1a, 0x21, 0x00) // 位图指令
+    this.data.push(
+      ...this.#doubleDigit(x),
+      ...this.#doubleDigit(y),
+      ...this.#doubleDigit(meta.width),
+      ...this.#doubleDigit(meta.height)
     )
-    
-    return this.images
+    this.data.push(...dataArray)
   }
 
   barcode(data, { width = 1, ratio = 1, height = 50, x = 0 } = {}) {
     this.texts.push(`B 39 ${width} ${ratio} ${height} ${x} ${this.currentY} ${data}`)
     this.currentY = this.currentY + height
+  }
+
+  #doubleDigit(value) {
+    return [value % 256, Math.floor(value / 256)]
   }
 
 }

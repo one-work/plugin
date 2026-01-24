@@ -63,19 +63,12 @@ export default class PrintPic {
       }
     }
 
-    const head = {
-      xL: bytesPerLine % 256,
-      xH: Math.floor(bytesPerLine / 256),
-      yL: h % 256,
-      yH: Math.floor(h / 256)
-    }
     const meta = {
       width: bytesPerLine,
       height: h
     }
 
     return {
-      head: head,
       data: raster,
       meta: meta
     }

@@ -79,5 +79,9 @@ export default class PrintPOS {
       0x1f, 0x28, 0x63, 0x02, 0x00, 0x44, 0x42
     )
   }
+  
+  #doubleDigit(value) {
+    return [value % 256, Math.floor(value / 256)]
+  }
 
 }
