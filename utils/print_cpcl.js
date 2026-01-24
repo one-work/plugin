@@ -27,9 +27,10 @@ export default class PrintCPCL {
       ''
     ].join("\n")
     const result = content.concat(
-      Array.from(iconv.encode(content1, 'gb18030')),
+      this.head16(),
+      this.texts,
       this.images,
-      Array.from(iconv.encode(content2, 'gb18030'))
+      this.foot16()
     )
 
     return result
@@ -43,8 +44,31 @@ export default class PrintCPCL {
     ]
   }
 
+  head16() {
+    return [
+      0x1A, 0x5B, 0x01, 
+      0x00, 0x00, 0x00, 0x00, 
+      this.width % 256, Math.floor(this.width / 256), this.height % 256, Math.floor(this.height / 256),
+      0x00,
+      0x0a
+    ]
+  }
+  
+  foot16() {
+    return [
+      0x1A, 0x5D, 0x00, 
+      0x0a,
+      0x1A, 0x4F, 0x00
+    ]
+  }
+
   text(data, { font = 8, size = 0, x = 0, y = 36, line_add = true } = {}) {
-    this.texts.push(`T ${font} ${size} ${x} ${this.currentY} ${data}`)
+    this.texts.push(
+      0x1a, 0x54, 0x00,
+      x % 256, Math.floor(x / 256),
+      this.currentY % 256, Math.floor(this.currentY / 256),
+      ...iconv.encode(data, 'gb18030')
+    )
     if (line_add) {
       this.currentY = this.currentY + y
     }
@@ -80,13 +104,18 @@ export default class PrintCPCL {
     this.currentY = this.currentY + height
   }
 
-  // 使用压缩数据
-  image(dataArray, { x = 0, y = this.currentY, width = 1, height = 1 } = {}) {
-    this.images = Array.from(iconv.encode("\n", 'gb18030')).concat(
-      Array.from(iconv.encode(`CG ${width} ${height} ${x} ${y} `, 'gb18030')),
+  image(dataArray, { x = 0, y = this.currentY, head = {} } = {}) {
+    this.images = this.head16().concat(
+      [0x1a, 0x21, 0x01],
+      [x % 256, Math.floor(x / 256), y % 256, Math.floor(y / 256)],
+      [head.xL, head.xH, head.yL, head.yH, 0x00, 0x11],
+      [0x0a],
       dataArray,
-      Array.from(iconv.encode("\n", 'gb18030'))
+      [0x0a],
+      this.foot16()
     )
+    
+    return this.images
   }
 
   barcode(data, { width = 1, ratio = 1, height = 50, x = 0 } = {}) {
