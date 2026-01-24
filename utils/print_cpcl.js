@@ -37,12 +37,10 @@ export default class PrintCPCL {
   }
 
   text(data, { font = 8, size = 0, x = 0, y = 36, line_add = true } = {}) {
-    this.texts.push(
-      0x1a, 0x54, 0x00,
-      x % 256, Math.floor(x / 256),
-      this.currentY % 256, Math.floor(this.currentY / 256),
-      ...iconv.encode(data, 'gb18030')
-    )
+    this.data.push(0x1a, 0x54, 0x00) // 标签文本指令
+    this.data.push(...this.#doubleDigit(x), ...this.#doubleDigit(this.currentY))  
+    this.data.push(...iconv.encode(data, 'gb18030'))
+
     if (line_add) {
       this.currentY = this.currentY + y
     }
