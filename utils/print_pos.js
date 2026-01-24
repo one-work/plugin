@@ -47,7 +47,7 @@ export default class PrintPOS {
     )
     this.data.push(0x0a, 0x0a)
   }
-  
+
   // 02 数据在条码下方
   barcode(value, { pos = 2, height = 50, width = 2, format = 4 } = {}) {
     const bytes = iconv.encode(value, 'gb18030')
@@ -65,12 +65,11 @@ export default class PrintPOS {
       0x00
     )
   }
-  
+
   image(value, head) {
-    const img = [0x1d, 0x76, 0x30, 0x00]
     this.data.push(
-      ...img,
-      ...[head.xL, head.xH, head.yL, head.yH],
+      0x1d, 0x76, 0x30, 0x00,
+      head.xL, head.xH, head.yL, head.yH,
       ...value
     )
   }
