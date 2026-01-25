@@ -20,7 +20,10 @@ export default class PrintCPCL {
     this.data.push('PRINT')
     this.data.push('')  // 最后统一调用 join("\n")
 
-    return this.data.join("\n")
+    const result = this.data.join("\n")
+    console.debug('打印数据：', result)
+
+    return result
   }
 
   text(data, { font = 8, size = 0, x = 0, y = 36, line_add = true } = {}) {
@@ -58,12 +61,10 @@ export default class PrintCPCL {
     this.currentY = this.currentY + height
   }
 
-  // 使用压缩数据
   image(dataArray, { x = 0, y = this.currentY, width = 1, height = 1 } = {}) {
-    this.images = Array.from(iconv.encode("\n", 'gb18030')).concat(
-      Array.from(iconv.encode(`CG ${width} ${height} ${x} ${y} `, 'gb18030')),
-      dataArray,
-      Array.from(iconv.encode("\n", 'gb18030'))
+    const data = dataArray.map(i => { return i.toString(16).padStart(2, '0') }).join('')
+    this.data.push(
+      `CG ${width} ${height} ${x} ${y} ${data}`
     )
   }
 
