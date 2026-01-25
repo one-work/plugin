@@ -16,14 +16,14 @@ export default class PrintCPCL {
   }
 
   render() {
-    this.data.push('FORM')
     this.data.push('PRINT')
     this.data.push('')  // 最后统一调用 join("\n")
 
-    const result = this.data.join("\n")
-    console.debug('打印数据：', result)
+    const result = this.data.join("\r\n")
+    console.debug('打印数据：')
+    console.debug(result)
 
-    return result
+    return iconv.encode(result, 'gb18030')
   }
 
   text(data, { font = 8, size = 0, x = 0, y = 36, line_add = true } = {}) {
@@ -61,10 +61,14 @@ export default class PrintCPCL {
     this.currentY = this.currentY + height
   }
 
-  image(dataArray, { x = 0, y = this.currentY, width = 1, height = 1 } = {}) {
-    const data = dataArray.map(i => { return i.toString(16).padStart(2, '0') }).join('')
+  image(dataArray, { x = 0, y = this.currentY, meta = {} } = {}) {
+    const imgData = []
+    for (let i = 0; i < meta.height; i ++) {
+      const data = dataArray.splice(0, meta.byteWidth)
+      imgData.push(`<SEQ ${data.map(i => { return i.toString(16).padStart(2, '0').toUpperCase() }).join('')}>`)
+    }
     this.data.push(
-      `CG ${width} ${height} ${x} ${y} ${data}`
+      `CG ${meta.byteWidth} ${meta.height} ${x} ${y} ${imgData.join('')}`
     )
   }
 
