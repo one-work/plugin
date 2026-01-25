@@ -11,8 +11,8 @@ export default class PrintCPCL {
     this.currentY = PrintCPCL.PADDING_TOP
     this.data = []
     this.data.push(`! 0 200 200 ${this.height} ${this.qty}`)
-    this.data.push(`PW ${this.width}`)
-    this.data.push('PREFEED 64')
+    //this.data.push(`PW ${this.width}`)
+    //this.data.push('PREFEED 64')
   }
 
   render() {
@@ -56,30 +56,28 @@ export default class PrintCPCL {
     )
   }
 
+  box({ x0 = 0, y0 = this.currentY, x1 = 150, y1 = 150, width = 2 } = {}) {
+    this.data.push(`BOX ${x0} ${y0} ${x1} ${y1} ${width}`)
+    this.currentY = this.currentY + y1
+  }
+
   lineX({ x0 = 0, x1 = 40 * 8, width = 8, height = 36 } = {}) {
     this.data.push(`L ${x0} ${this.currentY} ${x1} ${this.currentY} ${width}`)
     this.currentY = this.currentY + height
   }
 
-  image(dataArray, { x = 0, y = this.currentY, meta = {} } = {}) {
-    const imgData = []
-    for (let i = 0; i < meta.height; i ++) {
-      const data = dataArray.splice(0, meta.byteWidth)
-      imgData.push(`${this.#rawData(data)}`)
-    }
+  image(dataArray, { x = 0, meta = {} } = {}) {
+    const imgData = dataArray.map(i => { return i.toString(16).padStart(2, '0').toUpperCase() }).join('')
     this.data.push(
-      `EG ${meta.byteWidth} ${meta.height} ${x} ${y} ${imgData.join('')}`
+      `EG ${meta.byteWidth} ${meta.height} ${x} ${this.currentY} ${imgData}`
     )
+    console.debug('-------------------', this.currentY, this.currentY + meta.height)
     this.currentY = this.currentY + meta.height
   }
 
   barcode(data, { width = 1, ratio = 1, height = 50, x = 0 } = {}) {
     this.data.push(`B 39 ${width} ${ratio} ${height} ${x} ${this.currentY} ${data}`)
     this.currentY = this.currentY + height
-  }
-
-  #rawData(arr) {
-    return arr.map(i => { return i.toString(16).padStart(2, '0').toUpperCase() }).join('')
   }
 
 }

@@ -16,7 +16,7 @@ export default class PrintPic {
       success: (info) => {
         const { width: w, height: h } = info
         /* 统一缩放到 384 点宽（58 mm 纸） */
-        const dw = 200
+        const dw = 280
         const dh = Math.round((h * dw) / w)
         console.debug('图片信息：', info, dw, dh)
         ctx.drawImage(src, 0, 0, dw, dh)
@@ -54,6 +54,7 @@ export default class PrintPic {
 
     const bytesPerLine = Math.ceil(w / 8)
     const raster = []
+    const dataStr = []
 
     for (let y = 0; y < h; y++) {
       const sub = grayArray.splice(0, w)
@@ -71,6 +72,7 @@ export default class PrintPic {
 
     return {
       data: raster,
+      dataStr: dataStr,
       meta: meta
     }
   }
