@@ -13,6 +13,7 @@ export default class PrintCPCL {
     this.data.push(0x1a, 0x5b, 0x01) // 标签开始指令
     this.data.push(0x00, 0x00, 0x00, 0x00) // x, y 相对于 0,0 的偏移量
     this.data.push(...this.#doubleDigit(this.width), ...this.#doubleDigit(this.height), rotate)
+    this.data.push(0x00) // 结束指令
   }
 
   render() {     
@@ -40,7 +41,8 @@ export default class PrintCPCL {
   text(data, { font = 8, size = 0, x = 0, y = 36, line_add = true } = {}) {
     this.data.push(0x1a, 0x54, 0x00) // 标签文本指令
     this.data.push(...this.#doubleDigit(x), ...this.#doubleDigit(this.currentY))  
-    this.data.push(...iconv.encode(data, 'gb18030'))
+    this.data.push(...iconv.encode(data, 'gb2312'))
+    this.data.push(0x00) //  终止文本打印流
 
     if (line_add) {
       this.currentY = this.currentY + y
@@ -82,7 +84,7 @@ export default class PrintCPCL {
     this.data.push(
       ...this.#doubleDigit(x),
       ...this.#doubleDigit(y),
-      ...this.#doubleDigit(meta.width),
+      ...this.#doubleDigit(meta.width * 8),
       ...this.#doubleDigit(meta.height)
     )
     this.data.push(...dataArray)
