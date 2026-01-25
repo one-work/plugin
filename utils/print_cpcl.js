@@ -65,16 +65,25 @@ export default class PrintCPCL {
     const imgData = []
     for (let i = 0; i < meta.height; i ++) {
       const data = dataArray.splice(0, meta.byteWidth)
-      imgData.push(`<SEQ ${data.map(i => { return i.toString(16).padStart(2, '0').toUpperCase() }).join('')}>`)
+      imgData.push(`${this.#rawData(data)}`)
     }
     this.data.push(
-      `CG ${meta.byteWidth} ${meta.height} ${x} ${y} ${imgData.join('')}`
+      `EG ${meta.byteWidth} ${meta.height} ${x} ${y} ${imgData.join('')}`
     )
   }
 
   barcode(data, { width = 1, ratio = 1, height = 50, x = 0 } = {}) {
     this.data.push(`B 39 ${width} ${ratio} ${height} ${x} ${this.currentY} ${data}`)
     this.currentY = this.currentY + height
+  }
+
+  #rawData(arr) {
+    return arr.map(i => { return i.toString(16).padStart(2, '0').toUpperCase() }).join('')
+  }
+
+  #rawText(text) {
+    const rawData = iconv.encode(text, 'gb18030')
+    return rawData.map(i => { return i.toString(16).toUpperCase() }).join('')
   }
 
 }
