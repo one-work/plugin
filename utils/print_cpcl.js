@@ -16,7 +16,8 @@ export default class PrintCPCL {
   }
 
   render() {     
-    this.data.push(0x1a, 0x5d, 0x00) // 标签结束指令 
+    this.data.push(0x1a, 0x5d, 0x00) // 标签结束指令
+    this.data.push(0x0a) // 这行换行符必须加，不然打不出来！
     this.data.push(0x1a, 0x4f, 0x00) // 标签打印指令
 
     this.debug()
