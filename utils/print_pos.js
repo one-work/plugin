@@ -74,7 +74,7 @@ export default class PrintPOS {
   image(value, meta) {
     this.data.push(
       0x1d, 0x76, 0x30, 0x00,
-      ...this.#doubleDigit(meta.width),
+      ...this.#doubleDigit(meta.byteWidth),
       ...this.#doubleDigit(meta.height),
       ...value
     )

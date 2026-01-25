@@ -4,47 +4,37 @@ import Qrcode from 'qrcode-generator'
 export default class PrintCPCL {
   static PADDING_TOP = 40
 
-  constructor({ width = 72, height = 40 } = {}) {
+  constructor({ width = 72, height = 40, rotate = 0 } = {}) {
     this.width = width * 8
     this.height = height * 8
     this.qty = 1
-    this.texts = []
     this.currentY = PrintCPCL.PADDING_TOP
-    this.qrcodes = []
-    this.images = []
+    this.data = []
+    this.data.push(0x1a, 0x5b, 0x01) // 标签开始指令
+    this.data.push(0x00, 0x00, 0x00, 0x00) // x, y 相对于 0,0 的偏移量
+    this.data.push(...this.#doubleDigit(this.width), ...this.#doubleDigit(this.height), rotate)
   }
 
-  render() {
-    const content = []
-    const content1 = [
-      ...this.head(),
-      ...this.texts,
-      ...this.qrcodes
-    ].join("\n")      
-    const content2 = [
-      'FORM',
-      'PRINT',
-      ''
-    ].join("\n")
-    const result = content.concat(
-      Array.from(iconv.encode(content1, 'gb18030')),
-      this.images,
-      Array.from(iconv.encode(content2, 'gb18030'))
-    )
+  render() {     
+    this.data.push(0x1a, 0x5d, 0x00) // 标签结束指令
+    this.data.push(0x1a, 0x4f, 0x00) // 标签打印指令
+    this.data.push(0x1b, 0x6d)
 
-    return result
+    this.debug()
+
+    return this.data
   }
 
-  head() {
-    return [
-      `! 0 200 200 ${this.height} ${this.qty}`,
-      `PW ${this.width}`,
-      'PREFEED 64'
-    ]
+  debug() {
+    console.debug('打印数据：', this.data.map(i => { return i.toString(16).padStart(2, '0') }).join(' '))
   }
 
   text(data, { font = 8, size = 0, x = 0, y = 36, line_add = true } = {}) {
-    this.texts.push(`T ${font} ${size} ${x} ${this.currentY} ${data}`)
+    this.data.push(0x1a, 0x54, 0x00) // 标签文本指令
+    this.data.push(...this.#doubleDigit(x), ...this.#doubleDigit(this.currentY))  
+    this.data.push(...iconv.encode(data, 'gb2312'))
+    this.data.push(0x00) //  终止文本打印流
+
     if (line_add) {
       this.currentY = this.currentY + y
     }
@@ -80,18 +70,34 @@ export default class PrintCPCL {
     this.currentY = this.currentY + height
   }
 
-  // 使用压缩数据
-  image(dataArray, { x = 0, y = this.currentY, width = 1, height = 1 } = {}) {
-    this.images = Array.from(iconv.encode("\n", 'gb18030')).concat(
-      Array.from(iconv.encode(`CG ${width} ${height} ${x} ${y} `, 'gb18030')),
-      dataArray,
-      Array.from(iconv.encode("\n", 'gb18030'))
+  image(dataArray, { x = 0, y = this.currentY, meta = {} } = {}) {
+    this.data.push(
+      0x1a, 0x21, 0x01, // 位图指令
+      ...this.#doubleDigit(x),
+      ...this.#doubleDigit(y),
+      ...this.#doubleDigit(meta.width),
+      ...this.#doubleDigit(meta.height)
+    )
+    this.data.push(0x00, 0x11)
+    this.data.push(...dataArray)
+  }
+
+  imagePos(value, meta) {
+    this.data.push(
+      0x1d, 0x76, 0x30, 0x00,
+      ...this.#doubleDigit(meta.byteWidth),
+      ...this.#doubleDigit(meta.height),
+      ...value
     )
   }
 
   barcode(data, { width = 1, ratio = 1, height = 50, x = 0 } = {}) {
     this.texts.push(`B 39 ${width} ${ratio} ${height} ${x} ${this.currentY} ${data}`)
     this.currentY = this.currentY + height
+  }
+
+  #doubleDigit(value) {
+    return [value % 256, Math.floor(value / 256)]
   }
 
 }

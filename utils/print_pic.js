@@ -64,7 +64,8 @@ export default class PrintPic {
     }
 
     const meta = {
-      width: bytesPerLine,
+      width: w,
+      byteWidth: bytesPerLine,
       height: h
     }
 
