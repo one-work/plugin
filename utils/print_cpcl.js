@@ -8,55 +8,34 @@ export default class PrintCPCL {
     this.width = width * 8
     this.height = height * 8
     this.qty = 1
-    this.texts = []
     this.currentY = PrintCPCL.PADDING_TOP
-    this.qrcodes = []
-    this.images = []
+    this.data = []
+    this.data.push(`! 0 200 200 ${this.height} ${this.qty}`)
+    this.data.push(`PW ${this.width}`)
+    this.data.push('PREFEED 64')
   }
 
   render() {
-    const content = []
-    const content1 = [
-      ...this.head(),
-      ...this.texts,
-      ...this.qrcodes
-    ].join("\n")      
-    const content2 = [
-      'FORM',
-      'PRINT',
-      ''
-    ].join("\n")
-    const result = content.concat(
-      Array.from(iconv.encode(content1, 'gb18030')),
-      this.images,
-      Array.from(iconv.encode(content2, 'gb18030'))
-    )
+    this.data.push('FORM')
+    this.data.push('PRINT')
+    this.data.push('')  // 最后统一调用 join("\n")
 
-    return result
-  }
-
-  head() {
-    return [
-      `! 0 200 200 ${this.height} ${this.qty}`,
-      `PW ${this.width}`,
-      'PREFEED 64'
-    ]
+    return this.data.join("\n")
   }
 
   text(data, { font = 8, size = 0, x = 0, y = 36, line_add = true } = {}) {
-    this.texts.push(`T ${font} ${size} ${x} ${this.currentY} ${data}`)
+    this.data.push(`T ${font} ${size} ${x} ${this.currentY} ${data}`)
     if (line_add) {
       this.currentY = this.currentY + y
     }
   }
 
   text_bold(data, { size = 1, ...options } = {}) {
-    this.texts.push('SETBOLD 2')
-    this.texts.push(`SETMAG ${size} ${size}`)
-
+    this.data.push('SETBOLD 2')
+    this.data.push(`SETMAG ${size} ${size}`)
     this.text(data, { size: size, y: 36 * size, ...options })
-    this.texts.push('SETMAG 0 0')
-    this.texts.push('SETBOLD 0')
+    this.data.push('SETMAG 0 0')
+    this.data.push('SETBOLD 0')
   }
 
   qrcode_right(data, { y = PrintCPCL.PADDING_TOP, u = 6 } = {}) {
@@ -67,16 +46,15 @@ export default class PrintCPCL {
     console.debug('qrcode size：', size)
     const x = this.width - (u * size) - 16
 
-    const qrData = [
+    this.data.push(
       `B QR ${x} ${y} M 2 U ${u}`,
       `MA,${data}`,
       'ENDQR'
-    ].join("\n")
-    this.qrcodes.push(qrData)
+    )
   }
 
   lineX({ x0 = 0, x1 = 40 * 8, width = 8, height = 36 } = {}) {
-    this.texts.push(`L ${x0} ${this.currentY} ${x1} ${this.currentY} ${width}`)
+    this.data.push(`L ${x0} ${this.currentY} ${x1} ${this.currentY} ${width}`)
     this.currentY = this.currentY + height
   }
 
@@ -90,7 +68,7 @@ export default class PrintCPCL {
   }
 
   barcode(data, { width = 1, ratio = 1, height = 50, x = 0 } = {}) {
-    this.texts.push(`B 39 ${width} ${ratio} ${height} ${x} ${this.currentY} ${data}`)
+    this.data.push(`B 39 ${width} ${ratio} ${height} ${x} ${this.currentY} ${data}`)
     this.currentY = this.currentY + height
   }
 
