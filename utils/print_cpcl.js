@@ -12,7 +12,7 @@ export default class PrintCPCL {
     this.data = []
     this.data.push(0x1a, 0x5b, 0x01) // 标签开始指令
     this.data.push(0x00, 0x00, 0x00, 0x00) // x, y 相对于 0,0 的偏移量
-    this.data.push(...this.#doubleDigit(width), ...this.#doubleDigit(height), rotate)
+    this.data.push(...this.#doubleDigit(this.width), ...this.#doubleDigit(this.height), rotate)
   }
 
   render() {     
