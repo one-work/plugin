@@ -13,13 +13,11 @@ export default class PrintCPCL {
     this.data.push(0x1a, 0x5b, 0x01) // 标签开始指令
     this.data.push(0x00, 0x00, 0x00, 0x00) // x, y 相对于 0,0 的偏移量
     this.data.push(...this.#doubleDigit(this.width), ...this.#doubleDigit(this.height), rotate)
-    this.data.push(0x00) // 结束指令
   }
 
   render() {     
     this.data.push(0x1a, 0x5d, 0x00) // 标签结束指令
-    this.data.push(0x0a) // 这行换行符必须加，不然打不出来！
-    this.data.push(0x1a, 0x4f, 0x00) // 标签打印指令
+    this.data.push(0x1a, 0x4f, 0x01, 0x01) // 标签打印指令
 
     this.debug()
 
@@ -80,13 +78,14 @@ export default class PrintCPCL {
   }
 
   image(dataArray, { x = 0, y = this.currentY, meta = {} } = {}) {
-    this.data.push(0x1a, 0x21, 0x00) // 位图指令
+    this.data.push(0x1a, 0x21, 0x01) // 位图指令
     this.data.push(
       ...this.#doubleDigit(x),
       ...this.#doubleDigit(y),
       ...this.#doubleDigit(meta.width * 8),
       ...this.#doubleDigit(meta.height)
     )
+    this.data.push(0x00)
     this.data.push(...dataArray)
   }
 
