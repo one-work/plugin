@@ -17,7 +17,8 @@ export default class PrintCPCL {
 
   render() {     
     this.data.push(0x1a, 0x5d, 0x00) // 标签结束指令
-    this.data.push(0x1a, 0x4f, 0x01, 0x01) // 标签打印指令
+    this.data.push(0x1a, 0x4f, 0x00) // 标签打印指令
+    this.data.push(0x1b, 0x6d)
 
     this.debug()
 
@@ -82,10 +83,10 @@ export default class PrintCPCL {
     this.data.push(
       ...this.#doubleDigit(x),
       ...this.#doubleDigit(y),
-      ...this.#doubleDigit(meta.width * 8),
+      ...this.#doubleDigit(meta.width),
       ...this.#doubleDigit(meta.height)
     )
-    this.data.push(0x00)
+    this.data.push(0x00, 0x11)
     this.data.push(...dataArray)
   }
 
