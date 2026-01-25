@@ -70,6 +70,7 @@ export default class PrintCPCL {
     this.data.push(
       `EG ${meta.byteWidth} ${meta.height} ${x} ${y} ${imgData.join('')}`
     )
+    this.currentY = this.currentY + meta.height
   }
 
   barcode(data, { width = 1, ratio = 1, height = 50, x = 0 } = {}) {
@@ -79,11 +80,6 @@ export default class PrintCPCL {
 
   #rawData(arr) {
     return arr.map(i => { return i.toString(16).padStart(2, '0').toUpperCase() }).join('')
-  }
-
-  #rawText(text) {
-    const rawData = iconv.encode(text, 'gb18030')
-    return rawData.map(i => { return i.toString(16).toUpperCase() }).join('')
   }
 
 }
