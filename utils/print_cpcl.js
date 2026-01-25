@@ -79,8 +79,8 @@ export default class PrintCPCL {
   }
 
   image(dataArray, { x = 0, y = this.currentY, meta = {} } = {}) {
-    this.data.push(0x1a, 0x21, 0x01) // 位图指令
     this.data.push(
+      0x1a, 0x21, 0x01, // 位图指令
       ...this.#doubleDigit(x),
       ...this.#doubleDigit(y),
       ...this.#doubleDigit(meta.width),
@@ -88,6 +88,15 @@ export default class PrintCPCL {
     )
     this.data.push(0x00, 0x11)
     this.data.push(...dataArray)
+  }
+  
+  imagePos(value, meta) {
+    this.data.push(
+      0x1d, 0x76, 0x30, 0x00,
+      ...this.#doubleDigit(meta.width),
+      ...this.#doubleDigit(meta.height),
+      ...value
+    )
   }
 
   barcode(data, { width = 1, ratio = 1, height = 50, x = 0 } = {}) {
