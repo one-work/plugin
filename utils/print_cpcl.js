@@ -29,14 +29,6 @@ export default class PrintCPCL {
     console.debug('打印数据：', this.data.map(i => { return i.toString(16).padStart(2, '0') }).join(' '))
   }
 
-  head() {
-    return [
-      `! 0 200 200 ${this.height} ${this.qty}`,
-      `PW ${this.width}`,
-      'PREFEED 64'
-    ]
-  }
-
   text(data, { font = 8, size = 0, x = 0, y = 36, line_add = true } = {}) {
     this.data.push(0x1a, 0x54, 0x00) // 标签文本指令
     this.data.push(...this.#doubleDigit(x), ...this.#doubleDigit(this.currentY))  
@@ -89,7 +81,7 @@ export default class PrintCPCL {
     this.data.push(0x00, 0x11)
     this.data.push(...dataArray)
   }
-  
+
   imagePos(value, meta) {
     this.data.push(
       0x1d, 0x76, 0x30, 0x00,
