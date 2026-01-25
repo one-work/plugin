@@ -14,7 +14,12 @@ export default class PrintPOS {
 
   render() {
     this.data.push(...Array(5).fill(0x0a))  // 5个换行
+    this.debug()
     return this.data
+  }
+  
+  debug() {
+    console.debug('打印数据：', this.data.map(i => { return i.toString(16).padStart(2, '0') }).join(' '))
   }
 
   text_big(value) {
@@ -66,10 +71,11 @@ export default class PrintPOS {
     )
   }
 
-  image(value, head) {
+  image(value, meta) {
     this.data.push(
       0x1d, 0x76, 0x30, 0x00,
-      head.xL, head.xH, head.yL, head.yH,
+      ...this.#doubleDigit(meta.width),
+      ...this.#doubleDigit(meta.height),
       ...value
     )
   }
@@ -79,7 +85,7 @@ export default class PrintPOS {
       0x1f, 0x28, 0x63, 0x02, 0x00, 0x44, 0x42
     )
   }
-  
+
   #doubleDigit(value) {
     return [value % 256, Math.floor(value / 256)]
   }
