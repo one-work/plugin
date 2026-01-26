@@ -10,7 +10,7 @@ export default class PrintCPCL {
     this.qty = 1
     this.currentY = PrintCPCL.PADDING_TOP
     this.data = []
-    this.data.push(`! 0 200 200 ${this.height} ${this.qty}`)
+    this.data.push(`! 0 203 203 ${this.height} ${this.qty}`)
     //this.data.push(`PW ${this.width}`)
     //this.data.push('PREFEED 64')
   }
@@ -71,7 +71,6 @@ export default class PrintCPCL {
     this.data.push(
       `EG ${meta.byteWidth} ${meta.height} ${x} ${this.currentY} ${imgData}`
     )
-    console.debug('-------------------', this.currentY, this.currentY + meta.height)
     this.currentY = this.currentY + meta.height
   }
 
