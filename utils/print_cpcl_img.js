@@ -70,7 +70,7 @@ export default class PrintCPCL {
   image(dataArray, { x = 0, meta = {} } = {}) {
     const imgData = dataArray.map(i => { return i.toString(16).padStart(2, '0').toUpperCase() }).join('')
     this.data.push(
-      `EG ${meta.byteWidth} ${meta.height} ${x} ${this.currentY} ${imgData}`
+      `EG ${meta.byteWidth} ${meta.height*2} ${x} ${this.currentY} ${imgData}`
     )
     this.currentY = this.currentY + meta.height
   }
