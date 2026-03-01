@@ -35,7 +35,7 @@
 
 <view class="connected_info" wx:if="{{connectedDeviceId}}">
   <view>
-    <input placeholder="Wifi 名称"/>
+    <input value="{{wifi.SSID}}" placeholder="Wifi 名称"/>
     <input placeholder="Wifi 密码"/>
   </view>
   <view>

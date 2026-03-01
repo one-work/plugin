@@ -15,7 +15,7 @@ Page({
     wx.getConnectedWifi({
       success: (res) => {
         console.debug('-----', res)
-        this.setData({ wifi: res })
+        this.setData({ wifi: res.wifi })
       },
       fail: (err) => {
         console.debug(err)
