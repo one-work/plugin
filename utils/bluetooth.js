@@ -123,7 +123,7 @@ export default class {
 
       if (this.connectedDevice.deviceId === item.deviceId) {
         console.debug('已连接设备（即将打印）：', item.deviceId, objectId, this.objectId, this.enabled)
-        success?.()
+        success?.({ devices: devices })
       } else {
         if (x) {
           console.debug('-------------筛选', item.advertisServiceUUIDs)
@@ -158,7 +158,7 @@ export default class {
           const connectedItem = res.devices.find(e => e.deviceId === deviceId)
           console.debug('当前连接-已连接：', connectedItem)
           if (connectedItem && this.connectedDevice.deviceId === deviceId) {
-            success?.()
+            success?.({ devices: filterDevices })
           } else if (connectedItem) {
             this.getBLEDeviceServices(deviceId, success)
           } else {
