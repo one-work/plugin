@@ -42,7 +42,7 @@ export default class {
         this.api.openBluetoothAdapter({
           success: res => {
             console.debug('初始化蓝牙模块：', res)
-            this.#startBluetoothDevicesDiscovery(allowDup, success)
+            this.startApiBluetoothDevicesDiscovery(allowDup, success)
           },
           fail: res => {
             fail?.(res)
@@ -57,7 +57,7 @@ export default class {
     })
   }
 
-  #startBluetoothDevicesDiscovery(allowDup, success) {
+  startApiBluetoothDevicesDiscovery(allowDup, success) {
     this.api.startBluetoothDevicesDiscovery({
       allowDuplicatesKey: allowDup,
       success: discoveryRes => {
@@ -134,7 +134,7 @@ export default class {
       }
     } else if (x) {
       // x 表示是筛选所有发现过的设备场景, 既然找不到就开启 discovery
-      this.#startBluetoothDevicesDiscovery(false, success)
+      this.startApiBluetoothDevicesDiscovery(false, success)
     }
   }
 
