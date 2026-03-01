@@ -25,14 +25,9 @@ Page({
 
   createBLEConnection(e) {
     const ds = e.currentTarget.dataset
-    const deviceId = ds.deviceId
     this.setData({
-      connectedDeviceId: deviceId
-    })
-    console.debug('------', deviceId)
-    this.printer.createBLEConnection(deviceId, () => {
-
-
+      connectedDeviceId: ds.deviceId,
+      connectedDeviceName: ds.name
     })
   },
 
@@ -58,19 +53,13 @@ Page({
     })
   },
 
-  doPrint() {
-    const printer = wx.getStorageSync('printer') || {}
-    wx.request({
-      url: this.data.url,
-      header: {
-        Accept: 'application/json',
-        Authorization: wx.getStorageSync('authToken')
-      },
-      success: res => {
-        writeBLECharacteristicValue(printer, res.data)
-      },
-      complete: res => {
-        console.debug(res)
+  doPrint(e) {
+    this.printer.registeredDevices = [this.data.connectedDeviceName]
+    this.printer.getState({
+      success: (res) => {
+        if (res.printable) {
+          this.printer.writeValue(data)
+        }
       }
     })
   }
