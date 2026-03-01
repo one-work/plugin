@@ -127,7 +127,7 @@ export default class {
       } else {
         if (x) {
           console.debug('-------------筛选', item.advertisServiceUUIDs)
-          this.#getConnectedBluetoothDevices(item.advertisServiceUUIDs, item.deviceId, success)
+          this.#getConnectedBluetoothDevices(item.advertisServiceUUIDs, item.deviceId, successCallback)
         } else {
           this.createBLEConnection(item.deviceId, successCallback)
         }
@@ -150,7 +150,7 @@ export default class {
   }
 
   // 在 ios 系统中，必须提供有效的 services , getConnectedBluetoothDevices 才能正常工作；
-  #getConnectedBluetoothDevices(filterDevices, deviceId, success) {
+  #getConnectedBluetoothDevices(filterDevices, deviceId, successCallback) {
     console.debug('筛选列表：', filterDevices)
     this.api.getConnectedBluetoothDevices({
       services: filterDevices,
@@ -160,16 +160,16 @@ export default class {
           const connectedItem = res.devices.find(e => e.deviceId === deviceId)
           console.debug('当前连接-已连接：', connectedItem)
           if (connectedItem && this.connectedDevice.deviceId === deviceId) {
-            success?.({ devices: filterDevices })
+            successCallback?.({ devices: filterDevices })
           } else if (connectedItem) {
-            this.getBLEDeviceServices(deviceId, success)
+            this.getBLEDeviceServices(deviceId, successCallback)
           } else {
             console.debug('即将连接设备（即将打印）：', deviceId)
-            this.createBLEConnection(deviceId, success)
+            this.createBLEConnection(deviceId, successCallback)
           }
         } else {
           console.debug('即将连接设备（即将打印）：', deviceId)
-          this.createBLEConnection(deviceId, success)
+          this.createBLEConnection(deviceId, successCallback)
         }
       }
     })
