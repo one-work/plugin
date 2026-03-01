@@ -11,6 +11,16 @@ Page({
     console.debug('print onload', options)
     this.printer = new BluetoothPrinter(wx)
     wx.cpcl = new PrintCPCL()
+
+    wx.getConnectedWifi({
+      success: (res) => {
+        console.debug('-----', res)
+        this.setData({ wifi: res })
+      },
+      fail: (err) => {
+        console.debug(err)
+      }
+    })
   },
 
   createBLEConnection(e) {
