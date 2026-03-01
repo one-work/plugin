@@ -27,8 +27,10 @@ Page({
     console.debug(data)
 
     this.printer.getState({
-      success: () => {
-        this.printer.writeValue(data)
+      success: (res) => {
+        if (res.printable) {
+          this.printer.writeValue(data)
+        }
       }
     })
   },
@@ -42,8 +44,10 @@ Page({
     console.debug('POS处理后的数据：', data)
 
     this.printer.getState({
-      success: () => {
-        this.printer.writeValue(data)
+      success: (res) => {
+        if (res.printable) {
+          this.printer.writeValue(data)
+        }
       }
     })
   }

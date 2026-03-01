@@ -123,7 +123,7 @@ export default class {
 
       if (this.connectedDevice.deviceId === item.deviceId) {
         console.debug('已连接设备（即将打印）：', item.deviceId, objectId, this.objectId, this.enabled)
-        successCallback?.({ devices: devices, printable: true })
+        successCallback?.({ devices: allDevices, printable: true })
       } else {
         if (x) {
           console.debug('-------------筛选', item.advertisServiceUUIDs)
@@ -134,6 +134,7 @@ export default class {
       }
     } else if (x) {
       // x 表示是筛选所有发现过的设备场景, 既然找不到就开启 discovery
+      successCallback?.({ devices: allDevices })
       this.startApiBluetoothDevicesDiscovery(false, successCallback)
     }
   }
