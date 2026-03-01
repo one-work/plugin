@@ -31,10 +31,9 @@ Page({
   },
 
   restartBluetoothDevicesDiscovery() {
-    wx.stopBluetoothDevicesDiscovery({
-      complete: res => {
-        console.debug('停止蓝牙扫描', res)
-        this.printer.startApiBluetoothDevicesDiscovery(true)
+    this.printer.getState({
+      success: (res) => {
+        console.debug(res)
       }
     })
   },
