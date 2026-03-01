@@ -10,7 +10,7 @@ export default class {
   }
 
   // 获取本机蓝牙适配器状态
-  getState({ successCallback, fail, allowDup = false } = {}) {
+  getState({ success, fail, allowDup = false } = {}) {
     const allDevices = [...this.allDevices]
     console.debug('已连接设备（init）：', this.connectedDevice, this.objectId)
     console.debug('绑定设备（init）：', this.registeredDevices)
@@ -21,14 +21,14 @@ export default class {
         const state = stateRes.adapterState || stateRes
 
         if (state.available) {
-          this.#getBluetoothDevices(successCallback)
+          this.#getBluetoothDevices(success)
         }
 
         if (state.discovering) {
           this.api.onBluetoothDeviceFound(res => {
             console.debug('-'.repeat(50))
             console.debug('发现新设备：', JSON.stringify(res.devices))
-            this.#filterBluetoothDevices(res.devices, this.objectId, successCallback)
+            this.#filterBluetoothDevices(res.devices, this.objectId, success)
           })
         } else {
           const item = allDevices.find(e => this.registeredDevices.includes(e.name))
@@ -42,7 +42,7 @@ export default class {
         this.api.openBluetoothAdapter({
           success: res => {
             console.debug('初始化蓝牙模块：', res)
-            this.startApiBluetoothDevicesDiscovery(allowDup, successCallback)
+            this.startApiBluetoothDevicesDiscovery(allowDup, success)
           },
           fail: res => {
             fail?.(res)
