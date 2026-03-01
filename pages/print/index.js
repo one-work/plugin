@@ -17,7 +17,8 @@ Page({
     const ds = e.currentTarget.dataset
     const deviceId = ds.deviceId
     this.printer.createBLEConnection(deviceId, () => {
-
+      
+      this.setData({ connectedDeviceId: deviceId })
     })
   },
 
