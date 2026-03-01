@@ -33,7 +33,9 @@ Page({
   restartBluetoothDevicesDiscovery() {
     this.printer.getState({
       success: (res) => {
+        console.debug('-------get state success--')
         console.debug(res)
+        console.debug('---- get state success-')
       }
     })
   },
