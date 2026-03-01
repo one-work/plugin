@@ -93,7 +93,7 @@ export default class {
         Object.assign(item, device)
       } else {
         console.debug('搜索到新设备：', device.name)
-        this.allDevices.push(device)
+        allDevices.push(device)
       }
     })
 
@@ -112,7 +112,7 @@ export default class {
         }
       })
 
-      this.allDevices.sort((a, b) => {
+      allDevices.sort((a, b) => {
         if (a.deviceId === item.deviceId) {
           return -1
         } else if (b.deviceId === item.deviceId) {
@@ -137,6 +137,7 @@ export default class {
       successCallback?.({ devices: allDevices })
       this.startApiBluetoothDevicesDiscovery(false, successCallback)
     }
+    this.allDevices = allDevices
   }
 
   #getBluetoothDevices(successCallback) {
