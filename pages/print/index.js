@@ -35,6 +35,7 @@ Page({
       success: (res) => {
         console.debug('-------get state success--')
         console.debug(res)
+        this.setData({ devices: res.devices })
         console.debug('---- get state success-')
       }
     })
