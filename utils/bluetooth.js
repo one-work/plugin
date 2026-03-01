@@ -57,7 +57,7 @@ export default class {
     })
   }
 
-  startApiBluetoothDevicesDiscovery(allowDup, success) {
+  startApiBluetoothDevicesDiscovery(allowDup, successCallback) {
     this.api.startBluetoothDevicesDiscovery({
       allowDuplicatesKey: allowDup,
       success: discoveryRes => {
@@ -66,7 +66,7 @@ export default class {
           // 因为 uniApp 没有实现停止监听的方法，所以通过传递 ObjectId 来比较打印服务实例
           console.debug('='.repeat(50))
           console.debug('发现新设备（OnFound）：', this.objectId, JSON.stringify(foundRes.devices))
-          this.#filterBluetoothDevices(foundRes.devices, this.objectId, success)
+          this.#filterBluetoothDevices(foundRes.devices, this.objectId, successCallback)
         })
       },
       fail: res => {
@@ -76,7 +76,7 @@ export default class {
     })
   }
 
-  #filterBluetoothDevices(devices, objectId, success, x = false) {
+  #filterBluetoothDevices(devices, objectId, successCallback, x = false) {
     if (!this.enabled) {
       return
     }
@@ -123,26 +123,26 @@ export default class {
 
       if (this.connectedDevice.deviceId === item.deviceId) {
         console.debug('已连接设备（即将打印）：', item.deviceId, objectId, this.objectId, this.enabled)
-        success?.({ devices: devices })
+        successCallback?.({ devices: devices, printable: true })
       } else {
         if (x) {
           console.debug('-------------筛选', item.advertisServiceUUIDs)
           this.#getConnectedBluetoothDevices(item.advertisServiceUUIDs, item.deviceId, success)
         } else {
-          this.createBLEConnection(item.deviceId, success)
+          this.createBLEConnection(item.deviceId, successCallback)
         }
       }
     } else if (x) {
       // x 表示是筛选所有发现过的设备场景, 既然找不到就开启 discovery
-      this.startApiBluetoothDevicesDiscovery(false, success)
+      this.startApiBluetoothDevicesDiscovery(false, successCallback)
     }
   }
 
-  #getBluetoothDevices(success) {
+  #getBluetoothDevices(successCallback) {
     this.api.getBluetoothDevices({
       success: res => {
         console.debug('获取在蓝牙模块生效期间所有搜索到的蓝牙设备：', res)
-        this.#filterBluetoothDevices(res.devices, this.objectId, success, true)
+        this.#filterBluetoothDevices(res.devices, this.objectId, successCallback, true)
       }
     })
   }

@@ -92,12 +92,12 @@ export default class extends Bluetooth {
     })
   }
 
-  createBLEConnection(deviceId, success) {
+  createBLEConnection(deviceId, successCallback) {
     this.api.createBLEConnection({
       deviceId,
       success: res => {
         console.debug('连接蓝牙：', deviceId, res)
-        this.getBLEDeviceServices(deviceId, success)
+        this.getBLEDeviceServices(deviceId, successCallback)
       },
       fail: res => {
         console.debug('连接蓝牙设备失败', deviceId, res)
@@ -106,7 +106,7 @@ export default class extends Bluetooth {
   }
 
   // 获取蓝牙设备的所有服务
-  getBLEDeviceServices(deviceId, success) {
+  getBLEDeviceServices(deviceId, successCallback) {
     this.api.getBLEDeviceServices({
       deviceId,
       success: res => {
@@ -135,7 +135,7 @@ export default class extends Bluetooth {
               if (servicesLength === index + 1) {
                 console.debug('获取打印机', this.connectedDevice)
                 if (this.connectedDevice.deviceId) {
-                  success?.({ devices: this.allDevices })
+                  successCallback?.({ devices: this.allDevices, printable: true })
                 } else {
                   this.api.showModal({
                     title: '获取合适的特征值失败',
