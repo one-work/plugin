@@ -75,7 +75,7 @@ Page({
 
     const data = []
     data.push(0x1f, 0x28, 0x0f)  // 设置 Wifi
-    data.push(size)  // 数据总长度
+    data.push(...[size % 256, Math.floor(size / 256)])  // 数据总长度
     data.push(0x1f, 0x77)
     data.push(ssid.length)  // SSID 长度
     data.push(...ssid)
@@ -83,6 +83,8 @@ Page({
     data.push(pass.length)  // 密码长度
     data.push(...pass)
     data.push(xor)
+
+    //const x = [0x1F, 0x28, 0x0F, 0x17, 0x00, 0x1F 77 08 E4 B8 AD E6 96 87 41 50 03 01 08 31 32 33 34 35 36 37 38 75]
 
 
     this.printer.registeredDevices = [this.data.connectedDeviceName]
