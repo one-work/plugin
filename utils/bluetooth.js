@@ -1,8 +1,10 @@
 export default class {
 
-  constructor(api) {
+  constructor(api, page) {
     this.api = api
+    this.page = page
     this.allDevices = []
+    page.devices = this.allDevices
     this.registeredDevices = []
     this.connectedDevice = {}
     this.objectId = Math.random()
@@ -94,6 +96,7 @@ export default class {
       } else {
         console.debug('搜索到新设备：', device.name)
         allDevices.push(device)
+        this.allDevices.push(device)
       }
     })
 
@@ -137,7 +140,6 @@ export default class {
       successCallback?.({ devices: allDevices })
       this.startApiBluetoothDevicesDiscovery(false, successCallback)
     }
-    this.allDevices = allDevices
   }
 
   #getBluetoothDevices(successCallback) {

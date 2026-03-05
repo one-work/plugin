@@ -10,7 +10,7 @@ Page({
 
   onLoad(options) {
     console.debug('print onload', options)
-    this.printer = new BluetoothPrinter(wx)
+    this.printer = new BluetoothPrinter(wx, this)
     wx.cpcl = new PrintCPCL()
 
     wx.getConnectedWifi({
