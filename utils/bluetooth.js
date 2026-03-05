@@ -4,7 +4,7 @@ export default class {
     this.api = api
     this.page = page
     this.allDevices = []
-    page.devices = this.allDevices
+    page.data.devices = this.allDevices
     this.registeredDevices = []
     this.connectedDevice = {}
     this.objectId = Math.random()

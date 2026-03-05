@@ -2,8 +2,8 @@ import Bluetooth from './bluetooth'
 
 export default class extends Bluetooth {
 
-  constructor(api) {
-    super(api)
+  constructor(api, page) {
+    super(api, page)
     this.printLock = false
   }
 
