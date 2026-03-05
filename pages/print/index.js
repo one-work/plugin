@@ -84,9 +84,6 @@ Page({
     data.push(...pass)
     data.push(xor)
 
-    //const x = [0x1F, 0x28, 0x0F, 0x17, 0x00, 0x1F 77 08 E4 B8 AD E6 96 87 41 50 03 01 08 31 32 33 34 35 36 37 38 75]
-
-
     this.printer.registeredDevices = [this.data.connectedDeviceName]
     this.printer.getState({
       success: (res) => {
