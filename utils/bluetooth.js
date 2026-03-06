@@ -3,6 +3,7 @@ export default class {
   constructor(api, page) {
     this.api = api
     this.allDevices = []
+    this.page = page
     page.setData({ devices: this.allDevices })
 
     this.registeredDevices = []
@@ -83,7 +84,8 @@ export default class {
       return
     }
     const allDevices = [...this.allDevices]
-    console.debug('所有设备（filter）：', allDevices.length, allDevices)
+    console.debug('所有设备（summary）：', allDevices.length, objectId)
+    console.debug('所有设备（filter）：', allDevices)
     console.debug('本次已连接:', this.connectedDevice)
     devices.forEach(device => {
       if (!device.name && !device.localName) { return }
@@ -96,6 +98,7 @@ export default class {
         console.debug('搜索到新设备：', device.name)
         allDevices.push(device)
         this.allDevices.push(device)
+        this.page.setData({ devices: this.allDevices })
       }
     })
 
