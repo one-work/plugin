@@ -2,9 +2,9 @@ export default class {
 
   constructor(api, page) {
     this.api = api
-    this.page = page
     this.allDevices = []
-    page.data.devices = this.allDevices
+    page.setData({ devices: this.allDevices })
+
     this.registeredDevices = []
     this.connectedDevice = {}
     this.objectId = Math.random()
@@ -87,7 +87,6 @@ export default class {
     console.debug('本次已连接:', this.connectedDevice)
     devices.forEach(device => {
       if (!device.name && !device.localName) { return }
-      if (!device.RSSI) { return }
       if (device.name.includes('未知或不支持的设备') || device.name.includes('未知设备')) { return }
       const item = allDevices.find(e => e.deviceId === device.deviceId)
       if (item) {

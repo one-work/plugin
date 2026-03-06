@@ -15,18 +15,6 @@
         <text wx:if="{{connectedDeviceId === item.deviceId}}" class="weui-badge">已连接</text>
         <text wx:else class="weui-badge" style="background-color: darkgrey">未连接</text>
       </view>
-      <view wx:if="{{item.RSSI}}" style="font-size: 10px">
-        <text>信号强度: </text>
-        <text>{{item.RSSI}}dBm</text>
-      </view>
-      <view style="font-size: 10px">
-        <text>UUID: </text>
-        <text>{{item.deviceId}}</text>
-      </view>
-      <view wx:if="{{item.advertisServiceUUIDs}}" style="font-size: 10px">
-        <text>Service数量: </text>
-        <text>{{item.advertisServiceUUIDs.length}}</text>
-      </view>
     </view>
   </view>
 </scroll-view>
