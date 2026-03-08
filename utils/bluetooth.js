@@ -7,6 +7,7 @@ export default class {
     page.setData({ devices: this.allDevices })
 
     this.registeredDevices = []
+    this.filteredDevices = []
     this.connectedDevice = {}
     this.objectId = Math.random()
     this.enabled = true
@@ -90,6 +91,11 @@ export default class {
     devices.forEach(device => {
       if (!device.name && !device.localName) { return }
       if (device.name.includes('未知或不支持的设备') || device.name.includes('未知设备')) { return }
+      if (this.filteredDevices.length >= 1) {
+        this.filteredDevices.forEach(el => {
+          if (!device.name.includes(el)) { return }
+        })
+      }
       const item = allDevices.find(e => e.deviceId === device.deviceId)
       if (item) {
         console.debug('搜索到新设备-更新：', device.name)
