@@ -11,7 +11,7 @@ Page({
   onLoad(options) {
     console.debug('print onload', options)
     this.printer = new BluetoothPrinter(wx, this)
-    this.printer.filteredDevices = ['PRINTER']
+    this.printer.filteredDevices = [options.name]
     this.setData({ objectId: this.printer.objectId })
     wx.cpcl = new PrintCPCL()
 
