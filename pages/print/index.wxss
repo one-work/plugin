@@ -11,16 +11,19 @@ input {
   background-color: #F0F0F0;
   padding: 10px;
   padding-bottom: 20px;
+  margin: 15px 15px;
   margin-bottom: env(safe-area-inset-bottom);
   font-size: 14px;
   min-height: 100px;
   box-shadow: 0 0 3px 0;
 }
 
-.connected_info .operation {
-  position: absolute;
-  display: inline-block;
-  right: 30px;
+.connected_info button {
+  margin-top: 15px;
+}
+
+.connected_info input + input {
+  margin-top: 15px;
 }
 
 .devices_summary {
@@ -30,8 +33,8 @@ input {
 }
 
 .device_list {
-  height: 300px;
-  margin: 50px 5px;
+  height: 6rem;
+  margin: 15px 15px;
   margin-top: 0;
   border: 1px solid #EEE;
   border-radius: 5px;
@@ -57,7 +60,7 @@ input {
   background-color: rgba(0, 0, 0, .1);
 }
 
-.weui-btn {
+.px-4 {
   padding-left: 1rem;
   padding-right: 1rem;
 }
