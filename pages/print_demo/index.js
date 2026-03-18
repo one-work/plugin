@@ -8,8 +8,8 @@ Page({
   },
 
   onLoad() {
-    this.printer = new BluetoothPrinter(wx)
-    this.printer.registeredDevices = ['XC-Printer']
+    this.printer = new BluetoothPrinter(wx, this)
+    this.printer.registeredDevices = ['PRINTER-461D']
   },
 
   printCpcl() {
