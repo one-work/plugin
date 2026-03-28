@@ -9,7 +9,7 @@ Page({
 
   onLoad() {
     this.printer = new BluetoothPrinter(wx, this)
-    this.printer.registeredDevices = [wx.removeStorageSync('connectedDeviceName')]
+    this.printer.registeredDevices = [wx.getStorageSync('connectedDeviceName')]
   },
 
   printCpcl() {
