@@ -15,6 +15,15 @@ Page({
     this.setData({ objectId: this.printer.objectId })
     wx.cpcl = new PrintCPCL()
 
+    this.printer.getState({
+      success: (res) => {
+        console.debug('-------get state success--')
+        console.debug(res)
+        this.setData({ devices: res.devices })
+        console.debug('---- get state success-')
+      }
+    })
+
     wx.getConnectedWifi({
       success: (res) => {
         console.debug('-----', res)
@@ -41,17 +50,6 @@ Page({
         console.debug('断开与蓝牙设备的连接', res)
         this.setData({ connectedDeviceId: '' })
         wx.removeStorageSync('printer')
-      }
-    })
-  },
-
-  restartBluetoothDevicesDiscovery() {
-    this.printer.getState({
-      success: (res) => {
-        console.debug('-------get state success--')
-        console.debug(res)
-        this.setData({ devices: res.devices })
-        console.debug('---- get state success-')
       }
     })
   },

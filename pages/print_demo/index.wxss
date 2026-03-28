@@ -1,11 +1,7 @@
-.mt-1 {
-  margin-top: 0.25rem;
-}
-
 button {
   text-align: center;
   background: #eeeeee;
-  margin: 1em;
-  padding: 1em;
+  margin: 0.75rem;
+  padding: 0.75rem;
   border-radius: 5px;
 }

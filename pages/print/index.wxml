@@ -19,10 +19,6 @@
   </view>
 </scroll-view>
 
-<view class="px-4">
-  <button bindtap="restartBluetoothDevicesDiscovery">查找蓝牙设备</button>
-</view>
-
 <view class="connected_info" wx:if="{{true}}">
   <form catchsubmit="formSubmit">
     <input name="ssid" value="{{wifi.SSID}}" placeholder="Wifi 名称"/>
