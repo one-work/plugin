@@ -39,20 +39,23 @@ Page({
       connectedDeviceId: ds.deviceId,
       connectedDeviceName: ds.name
     })
+    wx.setStorageSync('connectedDeviceId', ds.deviceId)
+    wx.setStorageSync('connectedDeviceName', ds.name)
   },
 
   closeBLEConnection() {
-    this.setData({ 
-      connectedDeviceId: '',
-      connectedDeviceName: ''
-    })
     wx.closeBLEConnection({
       deviceId: this.data.connectedDeviceId,
       success: res => {
         console.debug('断开与蓝牙设备的连接', res)
-        wx.removeStorageSync('printer')
       }
     })
+    this.setData({ 
+      connectedDeviceId: '',
+      connectedDeviceName: ''
+    })
+    wx.removeStorageSync('connectedDeviceId')
+    wx.removeStorageSync('connectedDeviceName')
   },
 
   formSubmit(e) {
