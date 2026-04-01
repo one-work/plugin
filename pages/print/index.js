@@ -5,7 +5,9 @@ import iconv from 'iconv-lite'
 Page({
   data: {
     devices: [],
-    chs: []
+    chs: [],
+    connectedDeviceId: wx.getStorageSync('connectedDeviceId'),
+    connectedDeviceName: wx.getStorageSync('connectedDeviceName')
   },
 
   onLoad(options) {
