@@ -1,2 +1,2 @@
-<button bindtap="printCpcl" class="button">CPCL 打印测试</button>
-<button bindtap="printPos" class="button">POS/ESC 打印测试</button>
+<button bindtap="printCpcl" class="button">CPCL 打印</button>
+<button bindtap="printPos" class="button">POS/ESC 打印</button>

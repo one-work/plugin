@@ -21,8 +21,8 @@
 
 <view class="connected_info" wx:if="{{true}}">
   <form catchsubmit="formSubmit">
-    <input name="ssid" value="{{wifi.SSID}}" placeholder="Wifi 名称"/>
-    <input name="password" placeholder="Wifi 密码"/>
+    <input name="ssid" value="{{wifi.SSID}}" placeholder="WIFI 名称"/>
+    <input name="password" placeholder="WIFI 密码"/>
     <button formType="submit" class="weui-btn">设置 WIFI</button>
   </form>
 </view>

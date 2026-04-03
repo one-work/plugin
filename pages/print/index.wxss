@@ -11,11 +11,10 @@ input {
   background-color: #F0F0F0;
   padding: 10px;
   padding-bottom: 20px;
-  margin: 15px 15px;
+  margin: 15px 10px;
   margin-bottom: env(safe-area-inset-bottom);
   font-size: 14px;
   min-height: 100px;
-  box-shadow: 0 0 3px 0;
 }
 
 .connected_info button {
@@ -34,7 +33,7 @@ input {
 
 .device_list {
   height: 8rem;
-  margin: 15px 15px;
+  margin: 15px 10px;
   margin-top: 0;
   border: 1px solid #EEE;
   border-radius: 5px;
@@ -66,6 +65,7 @@ input {
 }
 
 .weui-badge {
+  color: gray;
   align-items: center;
   font-size: 0.8rem;
   border-radius: 4px;
@@ -73,6 +73,7 @@ input {
   height: 2em;
   justify-content: center;
   line-height: 1.5;
+  margin-left: 0.5rem;
   padding-left: 0.75em;
   padding-right: 0.75em;
   white-space: nowrap;
