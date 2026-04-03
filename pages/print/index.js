@@ -5,13 +5,16 @@ import iconv from 'iconv-lite'
 Page({
   data: {
     devices: [],
-    chs: [],
-    connectedDeviceId: wx.getStorageSync('connectedDeviceId'),
-    connectedDeviceName: wx.getStorageSync('connectedDeviceName')
+    chs: []
   },
 
   onLoad(options) {
     console.debug('print onload', options)
+    this.setData({
+      connectedDeviceId: wx.getStorageSync('connectedDeviceId'),
+      connectedDeviceName: wx.getStorageSync('connectedDeviceName')
+    })
+
     this.printer = new BluetoothPrinter(wx, this)
     this.printer.filteredDevices = options.name.split(',')
     this.setData({ objectId: this.printer.objectId })
