@@ -64,6 +64,10 @@ input {
   padding-right: 1rem;
 }
 
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
 .weui-badge {
   color: gray;
   align-items: center;

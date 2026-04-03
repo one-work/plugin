@@ -60,6 +60,23 @@ Page({
     wx.removeStorageSync('connectedDeviceName')
   },
 
+  scanWifi() {
+    wx.scanCode({
+      success: (res) => {
+        const wifi = {}
+        const xx = res.result.substring(5)
+        xx.split(';').forEach(i => {
+          if (i.startsWith('S:')) {
+            wifi.SSID = i.split(':')[1]
+          } else if (i.startsWith('P:')) {
+            wifi.PWD = i.split(':')[1]
+          }
+        })
+        this.setData({ wifi: wifi })
+      }
+    })
+  },
+
   formSubmit(e) {
     const input = e.detail.value
     const ssid = iconv.encode(input.ssid, 'utf-8')
