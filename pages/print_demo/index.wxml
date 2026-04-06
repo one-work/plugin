@@ -1,2 +1,4 @@
-<button bindtap="printCpcl" class="button">CPCL 打印</button>
-<button bindtap="printPos" class="button">POS/ESC 打印</button>
+<view class="p-3">
+  <button bindtap="printCpcl" class="button">CPCL 打印</button>
+  <button bindtap="printPos" class="button mt-4">POS/ESC 打印</button>
+</view>
