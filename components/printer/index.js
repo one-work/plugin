@@ -2,9 +2,6 @@ import BluetoothPrinter from '../../utils/bluetooth_printer'
 
 Component({
 
-  /**
-   * 组件的属性列表
-   */
   properties: {
     printerName: {
       type: String,
@@ -12,9 +9,6 @@ Component({
     }
   },
 
-  /**
-   * 组件的初始数据
-   */
   data: {
 
   },
@@ -28,20 +22,14 @@ Component({
 
       this.printer = new BluetoothPrinter(wx, this)
       this.printer.filteredDevices = this.data.printerName.split(',')
-      this.setData({ objectId: this.printer.objectId })
-
       this.printer.getState({
-        success: (res) => {
-          console.debug(res)
+        success: res => {
           this.setData({ devices: res.devices })
         }
       })
     }
   },
 
-  /**
-   * 组件的方法列表
-   */
   methods: {
     createBLEConnection(e) {
       const ds = e.currentTarget.dataset
