@@ -25,10 +25,6 @@ input {
   margin-top: 15px;
 }
 
-.device_item_hover {
-  background-color: rgba(0, 0, 0, .1);
-}
-
 .px-4 {
   padding-left: 1rem;
   padding-right: 1rem;

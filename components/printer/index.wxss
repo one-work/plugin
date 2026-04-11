@@ -24,6 +24,10 @@
   flex-grow: 1;
 }
 
+.device_item_hover {
+  background-color: rgba(0, 0, 0, .1);
+}
+
 .weui-badge {
   color: gray;
   align-items: center;
