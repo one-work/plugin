@@ -4,5 +4,8 @@
     "print_demo": "pages/print_demo/index",
     "weigh": "pages/weigh/index"
   },
+  "publicComponents": {
+    "printers": "components/printer/index"
+  },
   "main": "index.js"
 }
