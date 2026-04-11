@@ -39,6 +39,7 @@ Component({
       })
       wx.setStorageSync('connectedDeviceId', ds.deviceId)
       wx.setStorageSync('connectedDeviceName', ds.name)
+      wx.createBLEConnection(ds.deviceId)
     },
 
     closeBLEConnection() {
