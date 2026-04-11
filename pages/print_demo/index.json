@@ -1,5 +1,5 @@
 {
   "usingComponents": {
-    "xx": "../../components/printer/index"
+    "printers": "../../components/printer/index"
   }
 }

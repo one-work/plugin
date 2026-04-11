@@ -1,4 +1,4 @@
-<xx printerName="{{ printerName }}"></xx>
+<printers printerName="{{ printerName }}"></printers>
 
 <view class="p-3">
   <button bindtap="printCpcl" class="button">CPCL 打印</button>
