@@ -1,5 +1,4 @@
 import BluetoothPrinter from '../../utils/bluetooth_printer'
-import PrintCPCL from '../../utils/print_cpcl'
 import iconv from 'iconv-lite'
 
 Page({
@@ -10,22 +9,18 @@ Page({
 
   onLoad(options) {
     console.debug('print onload', options)
-    
 
     this.printer = new BluetoothPrinter(wx, this)
-    this.printer.filteredDevices = options.name.split(',')
     this.setData({ 
       objectId: this.printer.objectId,
       printerName: options.name
     })
-    wx.cpcl = new PrintCPCL()
 
     wx.getConnectedWifi({
-      success: (res) => {
-        console.debug('-----', res)
+      success: res => {
         this.setData({ wifi: res.wifi })
       },
-      fail: (err) => {
+      fail: err => {
         console.debug(err)
       }
     })

@@ -1,4 +1,4 @@
-import  BluetoothWeighter from '../../utils/bluetooth_weigher'
+import BluetoothWeighter from '../../utils/bluetooth_weigher'
 
 Page({
   data: {
