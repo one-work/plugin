@@ -44,7 +44,10 @@ Component({
         success: res => {
         },
         fail: res => {
-          alert(JSON.stringify(res))
+          wx.showModal({
+            title: '连接蓝牙失败',
+            content: JSON.stringify(res)
+          })
         }
       })
     },
