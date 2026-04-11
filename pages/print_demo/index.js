@@ -7,8 +7,12 @@ Page({
     state: '正在连接打印机...',
   },
 
-  onLoad() {
+  onLoad(options) {
     this.printer = new BluetoothPrinter(wx, this)
+    this.setData({ 
+      objectId: this.printer.objectId,
+      printerName: options.name
+    })
     this.printer.registeredDevices = [wx.getStorageSync('connectedDeviceName')]
   },
 
