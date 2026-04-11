@@ -20,13 +20,6 @@ Page({
     })
     wx.cpcl = new PrintCPCL()
 
-    this.printer.getState({
-      success: (res) => {
-        console.debug(res)
-        this.setData({ devices: res.devices })
-      }
-    })
-
     wx.getConnectedWifi({
       success: (res) => {
         console.debug('-----', res)

@@ -37,18 +37,3 @@ input {
 .mb-4 {
   margin-bottom: 1rem;
 }
-
-.weui-badge {
-  color: gray;
-  align-items: center;
-  font-size: 0.8rem;
-  border-radius: 4px;
-  display: inline-flex;
-  height: 2em;
-  justify-content: center;
-  line-height: 1.5;
-  margin-left: 0.5rem;
-  padding-left: 0.75em;
-  padding-right: 0.75em;
-  white-space: nowrap;
-}
