@@ -11,6 +11,7 @@ export default class {
     this.connectedDevice = {}
     this.objectId = Math.random()
     this.enabled = true
+    this.chunkSize = 2000
   }
 
   // 获取本机蓝牙适配器状态

@@ -34,7 +34,7 @@ export default class extends Bluetooth {
   }
 
   // 完善后的写入Buffer函数
-  writeBuffer(buffer, chunkSize = 20) {
+  writeBuffer(buffer, chunkSize = this.chunkSize) {
     const totalChunks = Math.ceil(buffer.length / chunkSize)
     const systemInfo = this.api.getSystemInfoSync()
     const writeType = systemInfo.platform === 'android' ? 'writeNoResponse' : 'write'
