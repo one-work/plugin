@@ -1,6 +1,6 @@
 import BluetoothPrinter from '../../utils/bluetooth_printer'
-import PrintCPCL from '../../utils/print_cpcl'
 import PrintPOS from '../../utils/print_pos'
+import PrintPic from '../../utils/print_pic'
 
 Page({
   data: {
@@ -28,6 +28,69 @@ Page({
       success: (res) => {
         if (res.printable) {
           this.printer.writeValue(data)
+        }
+      }
+    })
+  },
+
+  printImage() {
+    const pos = new PrintPOS()
+    const pic = new PrintPic(wx, this)
+    wx.chooseMedia({
+      count: 1,
+      mediaType: ['image'],
+      sizeType: ['compressed'],
+      success: (res) => {
+        pic.loadImageToCanvas(res.tempFilePaths[0], ress => {
+          console.debug('回调数据：', ress)
+          pos.image(ress.data, ress.meta)
+          this.printer.getState({
+            success: (res) => {
+              if (res.printable) {
+                this.printer.writeValue(pos.render())
+              }
+            }
+          })
+        })
+      }
+    })
+  },
+
+  printText() {
+    const pos = new PrintPOS()
+    pos.text_big('Bluetooth Printer!')
+    pos.text('欢迎使用蓝牙打印机！')
+
+    this.printer.getState({
+      success: (res) => {
+        if (res.printable) {
+          this.printer.writeValue(pos.render())
+        }
+      }
+    })
+  },
+
+  printQrcode() {
+    const pos = new PrintPOS()
+    pos.qrcode('https://one.work')
+
+    this.printer.getState({
+      success: (res) => {
+        if (res.printable) {
+          this.printer.writeValue(pos.render())
+        }
+      }
+    })
+  },
+
+  printBar() {
+    const pos = new PrintPOS()
+    pos.barcode('123456789')
+
+    this.printer.getState({
+      success: (res) => {
+        if (res.printable) {
+          this.printer.writeValue(pos.render())
         }
       }
     })
