@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "WIFI 配置",
+  "navigationBarTitleText": "标签(CPCL)打印",
   "usingComponents": {
     "printers": "../../components/printer/index"
   }

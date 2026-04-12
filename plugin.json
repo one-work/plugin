@@ -1,7 +1,8 @@
 {
   "pages": {
     "print": "pages/print/index",
-    "print_demo": "pages/print_demo/index",
+    "print_cpcl": "pages/print_cpcl/index",
+    "print_pos": "pages/print_pos/index",
     "weigh": "pages/weigh/index"
   },
   "publicComponents": {
