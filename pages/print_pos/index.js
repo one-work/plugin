@@ -41,7 +41,7 @@ Page({
       mediaType: ['image'],
       sizeType: ['compressed'],
       success: (res) => {
-        pic.loadImageToCanvas(res.tempFilePaths[0], ress => {
+        pic.loadImageToCanvas(res.tempFiles[0].tempFilePath, ress => {
           console.debug('回调数据：', ress)
           pos.image(ress.data, ress.meta)
           this.printer.getState({

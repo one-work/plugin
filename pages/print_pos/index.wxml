@@ -7,3 +7,5 @@
   <button bindtap="printBar" class="button mt-4">条形码</button>
   <button bindtap="printImage" class="button mt-4">图像</button>
 </view>
+
+<canvas canvas-id="hiddenCanvas"></canvas>
