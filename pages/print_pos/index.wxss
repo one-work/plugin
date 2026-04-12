@@ -1,1 +1,4 @@
-/* plugin/pages/print_pos/index.wxss */
+.canvas {
+  margin-left: auto;
+  margin-right: auto;
+}

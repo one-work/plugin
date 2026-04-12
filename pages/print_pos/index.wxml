@@ -1,11 +1,11 @@
 <printers printerName="{{ printerName }}"></printers>
 
 <view class="p-3">
-  <button bindtap="printPos" class="button mt-4">POS/ESC 打印</button>
+  <button bindtap="printPos" class="button mt-4">综合</button>
   <button bindtap="printText" class="button mt-4">文字</button>
   <button bindtap="printQrcode" class="button mt-4">二维码</button>
   <button bindtap="printBar" class="button mt-4">条形码</button>
   <button bindtap="printImage" class="button mt-4">图像</button>
 </view>
 
-<canvas canvas-id="hiddenCanvas"></canvas>
+<canvas canvas-id="hiddenCanvas" class="canvas" style="width: {{width}}px; height: {{height}}px;"></canvas>

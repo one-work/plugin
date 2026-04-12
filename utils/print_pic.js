@@ -19,6 +19,8 @@ export default class PrintPic {
         const dw = 280
         const dh = Math.round((h * dw) / w)
         console.debug('图片信息：', info, dw, dh)
+        this.page.setData({ width: dw, height: dh })
+
         ctx.drawImage(src, 0, 0, dw, dh)
         ctx.draw(false, () => {
           this.api.canvasGetImageData({

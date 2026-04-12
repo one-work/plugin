@@ -5,6 +5,8 @@ import PrintPic from '../../utils/print_pic'
 Page({
   data: {
     state: '正在连接打印机...',
+    width: 300,
+    height: 200
   },
 
   onLoad(options) {
@@ -41,7 +43,8 @@ Page({
       mediaType: ['image'],
       sizeType: ['compressed'],
       success: (res) => {
-        pic.loadImageToCanvas(res.tempFiles[0].tempFilePath, ress => {
+        const img = res.tempFiles[0]
+        pic.loadImageToCanvas(img.tempFilePath, ress => {
           console.debug('回调数据：', ress)
           pos.image(ress.data, ress.meta)
           this.printer.getState({
