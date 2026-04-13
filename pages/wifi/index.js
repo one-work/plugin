@@ -13,6 +13,7 @@ Page({
       connectedDeviceName: options.name
     })
 
+    this.printer.registeredDevices = [this.data.connectedDeviceName]
     wx.getConnectedWifi({
       success: res => {
         this.setData({ wifi: res.wifi })
@@ -70,7 +71,6 @@ Page({
     data.push(...pass)
     data.push(xor)
 
-    this.printer.registeredDevices = [this.data.connectedDeviceName]
     this.printer.getState({
       success: (res) => {
         if (res.printable) {
