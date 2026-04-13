@@ -1,4 +1,4 @@
-<view>{{connectedDeviceName}}</view>
+<view>已连接：{{connectedDeviceName}}</view>
 <view class="connected_info">
   <button bind:tap="scanWifi" class="button mb-4">扫码输入 WIFI 信息</button>
   <form catchsubmit="formSubmit">

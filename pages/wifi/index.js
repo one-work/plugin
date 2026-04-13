@@ -16,6 +16,9 @@ Page({
       printerName: options.name,
       connectedDeviceName: options.name
     })
+    this.setData({
+     
+    })
 
     wx.getConnectedWifi({
       success: res => {
