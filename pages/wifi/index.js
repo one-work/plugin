@@ -13,7 +13,8 @@ Page({
     this.printer = new BluetoothPrinter(wx, this)
     this.setData({ 
       objectId: this.printer.objectId,
-      printerName: options.name
+      printerName: options.name,
+      connectedDeviceName: options.name
     })
 
     wx.getConnectedWifi({

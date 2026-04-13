@@ -1,5 +1,4 @@
-
-
+<view>{{connectedDeviceName}}</view>
 <view class="connected_info">
   <button bindtap="scanWifi" class="button mb-4">扫码输入 WIFI 信息</button>
   <form catchsubmit="formSubmit">
