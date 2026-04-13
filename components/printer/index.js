@@ -21,8 +21,8 @@ Component({
 
   },
 
-  pageLifetimes: {
-    show() {
+  lifetimes: {
+    attached() {
       this.setData({
         connectedDeviceId: wx.getStorageSync('connectedDeviceId'),
         connectedDeviceName: wx.getStorageSync('connectedDeviceName')
