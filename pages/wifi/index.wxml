@@ -1,6 +1,6 @@
 <view>{{connectedDeviceName}}</view>
 <view class="connected_info">
-  <button bindtap="scanWifi" class="button mb-4">扫码输入 WIFI 信息</button>
+  <button bind:tap="scanWifi" class="button mb-4">扫码输入 WIFI 信息</button>
   <form catchsubmit="formSubmit">
     <input name="ssid" value="{{wifi.SSID}}" placeholder="WIFI 名称"/>
     <input name="password" value="{{wifi.PWD}}" placeholder="WIFI 密码"/>

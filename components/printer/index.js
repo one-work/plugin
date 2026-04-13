@@ -1,15 +1,6 @@
 import BluetoothPrinter from '../../utils/bluetooth_printer'
 
 Component({
-  behaviors: ['wx://component-export'],
-
-  export() {
-    return {
-      connectedDeviceId: this.data.connectedDeviceId,
-      connectedDeviceName: this.data.connectedDeviceName
-    }
-  },
-
   properties: {
     printerName: {
       type: String,
