@@ -2,11 +2,6 @@ page {
   color: #333;
 }
 
-input {
-  border: 1px solid #ccc;
-  padding: 5px 10px;
-}
-
 .connected_info {
   background-color: #F0F0F0;
   padding: 10px;
