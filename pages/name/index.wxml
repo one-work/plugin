@@ -1,0 +1,7 @@
+<view class="px-3 mt-4 title-sm">设置蓝牙名称</view>
+<view class="px-3 mt-1">
+  <form catchsubmit="formSubmit">
+    <input name="name" value="{{connectedDeviceName}}" placeholder="设置蓝牙名称"/>
+    <button formType="submit" class="button mt-1">设置蓝牙名称</button>
+  </form>
+</view>
