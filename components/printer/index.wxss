@@ -1,13 +1,13 @@
 .devices_summary {
   margin-top: 30px;
-  padding: 10px;
-  font-size: 16px;
+  padding: 0.75rem;
 }
 
 .device_list {
   height: 8rem;
-  margin: 15px 10px;
   margin-top: 0;
+  margin-left: 0.75rem;
+  margin-right: 0.75rem;
   border: 1px solid #EEE;
   border-radius: 5px;
   width: auto;
