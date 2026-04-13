@@ -2,22 +2,15 @@ import BluetoothPrinter from '../../utils/bluetooth_printer'
 import iconv from 'iconv-lite'
 
 Page({
-  data: {
-    devices: [],
-    chs: []
-  },
-
   onLoad(options) {
     console.debug('print onload', options)
 
     this.printer = new BluetoothPrinter(wx, this)
+
     this.setData({ 
       objectId: this.printer.objectId,
       printerName: options.name,
       connectedDeviceName: options.name
-    })
-    this.setData({
-     
     })
 
     wx.getConnectedWifi({

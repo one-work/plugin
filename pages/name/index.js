@@ -1,11 +1,17 @@
-// plugin/pages/name/index.js
+import BluetoothPrinter from '../../utils/bluetooth_printer'
+import iconv from 'iconv-lite'
+
 Page({
+  onLoad(options) {
+    console.debug('print onload', options)
 
-  /**
-   * 页面的初始数据
-   */
-  data: {
-
+    this.printer = new BluetoothPrinter(wx, this)
+    
+    this.setData({ 
+      objectId: this.printer.objectId,
+      printerName: options.name,
+      connectedDeviceName: options.name
+    })
   },
 
   formSubmit(e) {
