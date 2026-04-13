@@ -19,7 +19,6 @@ Page({
     const input = e.detail.value
     const name = iconv.encode(input.name, 'utf-8')
     const length = name.length + 5
-    const config = []
 
     // 计算校验位
     let xor = 0x1f ^ 0x42
