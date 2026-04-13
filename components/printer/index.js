@@ -58,9 +58,12 @@ Component({
           })
         }
       })
+
+      this.triggerEvent('selected', { ...ds })
     },
 
-    closeBLEConnection() {
+    closeBLEConnection(e) {
+      const ds = e.currentTarget.dataset
       wx.closeBLEConnection({
         deviceId: this.data.connectedDeviceId,
         success: res => {
@@ -73,6 +76,8 @@ Component({
       })
       wx.removeStorageSync('connectedDeviceId')
       wx.removeStorageSync('connectedDeviceName')
+
+      this.triggerEvent('unselected', { ...ds })
     }
   }
 })
