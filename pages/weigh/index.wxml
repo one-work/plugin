@@ -1,7 +1,7 @@
 <weighers printerName="{{ printerName }}"></weighers>
 
 <button
-  bindtap="restartBluetoothDevicesDiscovery"
+  bind:tap="restartBluetoothDevicesDiscovery"
   class="weui-btn weui-btn_primary"
 >查找蓝牙设备</button>
 
@@ -17,7 +17,7 @@
     </view>
     <view>
       <button
-        bindtap="doWeigh"
+        bind:tap="doWeigh"
         class="weui-btn weui-btn_primary"
         disabled="{{!value}}"
       >发送</button>
