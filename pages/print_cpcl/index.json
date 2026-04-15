@@ -1,6 +1,3 @@
 {
-  "navigationBarTitleText": "标签(CPCL)打印",
-  "usingComponents": {
-    "printers": "../../components/printer/index"
-  }
+  "navigationBarTitleText": "标签（CPCL）打印"
 }
