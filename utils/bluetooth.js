@@ -8,6 +8,7 @@ export default class {
 
     this.registeredDevices = []
     this.filteredDevices = []
+    this.blockedDevices = ['未知或不支持的设备', '未知设备']
     this.connectedDevice = {}
     this.objectId = Math.random()
     this.enabled = true
@@ -91,7 +92,7 @@ export default class {
     console.debug('本次已连接:', this.connectedDevice)
     devices.forEach(device => {
       if (!device.name && !device.localName) { return }
-      if (device.name.includes('未知或不支持的设备') || device.name.includes('未知设备')) { return }
+      if (this.blockedDevices.length >= 1 && this.filteredDevices.find(e => device.name.includes(e))) { return }
       if (this.filteredDevices.length >= 1 && !this.filteredDevices.find(e => device.name.includes(e))) { return }
       const item = allDevices.find(e => e.deviceId === device.deviceId)
       if (item) {
