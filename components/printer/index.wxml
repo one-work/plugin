@@ -7,7 +7,7 @@
     wx:key="index"
     data-device-id="{{item.deviceId}}"
     data-device-name="{{item.name || item.localName}}"
-    bind:tap="{{connectedDeviceId === item.deviceId ? 'closeBLEConnection' : 'createBLEConnection'}}"
+    bind:tap="{{connectedId === item.deviceId ? 'closeBLEConnection' : 'createBLEConnection'}}"
     class="device_item"
     hover-class="device_item_hover"
   >
