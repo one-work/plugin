@@ -26,13 +26,7 @@ Page({
     const data = pos.render()
     console.debug('POS处理后的数据：', data)
 
-    this.printer.getState({
-      success: (res) => {
-        if (res.printable) {
-          this.printer.writeValue(data)
-        }
-      }
-    })
+    this.print(data)
   },
 
   printImage() {
@@ -47,13 +41,7 @@ Page({
         pic.loadImageToCanvas(img.tempFilePath, ress => {
           console.debug('回调数据：', ress)
           pos.image(ress.data, ress.meta)
-          this.printer.getState({
-            success: (res) => {
-              if (res.printable) {
-                this.printer.writeValue(pos.render())
-              }
-            }
-          })
+          this.print(pos.render())
         })
       }
     })
@@ -64,36 +52,28 @@ Page({
     pos.text_big('Bluetooth Printer!')
     pos.text('欢迎使用蓝牙打印机！')
 
-    this.printer.getState({
-      success: (res) => {
-        if (res.printable) {
-          this.printer.writeValue(pos.render())
-        }
-      }
-    })
+    this.print(pos.render())
   },
 
   printQrcode() {
     const pos = new PrintPOS()
     pos.qrcode('https://one.work')
 
-    this.printer.getState({
-      success: (res) => {
-        if (res.printable) {
-          this.printer.writeValue(pos.render())
-        }
-      }
-    })
+    this.print(pos.render())
   },
 
   printBar() {
     const pos = new PrintPOS()
     pos.barcode('123456789')
 
+    this.print(pos.render())
+  },
+
+  print(data) {
     this.printer.getState({
       success: (res) => {
         if (res.printable) {
-          this.printer.writeValue(pos.render())
+          this.printer.writeValue(data)
         }
       }
     })

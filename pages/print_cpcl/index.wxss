@@ -1,1 +1,9 @@
-/* plugin/pages/print_cpcl/index.wxss */
+.text-centered {
+  text-align: center;
+  margin-top: 0.75rem;
+}
+
+.canvas {
+  margin-left: auto;
+  margin-right: auto;
+}
