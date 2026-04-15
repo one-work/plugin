@@ -32,7 +32,7 @@ export default class PrintCPCL {
     }
   }
 
-  text_bold(data, { size = 1, ...options } = {}) {
+  text_big(data, { size = 1, ...options } = {}) {
     this.#pushData('SETBOLD 2')
     this.#pushData(`SETMAG ${size} ${size}`)
     this.text(data, { size: size, y: 36 * size, ...options })

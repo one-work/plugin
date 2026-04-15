@@ -57,7 +57,7 @@ Page({
 
   printQrcode() {
     const pos = new PrintCPCL()
-    pos.qrcode('https://one.work')
+    pos.qrcode_right('https://one.work')
 
     this.print(pos.render())
   },
