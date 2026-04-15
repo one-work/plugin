@@ -5,15 +5,13 @@ Page({
   onLoad(options) {
     console.debug('print onload', options)
 
-    this.printer = new BluetoothPrinter(wx, this)
-
     this.setData({ 
-      objectId: this.printer.objectId,
-      printerName: options.name,
-      connectedDeviceName: options.name
+      connectedName: options.connectedName
     })
 
-    this.printer.registeredDevices = [this.data.connectedDeviceName]
+    this.printer = new BluetoothPrinter(wx, this)
+    this.printer.registeredDevices = [this.data.connectedName]
+
     wx.getConnectedWifi({
       success: res => {
         this.setData({ wifi: res.wifi })

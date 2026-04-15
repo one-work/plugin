@@ -3,16 +3,13 @@ import iconv from 'iconv-lite'
 
 Page({
   onLoad(options) {
-    console.debug('print onload', options)
-    this.printer = new BluetoothPrinter(wx, this)
-
-    this.setData({ 
-      objectId: this.printer.objectId,
-      printerName: options.name,
-      connectedDeviceName: options.name
+    console.debug('name onload', options)
+    this.setData({
+      connectedName: options.connectedName
     })
 
-    this.printer.registeredDevices = [this.data.connectedDeviceName]
+    this.printer = new BluetoothPrinter(wx, this)
+    this.printer.registeredDevices = [this.data.connectedName]
   },
 
   formSubmit(e) {

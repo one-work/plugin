@@ -3,17 +3,13 @@ import PrintCPCL from '../../utils/print_cpcl'
 import PrintPic from '../../utils/print_pic'
 
 Page({
-  data: {
-    state: '正在连接打印机...',
-  },
-
   onLoad(options) {
-    this.printer = new BluetoothPrinter(wx, this)
     this.setData({ 
-      objectId: this.printer.objectId,
-      printerName: options.name
+      connectedName: options.connectedName
     })
-    this.printer.registeredDevices = [wx.getStorageSync('connectedDeviceName')]
+
+    this.printer = new BluetoothPrinter(wx, this)
+    this.printer.registeredDevices = [this.data.connectedName]
   },
 
   printCpcl() {

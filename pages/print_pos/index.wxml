@@ -1,4 +1,4 @@
-<view class="text-centered">已连接：{{printerName}}</view>
+<view class="text-centered">已连接：{{connectedName}}</view>
 
 <view class="p-3">
   <button bind:tap="printPos" class="button mt-4">综合</button>

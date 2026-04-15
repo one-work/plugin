@@ -10,12 +10,12 @@ Page({
   },
 
   onLoad(options) {
-    this.printer = new BluetoothPrinter(wx, this)
     this.setData({ 
-      objectId: this.printer.objectId,
-      printerName: options.name
+      connectedName: options.connectedName
     })
-    this.printer.registeredDevices = [wx.getStorageSync('connectedDeviceName')]
+
+    this.printer = new BluetoothPrinter(wx, this)
+    this.printer.registeredDevices = [this.data.connectedName]
   },
 
   printPos() {
