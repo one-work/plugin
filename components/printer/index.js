@@ -5,8 +5,8 @@ Component({
 
   export() {
     return {
-      connectedDeviceId: this.data.connectedDeviceId,
-      connectedDeviceName: this.data.connectedDeviceName
+      connectedId: this.data.connectedId,
+      connectedName: this.data.connectedName
     }
   },
 
