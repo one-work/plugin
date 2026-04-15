@@ -3,6 +3,11 @@
   padding: 0.75rem;
 }
 
+.px-3 {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
 .device_list {
   height: 8rem;
   margin-top: 0;
