@@ -1,6 +1,6 @@
 import BluetoothPrinter from '../../utils/bluetooth_printer'
 import PrintCPCL from '../../utils/print_cpcl'
-import PrintPOS from '../../utils/print_pos'
+import PrintPic from '../../utils/print_pic'
 
 Page({
   data: {
