@@ -11,7 +11,7 @@
     class="device_item"
     hover-class="device_item_hover"
   >
-    <view class="device_item__left">
+    <view class="device_item__inner">
       <text>{{item.name}}</text>
       <text wx:if="{{connectedDeviceId === item.deviceId}}" class="weui-badge">已连接</text>
       <text wx:else class="weui-badge" style="background-color: darkgrey">未连接</text>

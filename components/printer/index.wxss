@@ -9,7 +9,7 @@
 }
 
 .device_list {
-  height: 8rem;
+  height: 9em;
   margin-top: 0;
   margin-left: 0.75rem;
   margin-right: 0.75rem;
@@ -21,12 +21,14 @@
 .device_item {
   display: flex;
   border-bottom: 1px solid #EEE;
-  padding: 10px;
+  padding: 0.5em 0.75em;
   color: #666;
 }
 
-.device_item__left {
+.device_item__inner {
   flex-grow: 1;
+  display: flex;
+  justify-content: space-between;
 }
 
 .device_item_hover {
@@ -39,7 +41,6 @@
   font-size: 0.8rem;
   border-radius: 4px;
   display: inline-flex;
-  height: 2em;
   justify-content: center;
   line-height: 1.5;
   margin-left: 0.5rem;
