@@ -89,10 +89,11 @@ export default class {
     const allDevices = [...this.allDevices]
     console.debug('所有设备（summary）：', allDevices.length, objectId)
     console.debug('所有设备（filter）：', allDevices)
-    console.debug('本次已连接:', this.connectedDevice)
+    console.debug('本次已连接：', this.connectedDevice)
+    console.debug('本次筛选：', devices.length)
     devices.forEach(device => {
       if (!device.name && !device.localName) { return }
-      if (this.blockedDevices.length >= 1 && this.filteredDevices.find(e => device.name.includes(e))) { return }
+      if (this.blockedDevices.length >= 1 && this.blockedDevices.find(e => device.name.includes(e))) { return }
       if (this.filteredDevices.length >= 1 && !this.filteredDevices.find(e => device.name.includes(e))) { return }
       const item = allDevices.find(e => e.deviceId === device.deviceId)
       if (item) {
