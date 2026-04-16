@@ -9,13 +9,12 @@
 }
 
 .device_list {
-  height: 9em;
   margin-top: 0;
   margin-left: 0.75rem;
   margin-right: 0.75rem;
   border: 1px solid #EEE;
   border-radius: 5px;
-  width: auto;
+  height: inherit;
 }
 
 .device_item {
