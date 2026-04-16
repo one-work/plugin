@@ -12,9 +12,10 @@
   margin-top: 0;
   margin-left: 0.75rem;
   margin-right: 0.75rem;
+  height: inherit;
+  width: auto;
   border: 1px solid #EEE;
   border-radius: 5px;
-  height: inherit;
 }
 
 .device_item {
