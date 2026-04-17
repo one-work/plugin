@@ -37,22 +37,26 @@ export default class PrintPic {
     })
   }
 
-  // 专为 8-bit 灰度图像优化，固定 256 级
-  otsu(histogram, totalPixels) {
+  // RGBA → 1 bit 光栅命令
+  imgToRaster(rgba, w, h) {
+    const grayArray = []
+    const totalPixels = rgba.length / 4
+
     let sum = 0;
     for (let i = 0; i < 256; i++) {
-      sum += i * histogram[i]
+      sum += i * rgba[i]
     }
 
     let sumB = 0, wB = 0, maxBetween = 0, threshold = 0;
 
+    // 专为 8-bit 灰度图像优化，固定 256 级
     for (let t = 0; t < 256; t++) {
-      wB += histogram[t];
+      wB += rgba[t];
       if (wB === 0) continue;
       const wF = totalPixels - wB;
       if (wF === 0) break;
 
-      sumB += t * histogram[t];
+      sumB += t * rgba[t];
       const mB = sumB / wB;
       const mF = (sum - sumB) / wF;
       const between = wB * wF * (mB - mF) ** 2;  // 类间方差
@@ -63,14 +67,8 @@ export default class PrintPic {
       }
     }
 
-    return threshold
-  }
-
-  // RGBA → 1 bit 光栅命令
-  imgToRaster(rgba, w, h) {
-    const grayArray = []
     for (let i = 0; i < rgba.length; i += 4) {
-      if (i < 128) {
+      if (i < threshold) {
         grayArray.push(1) // 打印像素点
       } else {
         grayArray.push(0) // 不打印
