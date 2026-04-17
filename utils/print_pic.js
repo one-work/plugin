@@ -19,7 +19,7 @@ export default class PrintPic {
       src,
       success: (info) => {
         const { width: w, height: h } = info
-        /* 统一缩放到 384 点宽（58 mm 纸） */
+        // 统一缩放到 384 点宽（58 mm 纸）
         const dw = 280
         const dh = Math.round((h * dw) / w)
         console.debug('图片信息：', info, dw, dh)

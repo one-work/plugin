@@ -43,7 +43,7 @@ Page({
         query.select('#hiddenCanvas').fields({ node: true, size: true }).exec(res => {
           console.debug(res)
           const canvas = res[0].node
-          pic.loadImageToCanvas(img.tempFilePath, canvas, ress => {
+          pic.loadImageToCanvas(canvas, img.tempFilePath, ress => {
             console.debug('回调数据：', ress)
             pos.image(ress.data, ress.meta)
             this.print(pos.render())
