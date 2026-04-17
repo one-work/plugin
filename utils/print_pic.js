@@ -6,7 +6,7 @@ export default class PrintPic {
   }
 
   // 画 canvas 并取 RGBA
-  loadImageToCanvas(src, canvas, success) {
+  loadImageToCanvas(canvas, src, success) {
     const ctx = canvas.getContext('2d')
     ctx.clearRect(0, 0, 9999, 9999)
     ctx.filter = 'grayscale(100%)'
@@ -25,14 +25,14 @@ export default class PrintPic {
         console.debug('图片信息：', info, dw, dh)
         this.page.setData({ width: dw, height: dh })
 
-        img.onload = (e) => {
+        img.addEventListener('load', () => {
           ctx.drawImage(img, 0, 0, dw, dh)
           const imageData = ctx.getImageData(0, 0, dw, dh)
           console.debug('canvas 数据：', imageData)
           const data = this.imgToRaster(imageData, dw, dh)
           console.debug('转化后的数据:', data)
           success?.(data)
-        }
+        })
       }
     })
   }
