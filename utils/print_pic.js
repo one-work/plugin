@@ -40,10 +40,16 @@ export default class PrintPic {
   // RGBA → 1 bit 光栅命令
   imgToRaster(rgba, w, h) {
     const grayArray = []
-    const hist = []
+    const hist = new Array(256).fill(0)
     const totalPixels = rgba.length / 4
 
-    let sum = 0;
+    for (let i = 0; i < rgba.length; i += 4) {
+      if (rgba[i + 3] > 0) {
+        hist[rgba[i]] = 1
+      }
+    }
+
+    let sum = 0
     for (let i = 0; i < 256; i++) {
       sum += i * hist[i]
     }
