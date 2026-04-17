@@ -41,8 +41,7 @@ export default class PrintPic {
   imgToRaster(rgba, w, h) {
     const grayArray = []
     for (let i = 0; i < rgba.length; i += 4) {
-      const gray = Math.round(rgba[i] * 0.299 + rgba[i + 1] * 0.587 + rgba[i + 2] * 0.114)
-      if (gray < 128) {
+      if (i < 128) {
         grayArray.push(1) // 打印像素点
       } else {
         grayArray.push(0) // 不打印
