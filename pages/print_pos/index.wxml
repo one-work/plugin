@@ -8,4 +8,4 @@
   <button bind:tap="printImage" class="button mt-4">图像</button>
 </view>
 
-<canvas canvas-id="hiddenCanvas" class="canvas" style="width: {{width}}px; height: {{height}}px;"></canvas>
+<canvas type="2d" id="hiddenCanvas" class="canvas" style="width: {{width}}px; height: {{height}}px;"></canvas>

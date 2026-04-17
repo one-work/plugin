@@ -32,16 +32,23 @@ Page({
   printImage() {
     const pos = new PrintPOS()
     const pic = new PrintPic(wx, this)
+    const query = this.createSelectorQuery()
+    console.debug()
+
     wx.chooseMedia({
       count: 1,
       mediaType: ['image'],
       sizeType: ['compressed'],
       success: (res) => {
         const img = res.tempFiles[0]
-        pic.loadImageToCanvas(img.tempFilePath, ress => {
-          console.debug('回调数据：', ress)
-          pos.image(ress.data, ress.meta)
-          this.print(pos.render())
+        query.select('#hiddenCanvas').fields({ node: true, size: true }).exec(res => {
+          console.debug(res)
+          const canvas = res[0].node
+          pic.loadImageToCanvas(img.tempFilePath, canvas, ress => {
+            console.debug('回调数据：', ress)
+            pos.image(ress.data, ress.meta)
+            this.print(pos.render())
+          })
         })
       }
     })

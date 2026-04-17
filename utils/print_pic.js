@@ -6,10 +6,14 @@ export default class PrintPic {
   }
 
   // 画 canvas 并取 RGBA
-  loadImageToCanvas(src, success) {
-    const ctx = this.api.createCanvasContext('hiddenCanvas', this.page)
+  loadImageToCanvas(src, canvas, success) {
+    const ctx = canvas.getContext('2d')
     ctx.clearRect(0, 0, 9999, 9999)
+    ctx.filter = 'grayscale(100%)'
     console.debug('图片 src：', src)
+
+    const img = canvas.createImage()
+    img.src = src
 
     this.api.getImageInfo({
       src,
@@ -21,22 +25,14 @@ export default class PrintPic {
         console.debug('图片信息：', info, dw, dh)
         this.page.setData({ width: dw, height: dh })
 
-        ctx.drawImage(src, 0, 0, dw, dh)
-        ctx.draw(false, () => {
-          this.api.canvasGetImageData({
-            canvasId: 'hiddenCanvas',
-            x: 0,
-            y: 0,
-            width: dw,
-            height: dh,
-            success: (res) => {
-              console.debug('canvas 数据：', res)
-              const data = this.imgToRaster(res.data, res.width, res.height)
-              console.debug('转化后的数据:', data)
-              success?.(data)
-            }
-          })
-        })
+        img.onload = (e) => {
+          ctx.drawImage(img, 0, 0, dw, dh)
+          const imageData = ctx.getImageData(0, 0, dw, dh)
+          console.debug('canvas 数据：', imageData)
+          const data = this.imgToRaster(imageData, dw, dh)
+          console.debug('转化后的数据:', data)
+          success?.(data)
+        }
       }
     })
   }
