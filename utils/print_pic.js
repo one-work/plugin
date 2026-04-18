@@ -14,6 +14,9 @@ export default class PrintPic {
     const img = canvas.createImage()
     img.src = src
 
+    const dpr = this.api.getSystemInfoSync().pixelRatio
+
+
     this.api.getImageInfo({
       src,
       success: (info) => {
@@ -22,6 +25,10 @@ export default class PrintPic {
         const dw = 280
         const dh = Math.round((h * dw) / w)
         console.debug('图片信息：', info, dw, dh)
+
+        canvas.width = dw * dpr
+        canvas.height = dh * dpr
+        ctx.scale(dpr, dpr)
         this.page.setData({ width: dw, height: dh })
 
         img.addEventListener('load', () => {
