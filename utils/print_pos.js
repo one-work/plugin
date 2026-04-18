@@ -5,6 +5,7 @@ export default class PrintPOS {
 
   constructor() {
     this.data = []
+    this.debug = false
     this.data.push(0x1b, 0x40)  // 初始化打印机：清除打印缓存，各参数恢复默认值
     this.data.push(0x1d, 0x4c, 0x12, 0x00)  // 设置左限（左边距）：向右移动 18（0x12）点
     //this.data.push(0x1c, 0x26) // 启用 16×16 点阵中文打印模式
@@ -13,10 +14,12 @@ export default class PrintPOS {
 
   render() {
     this.data.push(...Array(5).fill(0x0a))  // 5个换行
-    this.debug()
+    if (this.debug) {
+      this.debug()
+    }
     return this.data
   }
-  
+
   debug() {
     console.debug('打印数据：', this.data.map(i => { return i.toString(16).padStart(2, '0') }).join(' '))
   }

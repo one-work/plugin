@@ -16,7 +16,6 @@ export default class PrintPic {
 
     const dpr = this.api.getSystemInfoSync().pixelRatio
 
-
     this.api.getImageInfo({
       src,
       success: (info) => {
@@ -28,7 +27,7 @@ export default class PrintPic {
 
         canvas.width = dw * dpr
         canvas.height = dh * dpr
-        ctx.scale(dpr, dpr)
+        //ctx.scale(dpr, dpr)
         this.page.setData({ width: dw, height: dh })
 
         img.addEventListener('load', () => {
@@ -90,7 +89,7 @@ export default class PrintPic {
         grayArray.push(0) // 不打印
       }
     }
-    console.debug('转灰度后的数据：', grayArray.length, grayArray.join(''))
+    console.debug('转灰度后的数据：', grayArray.length)
 
     const bytesPerLine = Math.ceil(w / 8)
     const raster = []
@@ -104,16 +103,14 @@ export default class PrintPic {
       }
     }
 
-    const meta = {
-      width: w,
-      byteWidth: bytesPerLine,
-      height: h
-    }
-
     return {
       data: raster,
       dataStr: dataStr,
-      meta: meta
+      meta: {
+        width: w,
+        byteWidth: bytesPerLine,
+        height: h
+      }
     }
   }
 

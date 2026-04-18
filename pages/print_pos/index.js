@@ -44,7 +44,6 @@ Page({
           console.debug(res)
           const canvas = res[0].node
           pic.loadImageToCanvas(canvas, img.tempFilePath, ress => {
-            console.debug('回调数据：', ress)
             pos.image(ress.data, ress.meta)
             this.print(pos.render())
           })
