@@ -44,6 +44,10 @@ Page({
           console.debug(res)
           const canvas = res[0].node
           pic.loadImageToCanvas(canvas, img.tempFilePath, ress => {
+            this.setData({
+              width: ress.meta.width,
+              height: ress.meta.height
+            })
             pos.image(ress.data, ress.meta)
             this.print(pos.render())
           })

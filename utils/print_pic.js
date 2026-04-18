@@ -28,7 +28,7 @@ export default class PrintPic {
         canvas.width = dw * dpr
         canvas.height = dh * dpr
         //ctx.scale(dpr, dpr)
-        this.page.setData({ width: dw, height: dh })
+        
 
         img.addEventListener('load', () => {
           ctx.drawImage(img, 0, 0, dw, dh)
