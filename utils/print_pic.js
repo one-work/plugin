@@ -45,13 +45,15 @@ export default class PrintPic {
 
   // RGBA → 1 bit 光栅命令
   imgToRaster(rgba, w, h) {
+    // 支持 ImageData 或 Uint8Array
+    const buf = rgba && rgba.data ? rgba.data : rgba
     const grayArray = []
     const hist = new Array(256).fill(0)
-    const totalPixels = rgba.length / 4
+    const totalPixels = Math.floor(buf.length / 4)
 
-    for (let i = 0; i < rgba.length; i += 4) {
-      if (rgba[i + 3] > 0) {
-        hist[rgba[i]]++
+    for (let i = 0; i < buf.length; i += 4) {
+      if (buf[i + 3] > 0) {
+        hist[buf[i]]++
       }
     }
 
@@ -80,8 +82,8 @@ export default class PrintPic {
     }
     console.debug('Threshold:', threshold)
 
-    for (let i = 0; i < rgba.length; i += 4) {
-      const gray = Math.round(rgba[i] * 0.299 + rgba[i + 1] * 0.587 + rgba[i + 2] * 0.114)
+    for (let i = 0; i < buf.length; i += 4) {
+      const gray = Math.round(buf[i] * 0.299 + buf[i + 1] * 0.587 + buf[i + 2] * 0.114)
       if (gray < threshold) {
         grayArray.push(1) // 打印像素点
       } else {
