@@ -12,7 +12,6 @@ export default class PrintPic {
 
     const img = canvas.createImage()
     img.src = src
-
     img.addEventListener('load', () => {
       const w = img.width
       const h = img.height
