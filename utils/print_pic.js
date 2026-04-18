@@ -9,7 +9,6 @@ export default class PrintPic {
   loadImageToCanvas(canvas, src, success) {
     const ctx = canvas.getContext('2d')
     ctx.clearRect(0, 0, 9999, 9999)
-    ctx.filter = 'grayscale(100%)'
     console.debug('图片 src：', src)
 
     const img = canvas.createImage()
@@ -75,7 +74,8 @@ export default class PrintPic {
     console.debug('Threshold:', threshold)
 
     for (let i = 0; i < rgba.length; i += 4) {
-      if (i < threshold) {
+      const gray = Math.round(rgba[i] * 0.299 + rgba[i + 1] * 0.587 + rgba[i + 2] * 0.114)
+      if (gray < threshold) {
         grayArray.push(1) // 打印像素点
       } else {
         grayArray.push(0) // 不打印
