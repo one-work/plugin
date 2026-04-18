@@ -1,8 +1,7 @@
 export default class PrintPic {
 
-  constructor(api, page) {
+  constructor(api) {
     this.api = api
-    this.page = page
   }
 
   // 画 canvas 并取 RGBA
@@ -16,29 +15,24 @@ export default class PrintPic {
 
     const dpr = this.api.getSystemInfoSync().pixelRatio
 
-    this.api.getImageInfo({
-      src,
-      success: (info) => {
-        const { width: w, height: h } = info
-        // 统一缩放到 384 点宽（58 mm 纸）
-        const dw = 280
-        const dh = Math.round((h * dw) / w)
-        console.debug('图片信息：', info, dw, dh)
+    img.addEventListener('load', () => {
+      const w = img.width
+      const h = img.height
+      // 统一缩放到 384 点宽（58 mm 纸）
+      const dw = 280
+      const dh = Math.round((h * dw) / w)
+      console.debug('图片信息：', img, dw, dh)
 
-        canvas.width = dw * dpr
-        canvas.height = dh * dpr
-        //ctx.scale(dpr, dpr)
-        
+      canvas.width = dw * dpr
+      canvas.height = dh * dpr
+      //ctx.scale(dpr, dpr)
 
-        img.addEventListener('load', () => {
-          ctx.drawImage(img, 0, 0, dw, dh)
-          const imageData = ctx.getImageData(0, 0, dw, dh)
-          console.debug('canvas 数据：', imageData)
-          const data = this.imgToRaster(imageData, dw, dh)
-          console.debug('转化后的数据:', data)
-          success?.(data)
-        })
-      }
+      ctx.drawImage(img, 0, 0, dw, dh)
+      const imageData = ctx.getImageData(0, 0, dw, dh)
+      console.debug('canvas 数据：', imageData)
+      const data = this.imgToRaster(imageData, dw, dh)
+      console.debug('转化后的数据:', data)
+      success?.(data)
     })
   }
 
