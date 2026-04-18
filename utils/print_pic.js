@@ -45,7 +45,7 @@ export default class PrintPic {
 
     for (let i = 0; i < rgba.length; i += 4) {
       if (rgba[i + 3] > 0) {
-        hist[rgba[i]] = 1
+        hist[rgba[i]]++
       }
     }
 
