@@ -1,7 +1,8 @@
 export default class PrintPic {
 
-  constructor(dpr) {
-    this.api = dpr || 1
+  constructor(dpr, img) {
+    this.dpr = dpr || 1
+    this.img = img
   }
 
   // 画 canvas 并取 RGBA
@@ -9,8 +10,8 @@ export default class PrintPic {
     const ctx = canvas.getContext('2d')
     ctx.clearRect(0, 0, 9999, 9999)
     console.debug('图片 src：', src)
+    const img = this.img
 
-    const img = canvas.createImage()
     img.src = src
     img.addEventListener('load', () => {
       const w = img.width
@@ -18,7 +19,7 @@ export default class PrintPic {
       // 统一缩放到 384 点宽（58 mm 纸）
       const dw = 280
       const dh = Math.round((h * dw) / w)
-      console.debug('图片信息：', img, dw, dh)
+      console.debug('图片信息：', w, h, dw, dh)
 
       canvas.width = dw * this.dpr
       canvas.height = dh * this.dpr

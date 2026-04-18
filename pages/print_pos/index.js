@@ -31,7 +31,7 @@ Page({
 
   printImage() {
     const pos = new PrintPOS()
-    const pic = new PrintPic(wx.getSystemInfoSync().pixelRatio)
+
     const query = this.createSelectorQuery()
 
     wx.chooseMedia({
@@ -43,6 +43,8 @@ Page({
         query.select('#hiddenCanvas').fields({ node: true, size: true }).exec(res => {
           console.debug(res)
           const canvas = res[0].node
+          const imgNode = canvas.createImage()
+          const pic = new PrintPic(wx.getSystemInfoSync().pixelRatio, imgNode)
 
           pic.loadImageToCanvas(canvas, img.tempFilePath, ress => {
             this.setData({
