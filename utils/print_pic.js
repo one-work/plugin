@@ -1,7 +1,7 @@
 export default class PrintPic {
 
-  constructor(api) {
-    this.api = api
+  constructor(dpr) {
+    this.api = dpr || 1
   }
 
   // 画 canvas 并取 RGBA
@@ -13,8 +13,6 @@ export default class PrintPic {
     const img = canvas.createImage()
     img.src = src
 
-    const dpr = this.api.getSystemInfoSync().pixelRatio
-
     img.addEventListener('load', () => {
       const w = img.width
       const h = img.height
@@ -23,8 +21,8 @@ export default class PrintPic {
       const dh = Math.round((h * dw) / w)
       console.debug('图片信息：', img, dw, dh)
 
-      canvas.width = dw * dpr
-      canvas.height = dh * dpr
+      canvas.width = dw * this.dpr
+      canvas.height = dh * this.dpr
       //ctx.scale(dpr, dpr)
 
       ctx.drawImage(img, 0, 0, dw, dh)
