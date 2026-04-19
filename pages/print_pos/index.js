@@ -44,7 +44,7 @@ Page({
           console.debug(res)
           const canvas = res[0].node
           const imgNode = canvas.createImage()
-          const pic = new PrintPic(wx.getSystemInfoSync().pixelRatio, imgNode)
+          const pic = new PrintPic(wx.getWindowInfo().pixelRatio, imgNode)
 
           pic.loadImageToCanvas(canvas, img.tempFilePath, ress => {
             this.setData({
