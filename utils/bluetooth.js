@@ -48,6 +48,7 @@ export default class {
         this.api.openBluetoothAdapter({
           success: res => {
             console.debug('初始化蓝牙模块：', res)
+            this.#getBluetoothDevices(success)
             this.startApiBluetoothDevicesDiscovery(allowDup, success)
           },
           fail: res => {
@@ -90,7 +91,7 @@ export default class {
     console.debug('所有设备（summary）：', allDevices.length, objectId)
     console.debug('所有设备（filter）：', allDevices)
     console.debug('本次已连接：', this.connectedDevice)
-    console.debug('本次筛选：', devices.length)
+    console.debug('本次筛选：', devices.length, devices)
     devices.forEach(device => {
       if (!device.name && !device.localName) { return }
       if (this.blockedDevices.length >= 1 && this.blockedDevices.find(e => device.name.includes(e))) { return }
