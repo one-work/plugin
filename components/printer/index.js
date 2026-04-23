@@ -79,6 +79,7 @@ Component({
     restartBluetooth() {
       wx.closeBluetoothAdapter({
         success: res => {
+          this.setData({ devices: [] })
           this.printer.getState({
             success: res => {
               this.setData({ devices: res.devices })
