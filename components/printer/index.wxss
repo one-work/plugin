@@ -1,4 +1,5 @@
 .devices_summary {
+  flex-grow: 0;
   margin-top: 30px;
   padding: 0.75rem;
 }
@@ -9,11 +10,12 @@
 }
 
 .device_list {
+  flex-grow: 1;
   margin-top: 0;
   margin-left: 0.75rem;
   margin-right: 0.75rem;
-  height: inherit;
   width: auto;
+  min-height: 6em;
   border: 1px solid #EEE;
   border-radius: 5px;
 }
