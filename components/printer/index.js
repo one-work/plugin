@@ -74,6 +74,18 @@ Component({
       wx.removeStorageSync('connectedName')
 
       this.triggerEvent('unselected', { ...ds })
+    },
+
+    restartBluetooth() {
+      wx.closeBluetoothAdapter({
+        success: res => {
+          this.printer.getState({
+            success: res => {
+              this.setData({ devices: res.devices })
+            }
+          })
+        }
+      })
     }
   }
 })
