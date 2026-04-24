@@ -1,6 +1,5 @@
 {
   "pages": {
-    "name": "pages/name/index",
     "wifi": "pages/wifi/index",
     "print_cpcl": "pages/print_cpcl/index",
     "print_pos": "pages/print_pos/index",
@@ -8,7 +7,7 @@
   },
   "publicComponents": {
     "printers": "components/printer/index",
-    "name": "components/name/index"
+    "bluetoothName": "components/name/index"
   },
   "main": "index.js"
 }

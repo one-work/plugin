@@ -1,4 +1,3 @@
-<view class="text-centered">已连接：{{connectedName}}</view>
 <view class="px-3 mt-4 title-sm">设置蓝牙名称</view>
 <view class="px-3 mt-1">
   <form catchsubmit="formSubmit">
