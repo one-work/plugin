@@ -41,6 +41,7 @@ Component({
         connectedId: ds.deviceId,
         connectedName: ds.deviceName
       })
+
       wx.setStorageSync('connectedId', ds.deviceId)
       wx.setStorageSync('connectedName', ds.deviceName)
       wx.createBLEConnection({
