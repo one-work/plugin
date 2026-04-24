@@ -11,18 +11,13 @@ Component({
 
   lifetimes: {
     attached() {
-      console.debug('name onload', options)
-      this.setData({
-        connectedName: options.connectedName
-      })
-
       this.printer = new BluetoothPrinter(wx, this)
-      this.printer.registeredDevices = [this.data.connectedName]
     }
   },
 
   methods: {
     formSubmit(e) {
+      this.printer.registeredDevices = [this.data.connectedName]
       const input = e.detail.value
       const name = iconv.encode(input.name, 'utf-8')
       const length = name.length + 5
