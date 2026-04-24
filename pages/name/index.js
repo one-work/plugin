@@ -1,42 +1,66 @@
-import BluetoothPrinter from '../../utils/bluetooth_printer'
-import iconv from 'iconv-lite'
-
+// plugin/pages/name/index.js
 Page({
-  onLoad(options) {
-    console.debug('name onload', options)
-    this.setData({
-      connectedName: options.connectedName
-    })
 
-    this.printer = new BluetoothPrinter(wx, this)
-    this.printer.registeredDevices = [this.data.connectedName]
+  /**
+   * 页面的初始数据
+   */
+  data: {
+
   },
 
-  formSubmit(e) {
-    const input = e.detail.value
-    const name = iconv.encode(input.name, 'utf-8')
-    const length = name.length + 5
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad(options) {
 
-    // 计算校验位
-    let xor = 0x1f ^ 0x42
-    for (const byte of name) {
-      xor ^= byte
-    }
+  },
 
-    const data = []
-    data.push(0x1f, 0x28, 0x0f)
-    data.push(...[length % 256, Math.floor(length / 256)])
-    data.push(0x1f, 0x42)
-    data.push(...name)
-    data.push(0x00, 0x00)
-    data.push(xor)
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady() {
 
-    this.printer.getState({
-      success: (res) => {
-        if (res.printable) {
-          this.printer.writeValue(data)
-        }
-      }
-    })
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow() {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面隐藏
+   */
+  onHide() {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面卸载
+   */
+  onUnload() {
+
+  },
+
+  /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  onPullDownRefresh() {
+
+  },
+
+  /**
+   * 页面上拉触底事件的处理函数
+   */
+  onReachBottom() {
+
+  },
+
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage() {
+
   }
 })

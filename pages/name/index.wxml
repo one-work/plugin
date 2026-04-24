@@ -1,8 +1,2 @@
-<view class="text-centered">已连接：{{connectedName}}</view>
-<view class="px-3 mt-4 title-sm">设置蓝牙名称</view>
-<view class="px-3 mt-1">
-  <form catchsubmit="formSubmit">
-    <input name="name" value="{{connectedName}}" placeholder="设置蓝牙名称"/>
-    <button formType="submit" class="button mt-1">设置蓝牙名称</button>
-  </form>
-</view>
+<!--plugin/pages/name/index.wxml-->
+<text>plugin/pages/name/index.wxml</text>
