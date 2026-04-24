@@ -2,3 +2,40 @@
   text-align: center;
   margin-top: 0.75rem;
 }
+
+.title-sm {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  font-size: 0.8em;
+  font-weight: normal;
+  color: grey;
+}
+
+.form-inner {
+  margin-top: 0.25rem;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  display: flex;
+  box-sizing: border-box;
+}
+
+.input {
+  flex: 1;
+  box-sizing: border-box;
+  height: fit-content;
+  min-width: 0;
+}
+
+.button {
+  flex-grow: 0;
+  box-sizing: border-box;
+  min-width: 0;
+  margin: 0;
+  white-space: nowrap;
+  width: 150px;
+}
+
+.button::after {
+  content: '';
+  border: none;
+}
