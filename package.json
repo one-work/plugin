@@ -2,7 +2,7 @@
   "name": "bluetooth",
   "id": "chuangyin-bluetooth",
   "displayName": "蓝牙打印",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "main": "index.js",
   "keywords": [
     "蓝牙",
@@ -22,7 +22,19 @@
     },
     "darkmode": "x",
     "i18n": "x",
-    "widescreen": "x"
+    "widescreen": "x",
+    "contact": {
+        "qq": ""
+    },
+    "npmurl": "",
+    "sale": {
+        "regular": {
+            "price": "0.00"
+        },
+        "sourcecode": {
+            "price": "0.00"
+        }
+    }
   },
   "dependencies": {
     "buffer": "^6.0.3",
@@ -71,7 +83,8 @@
             "jd": "-",
             "harmony": "-",
             "qq": "-",
-            "lark": "-"
+            "lark": "-",
+            "xhs": "-"
           },
           "quickapp": {
             "huawei": "-",
@@ -94,5 +107,6 @@
         }
       }
     }
-  }
+},
+"repository": ""
 }
