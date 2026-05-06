@@ -4,7 +4,13 @@ export default class {
     this.api = api
     this.allDevices = []
     this.page = page
-    page.setData({ devices: this.allDevices })
+    if (page.setData) {
+      page.setData({
+        devices: this.allDevices
+      })
+    } else {
+      this.devices = this.allDevices
+    }
 
     this.registeredDevices = []
     this.filteredDevices = []
@@ -105,7 +111,11 @@ export default class {
           console.debug('搜索到新设备：', device.name)
           allDevices.push(device)
           this.allDevices.push(device)
-          this.page.setData({ devices: this.allDevices })
+          if (this.page.setData) {
+            this.page.setData({ devices: this.allDevices })
+          } else {
+            this.page.devices = this.allDevices
+          }
         }
       }
     })
