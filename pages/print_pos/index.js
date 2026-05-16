@@ -1,6 +1,5 @@
 import BluetoothPrinter from '../../utils/bluetooth_printer'
-import PrintPOS from '../../utils/print_pos'
-import PrintPic from '../../utils/print_pic'
+import { PrintPOS, PrintPic } from 'xcprinter'
 
 Page({
   data: {

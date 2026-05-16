@@ -1,6 +1,5 @@
 import BluetoothPrinter from '../../utils/bluetooth_printer'
-import PrintCPCL from '../../utils/print_cpcl'
-import PrintPic from '../../utils/print_pic'
+import { PrintCPCL, PrintPic } from 'xcprinter'
 
 Page({
   onLoad(options) {
