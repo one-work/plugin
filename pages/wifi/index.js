@@ -1,5 +1,6 @@
 import BluetoothPrinter from '../../utils/bluetooth_printer'
 import iconv from 'iconv-lite'
+import { PrintCommand } from 'xcprinter'
 
 Page({
   onLoad(options) {
@@ -42,12 +43,9 @@ Page({
   formSubmit(e) {
     const input = e.detail.value
     const ssid = iconv.encode(input.ssid, 'utf-8')
-    const pass = iconv.encode(input.password, 'utf-8')
-    
-
-    
-
-    
+    const password = iconv.encode(input.password, 'utf-8')
+    const command = new PrintCommand()
+    const data = command.setWifi(ssid, password)
 
     this.printer.getState({
       success: (res) => {
