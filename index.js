@@ -3,6 +3,7 @@ import BluetoothWeigher from './utils/bluetooth_weigher'
 import { PrintPOS, PrintCPCL, PrintPic } from 'xcprinter'
 import iconv from 'iconv-lite'
 import Qrcode from 'qrcode-generator'
+import { TextEncoder, TextDecoder } 'fast-text-encoding'
 
 export {
   BluetoothPrinter,
@@ -11,5 +12,7 @@ export {
   PrintPOS,
   PrintPic,
   iconv,
-  Qrcode
+  Qrcode,
+  TextEncoder,
+  TextEncoder
 }
