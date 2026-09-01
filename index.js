@@ -4,12 +4,12 @@ import { PrintPOS, PrintCPCL, PrintPic } from 'xcprinter'
 import iconv from 'iconv-lite'
 import Qrcode from 'qrcode-generator'
 
-module.exports = {
-  BluetoothPrinter: BluetoothPrinter,
-  BluetoothWeigher: BluetoothWeigher,
-  PrintCPCL: PrintCPCL,
-  PrintPOS: PrintPOS,
-  PrintPic: PrintPic,
-  iconv: iconv,
-  Qrcode: Qrcode
+export {
+  BluetoothPrinter,
+  BluetoothWeigher,
+  PrintCPCL,
+  PrintPOS,
+  PrintPic,
+  iconv,
+  Qrcode
 }
