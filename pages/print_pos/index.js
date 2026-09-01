@@ -30,7 +30,6 @@ Page({
 
   printImage() {
     const pos = new PrintPOS()
-
     const query = this.createSelectorQuery()
 
     wx.chooseMedia({
