@@ -24,20 +24,21 @@
     "i18n": "x",
     "widescreen": "x",
     "contact": {
-        "qq": ""
+      "qq": ""
     },
     "npmurl": "",
     "sale": {
-        "regular": {
-            "price": "0.00"
-        },
-        "sourcecode": {
-            "price": "0.00"
-        }
+      "regular": {
+        "price": "0.00"
+      },
+      "sourcecode": {
+        "price": "0.00"
+      }
     }
   },
   "dependencies": {
     "process": "^0.11.10",
+    "text-encoding": "^0.7.0",
     "xcprinter": "1.0.16"
   },
   "engines": {
