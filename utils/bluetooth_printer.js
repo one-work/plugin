@@ -93,6 +93,7 @@ export default class extends Bluetooth {
           })
         } else {
           this.printLock = false
+          console.debug(`打印失败-----------------`)
           this.api.showModal(
             {
               title: '打印失败',
