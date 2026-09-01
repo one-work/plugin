@@ -15,21 +15,25 @@ export default class extends Bluetooth {
         title: '打印机正忙',
         content: '前一个打印任务还在进行中！'
       })
-    } else {
-      this.printLock = true
-      if (Array.isArray(data)) {
-        const buffer = new ArrayBuffer(data.length)
-        const uint = new Uint8Array(buffer)
-        uint.set(data)
-        this.writeBuffer(uint)
-      } else if (data instanceof Uint8Array) {
-        this.writeBuffer(data) 
-      } else {
-        this.api.showModal({
-          title: '数据格式不符合预期',
-          content: '支持 Array 类型或者 Uint8Array 类型数据！'
-        })
-      }
+      return
+    }
+
+    if (!Array.isArray(data) && !(data instanceof Uint8Array)) {
+      this.api.showModal({
+        title: '数据格式不符合预期',
+        content: '支持 Array 类型或者 Uint8Array 类型数据！'
+      })
+      return
+    }
+
+    this.printLock = true
+    if (Array.isArray(data)) {
+      const buffer = new ArrayBuffer(data.length)
+      const uint = new Uint8Array(buffer)
+      uint.set(data)
+      this.writeBuffer(uint)
+    } else if (data instanceof Uint8Array) {
+      this.writeBuffer(data)
     }
   }
 
@@ -87,6 +91,15 @@ export default class extends Bluetooth {
             index: index,
             retry: retry
           })
+        } else {
+          this.printLock = false
+          console.debug(`打印失败-----------------`)
+          this.api.showModal(
+            {
+              title: '打印失败',
+              content: '数据发送中断，请检查打印机连接后重试'
+            }
+          )
         }
       }
     })
