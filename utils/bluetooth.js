@@ -22,7 +22,7 @@ export default class {
   }
 
   // 获取本机蓝牙适配器状态
-  getState({ successCallback, failCallback, allowDup = false } = {}) {
+  getState({ success, fail, allowDup = false } = {}) {
     const allDevices = [...this.allDevices]
     console.debug('已连接设备（init）：', this.connectedDevice, this.objectId)
     console.debug('绑定设备（init）：', this.registeredDevices)
@@ -33,14 +33,14 @@ export default class {
         const state = stateRes.adapterState || stateRes
 
         if (state.available) {
-          this.#getBluetoothDevices(successCallback)
+          this.#getBluetoothDevices(success)
         }
 
         if (state.discovering) {
           this.api.onBluetoothDeviceFound(res => {
             console.debug('-'.repeat(50))
             console.debug('发现新设备：', JSON.stringify(res.devices))
-            this.#filterBluetoothDevices(res.devices, this.objectId, successCallback)
+            this.#filterBluetoothDevices(res.devices, this.objectId, success)
           })
         } else {
           const item = allDevices.find(e => this.registeredDevices.includes(e.name))
@@ -54,11 +54,11 @@ export default class {
         this.api.openBluetoothAdapter({
           success: res => {
             console.debug('初始化蓝牙模块：', res)
-            this.#getBluetoothDevices(successCallback)
-            this.startApiBluetoothDevicesDiscovery(allowDup, successCallback)
+            this.#getBluetoothDevices(success)
+            this.startApiBluetoothDevicesDiscovery(allowDup, success)
           },
           fail: res => {
-            failCallback?.(res)
+            fail?.(res)
             this.api.showModal({
               title: '初始化蓝牙模块失败',
               content: '清除微信缓存后再试'
@@ -182,7 +182,7 @@ export default class {
           const connectedItem = res.devices.find(e => e.deviceId === deviceId)
           console.debug('当前连接-已连接：', connectedItem)
           if (connectedItem && this.connectedDevice.deviceId === deviceId) {
-            successCallback?.({ devices: filterDevices })
+            successCallback?.({ devices: filterDevices, printable: true })
           } else if (connectedItem) {
             this.getBLEDeviceServices(deviceId, successCallback)
           } else {
