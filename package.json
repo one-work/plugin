@@ -9,7 +9,7 @@
     "打印",
     "小票",
     "标签"
-],
+  ],
   "author": "",
   "license": "ISC",
   "description": "蓝牙打印",
