@@ -125,7 +125,7 @@ export default class extends Bluetooth {
     this.api.getBLEDeviceServices({
       deviceId,
       success: res => {
-        const availableServices = res.services.filter(service => service.isPrimary && service.uuid.endsWith('0000-1000-8000-00805F9B34FB'))
+        const availableServices = res.services.filter(service => service.isPrimary && service.uuid.toLowerCase().startsWith('0000ff00'))
         const servicesLength = availableServices.length
 
         availableServices.forEach((service, index) => {
@@ -137,7 +137,7 @@ export default class extends Bluetooth {
             success: res => {
               for (const characteristic of res.characteristics) {
                 console.debug('特征值', deviceId, service.uuid, characteristic.uuid, characteristic.properties)
-                if (characteristic.properties.write && (characteristic.properties.writeNoResponse || (characteristic.uuid.endsWith('0000-1000-8000-00805F9B34FB')))) {
+                if (characteristic.properties.write && (characteristic.properties.writeNoResponse || (characteristic.uuid.toLowerCase().startsWith('0000ff00')))) {
                   console.debug('可写入', deviceId, service.uuid, characteristic.uuid)
                   this.connectedDevice = {
                     deviceId: deviceId,
